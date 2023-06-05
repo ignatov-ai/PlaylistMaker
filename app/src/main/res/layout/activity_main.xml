@@ -88,8 +88,6 @@
             android:textColor="@color/black"
             android:textAllCaps="false"
             android:textSize="@dimen/text_size"/>
-
-
     </LinearLayout>
 
 </LinearLayout>
