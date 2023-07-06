@@ -16,15 +16,15 @@
             android:id="@+id/back_to_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
             android:src="@drawable/arrow_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="28dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/ysregular"
             android:text="@string/settings_header"
             android:textColor="@color/black"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_l_r"
             android:layout_gravity="start"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="24dp"
             android:text="Тёмная тема"
             android:textColor="@color/black"
             android:textSize="16sp"/>
@@ -49,8 +49,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="21dp"
-            android:layout_marginRight="18dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="16dp"
             tools:ignore="TouchTargetSizeCheck" />
     </FrameLayout>
 
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_l_r"
             android:layout_gravity="start"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="24dp"
             android:text="Поделиться приложением"
             android:textColor="@color/black"
             android:textSize="16sp"/>
@@ -71,7 +71,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="24dp"
             android:layout_gravity="end"
             android:layout_marginRight="16dp"
             android:src="@drawable/share"/>
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_l_r"
             android:layout_gravity="start"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="24dp"
             android:text="Написать в поддержку"
             android:textColor="@color/black"
             android:textSize="16sp"/>
@@ -94,9 +94,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="24dp"
             android:layout_gravity="end"
-            android:layout_marginRight="14dp"
+            android:layout_marginRight="16dp"
             android:src="@drawable/support"/>
     </FrameLayout>
 
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_l_r"
             android:layout_gravity="start"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="24dp"
             android:text="Пользовательское соглашение"
             android:textColor="@color/black"
             android:textSize="16sp"/>
@@ -117,9 +117,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="24dp"
             android:layout_gravity="end"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="24dp"
             android:src="@drawable/arrow_forward"/>
     </FrameLayout>
 

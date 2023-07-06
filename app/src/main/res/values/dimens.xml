@@ -5,5 +5,5 @@
     <dimen name="margin_t_b">24dp</dimen>
     <dimen name="btn_radius">16dp</dimen>
     <dimen name="header_height">56dp</dimen>
-    <dimen name="settings_text_block">61dp</dimen>
+    <dimen name="settings_text_block">64dp</dimen>
 </resources>

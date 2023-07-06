@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="whiteButton" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:fontFamily">@font/ysregular</item>
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginTop">@dimen/margin_t_b</item>
+        <item name="android:layout_marginLeft">@dimen/margin_l_r</item>
+        <item name="android:layout_marginRight">@dimen/margin_l_r</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">10dp</item>
+        <item name="iconTint">@color/black</item>
+        <item name="cornerRadius">@dimen/btn_radius</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size</item>
     </style>
 </resources>

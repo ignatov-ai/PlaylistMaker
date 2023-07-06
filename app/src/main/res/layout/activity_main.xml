@@ -33,64 +33,25 @@
 
         <Button
             android:id="@+id/btn_search"
-            android:theme="@style/whiteButton"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/margin_t_b"
-            android:layout_marginLeft="@dimen/margin_l_r"
-            android:layout_marginRight="@dimen/margin_l_r"
-            android:backgroundTint="@color/white"
-            app:icon="@drawable/search"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconTint="@color/black"
-            app:cornerRadius="@dimen/btn_radius"
             android:text="@string/btn_search"
-            android:textColor="@color/black"
-            android:textAllCaps="false"
-            android:textSize="@dimen/text_size"/>
+            app:icon="@drawable/search"
+            style="@style/whiteButton"/>
 
         <Button
             android:id="@+id/btn_media"
-            android:theme="@style/whiteButton"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/margin_l_r"
-            android:layout_marginLeft="@dimen/margin_l_r"
-            android:layout_marginRight="@dimen/margin_l_r"
-            android:backgroundTint="@color/white"
-            app:icon="@drawable/library"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconTint="@color/black"
-            app:cornerRadius="@dimen/btn_radius"
             android:text="@string/btn_media"
-            android:textColor="@color/black"
-            android:textAllCaps="false"
-            android:textSize="@dimen/text_size"/>
+            app:icon="@drawable/library"
+            style="@style/whiteButton"
+            android:layout_marginTop="@dimen/margin_l_r"
+            />
 
         <Button
             android:id="@+id/btn_settings"
-            android:theme="@style/whiteButton"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/margin_l_r"
-            android:layout_marginLeft="@dimen/margin_l_r"
-            android:layout_marginRight="@dimen/margin_l_r"
-            android:layout_marginBottom="@dimen/margin_t_b"
-            android:backgroundTint="@color/white"
-            app:icon="@drawable/settings"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconTint="@color/black"
-            app:cornerRadius="@dimen/btn_radius"
             android:text="@string/btn_settings"
-            android:textColor="@color/black"
-            android:textAllCaps="false"
-            android:textSize="@dimen/text_size"/>
+            app:icon="@drawable/settings"
+            style="@style/whiteButton"
+            android:layout_marginTop="@dimen/margin_l_r"
+            android:layout_marginBottom="@dimen/margin_t_b"/>
     </LinearLayout>
 
 </LinearLayout>
