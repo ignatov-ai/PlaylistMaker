@@ -26,7 +26,7 @@
             android:layout_marginLeft="32dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/ysregular"
-            android:text="@string/settings_header"
+            android:text="@string/settingsHeader"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/text_size" />
     </LinearLayout>
@@ -58,7 +58,7 @@
 
         <TextView
             style="@style/settingsTextRow"
-            android:text="Поделиться приложением"/>
+            android:text="@string/shareLabel"/>
 
         <ImageView
             android:id="@+id/share"
@@ -73,7 +73,7 @@
 
         <TextView
             style="@style/settingsTextRow"
-            android:text="Написать в поддержку"/>
+            android:text="@string/supportLabel"/>
 
         <ImageView
             android:id="@+id/support"
@@ -87,7 +87,7 @@
 
         <TextView
             style="@style/settingsTextRow"
-            android:text="Пользовательское соглашение"/>
+            android:text="@string/userAgreementLabel"/>
 
         <ImageView
             android:id="@+id/userAgreement"
