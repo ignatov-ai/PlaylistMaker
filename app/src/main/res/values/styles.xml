@@ -38,4 +38,8 @@
         <item name="android:layout_marginRight">@dimen/margin_l_r</item>
     </style>
 
+    <style name="searchBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+    </style>
+
 </resources>

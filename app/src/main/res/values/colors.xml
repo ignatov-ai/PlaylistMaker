@@ -18,5 +18,7 @@
     <color name="switchKnobNight">@color/ypBlue</color>
     <!--    Track Opacity 48%-->
     <color name="switchTrackNight">@color/ypBlue</color>
+    <color name="ypGray">#AEAFB4</color>
+    <color name="ypSearchBar">#E6E8EB</color>
 
 </resources>

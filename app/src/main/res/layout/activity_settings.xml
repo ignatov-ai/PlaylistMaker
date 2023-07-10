@@ -14,17 +14,18 @@
 
         <ImageView
             android:id="@+id/backToMain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/arrow_back" />
+            android:layout_width="@dimen/layerWidth24dp"
+            android:layout_height="@dimen/layerHeight24dp"
+            android:layout_marginStart="@dimen/marginStart24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/arrow_back"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="@dimen/layerHeight24dp"
+            android:layout_marginStart="@dimen/marginStart24dp"
+            android:layout_gravity="center_vertical"
             android:fontFamily="@font/ysregular"
             android:text="@string/settingsHeader"
             android:textColor="?attr/colorOnPrimary"

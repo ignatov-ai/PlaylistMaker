@@ -12,6 +12,8 @@
         <item name="colorSurface">@color/switchKnobNight</item>
 
         <item name="android:statusBarColor">@color/mainNight</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorOnSecondaryContainer">@color/ypDark</item>
     </style>
 
 </resources>

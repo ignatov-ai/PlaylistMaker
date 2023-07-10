@@ -12,5 +12,7 @@
         <item name="colorSurface">@color/switchKnobLight</item>
 
         <item name="android:statusBarColor">@color/mainLight</item>
+        <item name="colorOnPrimaryContainer">@color/ypSearchBar</item>
+        <item name="colorOnSecondaryContainer">@color/ypGray</item>
     </style>
 </resources>

@@ -16,13 +16,14 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="14dp"
+            android:layout_height="@dimen/layerHeight24dp"
+            android:layout_marginStart="@dimen/margin_l_r"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/ysregular"
             android:text="@string/title"
-            android:textSize="@dimen/text_size"
             android:textColor="@color/white"
-            android:fontFamily="@font/ysregular"/>
+            android:textSize="@dimen/text_size"
+            tools:ignore="TextSizeCheck" />
 
     </LinearLayout>
     <LinearLayout
@@ -35,19 +36,22 @@
             android:id="@+id/btnSearch"
             android:text="@string/btnSearch"
             app:icon="@drawable/search"
-            style="@style/whiteButton"/>
+            style="@style/whiteButton"
+            tools:ignore="VisualLintButtonSize" />
 
         <Button
             android:id="@+id/btnMedia"
             android:text="@string/btnMedia"
             app:icon="@drawable/library"
-            style="@style/whiteButton"/>
+            style="@style/whiteButton"
+            tools:ignore="VisualLintButtonSize" />
 
         <Button
             android:id="@+id/btnSettings"
             android:text="@string/btnSettings"
             app:icon="@drawable/settings"
-            style="@style/whiteButton"/>
+            style="@style/whiteButton"
+            tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
 
 </LinearLayout>
