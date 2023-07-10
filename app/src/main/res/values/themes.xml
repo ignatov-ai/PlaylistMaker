@@ -10,5 +10,7 @@
 
         <item name="textAppearanceLabelMedium">@color/ypDark</item>
         <item name="colorSurface">@color/switchKnobLight</item>
+
+        <item name="android:statusBarColor">@color/mainLight</item>
     </style>
 </resources>

@@ -10,6 +10,8 @@
 
         <item name="textAppearanceLabelMedium">@color/mainNight</item>
         <item name="colorSurface">@color/switchKnobNight</item>
+
+        <item name="android:statusBarColor">@color/mainNight</item>
     </style>
 
 </resources>

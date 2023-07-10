@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/back_to_main"
+            android:id="@+id/backToMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -61,6 +61,7 @@
             android:text="Поделиться приложением"/>
 
         <ImageView
+            android:id="@+id/share"
             style="@style/settingsImageRow"
             android:layout_marginRight="@dimen/margin_l_r"
             android:src="@drawable/share" />
@@ -75,6 +76,7 @@
             android:text="Написать в поддержку"/>
 
         <ImageView
+            android:id="@+id/support"
             style="@style/settingsImageRow"
             android:src="@drawable/support" />
     </LinearLayout>
@@ -88,6 +90,7 @@
             android:text="Пользовательское соглашение"/>
 
         <ImageView
+            android:id="@+id/userAgreement"
             style="@style/settingsImageRow"
             android:src="@drawable/arrow_forward" />
     </LinearLayout>
