@@ -55,7 +55,7 @@
                 android:src="@drawable/magnifire_input_icon" />
 
             <EditText
-                android:id="@+id/searchEditText"
+                android:id="@+id/searchField"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -73,14 +73,14 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
             <ImageView
-                android:id="@+id/searchCleanBarIcon"
+                android:id="@+id/searchClearBar"
                 android:layout_width="@dimen/searchIconWidth16dp"
                 android:layout_height="@dimen/searchIconHeight16dp"
                 android:layout_marginRight="@dimen/margin_l_r"
                 android:layout_gravity="center_vertical"
                 tools:ignore="ContentDescription"
                 android:src="@android:drawable/ic_menu_close_clear_cancel"
-                android:visibility="visible"/>
+                android:visibility="invisible"/>
 
         </LinearLayout>
 
