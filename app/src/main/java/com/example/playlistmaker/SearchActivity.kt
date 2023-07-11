@@ -28,8 +28,7 @@ class SearchActivity : AppCompatActivity() {
 
         btnBackToMain = findViewById(R.id.backToMain)
         btnBackToMain.setOnClickListener {
-            val displayBack = Intent(this, MainActivity::class.java)
-            startActivity(displayBack)
+            finish()
         }
 
         searchField = findViewById(R.id.searchField)

@@ -8,18 +8,23 @@ import android.os.Bundle
 import android.widget.ImageView
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var btnBackToMain: ImageView
+    private lateinit var btnShare: ImageView
+    private lateinit var btnSupport: ImageView
+    private lateinit var btnUserAgreement: ImageView
+
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val btnBackToMain = findViewById<ImageView>(R.id.backToMain)
+        btnBackToMain = findViewById(R.id.backToMain)
         btnBackToMain.setOnClickListener {
-            val displayBack = Intent(this, MainActivity::class.java)
-            startActivity(displayBack)
+            finish()
         }
 
-        val btnShare = findViewById<ImageView>(R.id.share)
+        btnShare = findViewById(R.id.share)
         btnShare.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
@@ -30,7 +35,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(shareIntent, "Share via"))
         }
 
-        val btnSupport = findViewById<ImageView>(R.id.support)
+        btnSupport = findViewById(R.id.support)
         btnSupport.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SENDTO)
             emailIntent.data = Uri.parse("mailto:ignatov-ai@yandex.ru")
@@ -45,7 +50,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(emailIntent)
         }
 
-        val btnUserAgreement = findViewById<ImageView>(R.id.userAgreement)
+        btnUserAgreement = findViewById(R.id.userAgreement)
         btnUserAgreement.setOnClickListener {
             val browserIntent = Intent(Intent.ACTION_VIEW)
             browserIntent.data =

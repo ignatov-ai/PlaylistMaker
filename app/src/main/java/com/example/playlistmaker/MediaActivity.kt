@@ -6,15 +6,15 @@ import android.os.Bundle
 import android.widget.ImageView
 
 class MediaActivity : AppCompatActivity() {
+
+    private lateinit var btnBackToMain: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media)
 
-        val btn_back_to_main = findViewById<ImageView>(R.id.backToMain)
-
-        btn_back_to_main.setOnClickListener{
-            val displayBack = Intent(this, MainActivity::class.java)
-            startActivity(displayBack)
+        btnBackToMain = findViewById(R.id.backToMain)
+        btnBackToMain.setOnClickListener{
+            finish()
         }
 
     }

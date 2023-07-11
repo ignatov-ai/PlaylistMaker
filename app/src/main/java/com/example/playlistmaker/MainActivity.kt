@@ -5,28 +5,35 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var btnSearch: Button
+    private lateinit var btnMedia: Button
+    private lateinit var btnSettings: Button
+
+
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btn_search = findViewById<Button>(R.id.btnSearch)
-        val btn_media = findViewById<Button>(R.id.btnMedia)
-        val btn_settings = findViewById<Button>(R.id.btnSettings)
+        btnSearch = findViewById(R.id.btnSearch)
+        btnMedia = findViewById(R.id.btnMedia)
+        btnSettings = findViewById(R.id.btnSettings)
 
-        btn_search.setOnClickListener {
+        btnSearch.setOnClickListener {
             val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
         }
 
-        btn_media.setOnClickListener {
+        btnMedia.setOnClickListener {
             val mediaIntent = Intent(this, MediaActivity::class.java)
             startActivity(mediaIntent)
         }
 
-        btn_settings.setOnClickListener {
+        btnSettings.setOnClickListener {
             val settingsIntent = Intent(this, SettingsActivity::class.java)
             startActivity(settingsIntent)
         }
