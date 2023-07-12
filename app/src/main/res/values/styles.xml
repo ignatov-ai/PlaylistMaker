@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="whiteButton" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="whiteButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:fontFamily">@font/ysregular</item>
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/white</item>

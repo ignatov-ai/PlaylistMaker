@@ -30,22 +30,22 @@ class SettingsActivity : AppCompatActivity() {
             shareIntent.type = "text/plain"
             shareIntent.putExtra(
                 Intent.EXTRA_TEXT,
-                "Пройди курс разработчика Android приложений от Яндекс. Ссылка: https://practicum.yandex.ru/android-developer/"
+                getString(R.string.shareMessage)
             )
-            startActivity(Intent.createChooser(shareIntent, "Share via"))
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.shareLabel)))
         }
 
         btnSupport = findViewById(R.id.support)
         btnSupport.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SENDTO)
-            emailIntent.data = Uri.parse("mailto:ignatov-ai@yandex.ru")
+            emailIntent.data = Uri.parse(getString(R.string.mailto))
             emailIntent.putExtra(
                 Intent.EXTRA_SUBJECT,
-                "Сообщение разработчикам и разработчицам приложения Playlist Maker"
+                getString(R.string.mailTheme)
             )
             emailIntent.putExtra(
                 Intent.EXTRA_TEXT,
-                "Спасибо разработчикам и разработчицам за крутое приложение!"
+                getString(R.string.mailMessage)
             )
             startActivity(emailIntent)
         }
@@ -54,7 +54,7 @@ class SettingsActivity : AppCompatActivity() {
         btnUserAgreement.setOnClickListener {
             val browserIntent = Intent(Intent.ACTION_VIEW)
             browserIntent.data =
-                Uri.parse("https://yandex.ru/legal/practicum_offer/")
+                Uri.parse(getString(R.string.agreementLink))
             startActivity(browserIntent)
         }
     }

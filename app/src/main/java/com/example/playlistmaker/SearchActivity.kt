@@ -49,6 +49,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 searchText = s.toString()
+
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -65,7 +66,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        searchText = savedInstanceState.getString(SEARCH_TEXT)
+        searchText = savedInstanceState.getString(SEARCH_TEXT, "")
         searchField.setText(searchText)
     }
 

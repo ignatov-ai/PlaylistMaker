@@ -10,4 +10,9 @@
     <string name="userAgreementLabel">Пользовательское соглашение</string>
     <string name="supportLabel">Написать в поддержку</string>
     <string name="shareLabel">Поделиться приложением</string>
+    <string name="shareMessage">Пройди курс разработчика Android приложений от Яндекс. Ссылка: https://practicum.yandex.ru/android-developer/</string>
+    <string name="mailto">mailto:ignatov-ai@yandex.ru</string>
+    <string name="mailTheme">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="mailMessage">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="agreementLink">https://yandex.ru/legal/practicum_offer/</string>
 </resources>
