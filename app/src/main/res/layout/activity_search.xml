@@ -68,6 +68,7 @@
                 android:inputType="textAutoComplete"
                 android:lines="1"
                 android:maxLength="50"
+                android:textColor="@color/ypDark"
                 android:textColorHint="?attr/colorOnSecondaryContainer"
                 android:textCursorDrawable="@drawable/color_cursor"
                 tools:ignore="TouchTargetSizeCheck" />
