@@ -12,7 +12,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class SearchActivity : AppCompatActivity() {
-    companion object {
+    private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
     }
 
