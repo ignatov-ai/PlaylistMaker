@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
-
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
     }
