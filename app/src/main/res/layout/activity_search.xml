@@ -86,83 +86,10 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/trackListElement"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackList"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/trackListElementHeight"
-        android:layout_gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin16dp">
-
-        <ImageView
-            android:id="@+id/trackListElementIcon"
-            android:layout_width="@dimen/trackListElementIconSize"
-            android:layout_height="@dimen/trackListElementIconSize"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/margin_l_r"
-            android:orientation="horizontal"
-            app:srcCompat="@mipmap/trackListElementIcon_foreground" />
-        <LinearLayout
-            android:id="@+id/trackListMiddle"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical"
-            android:layout_marginLeft="@dimen/margin_l_r"
-            android:layout_marginRight="@dimen/margin_l_r">
-            <TextView
-                android:id="@+id/trackListElementName"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/trackListElementNameHeight"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="@dimen/trackListElementNameFontSize"
-                android:text="Yesterday (Remastered 2009)"/>
-            <LinearLayout
-                android:id="@+id/trackListElementProperties"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size16dp"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/trackListElementPropertiesGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:textColor="?attr/colorOnPrimarySurface"
-                    android:textSize="@dimen/trackListElementPropertiesFontSize"
-                    android:text="Beatles"/>
-                <ImageView
-                    android:layout_width="@dimen/size12dp"
-                    android:layout_height="@dimen/size12dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/dot"
-                    app:tint="?attr/colorOnPrimarySurface" />
-                <TextView
-                    android:id="@+id/trackListElementPropertiesTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:textColor="?attr/colorOnPrimarySurface"
-                    android:textSize="@dimen/trackListElementPropertiesFontSize"
-                    android:text="2:55"/>
-            </LinearLayout>
-
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/trackListElementNextArrow"
-            android:layout_width="@dimen/layerWidth24dp"
-            android:layout_height="@dimen/layerHeight24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/margin16dp"
-            android:src="@drawable/arrow_forward"
-            app:tint="?attr/colorOnPrimarySurface" />
-    </LinearLayout>
-    
-    
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </LinearLayout>
