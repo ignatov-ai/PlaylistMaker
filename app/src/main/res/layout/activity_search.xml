@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -83,7 +84,82 @@
                 android:visibility="invisible"/>
 
         </LinearLayout>
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/trackListElement"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin16dp">
+
+        <ImageView
+            android:id="@+id/trackListElementIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_l_r"
+            android:orientation="horizontal"
+            app:srcCompat="@mipmap/trackListElementIcon_foreground" />
+        <LinearLayout
+            android:id="@+id/trackListMiddle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin_l_r"
+            android:layout_marginRight="@dimen/margin_l_r">
+            <TextView
+                android:id="@+id/trackListElementName"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:textColor="@color/ypDark"
+                android:textSize="16sp"
+                android:text="Yesterday (Remastered 2009)"/>
+            <LinearLayout
+                android:id="@+id/trackListElementProperties"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/trackListElementPropertiesGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:textColor="@color/ypGray"
+                    android:textSize="11sp"
+                    android:text="Beatles"/>
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/dot"/>
+                <TextView
+                    android:id="@+id/trackListElementPropertiesTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:textColor="@color/ypGray"
+                    android:textSize="11sp"
+                    android:text="2:55"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/trackListElementNextArrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/margin16dp"
+            android:tint="@color/ypGray"
+            android:src="@drawable/arrow_forward" />
     </LinearLayout>
     
     

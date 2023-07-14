@@ -13,4 +13,5 @@
     <dimen name="searchIconWidth16dp">16dp</dimen>
     <dimen name="searchIconHeight16dp">16dp</dimen>
     <dimen name="margin8dp">8dp</dimen>
+    <dimen name="margin16dp">16dp</dimen>
 </resources>
