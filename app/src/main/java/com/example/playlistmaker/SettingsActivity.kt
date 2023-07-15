@@ -38,7 +38,11 @@ class SettingsActivity : AppCompatActivity() {
         btnSupport = findViewById(R.id.support)
         btnSupport.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SENDTO)
-            emailIntent.data = Uri.parse(getString(R.string.mailto))
+            emailIntent.data = Uri.parse("mailto:")
+            emailIntent.putExtra(
+                Intent.EXTRA_EMAIL,
+                arrayOf(getString(R.string.mailto))
+            )
             emailIntent.putExtra(
                 Intent.EXTRA_SUBJECT,
                 getString(R.string.mailTheme)
