@@ -40,7 +40,7 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var trackListView: RecyclerView
 
-    private val iTunesBaseUrl = "https://imdb-api.com"
+    private val iTunesBaseUrl = "https://itunes.apple.com"
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
