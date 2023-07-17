@@ -22,4 +22,9 @@
     <dimen name="trackListElementHeight">64dp</dimen>
     <dimen name="trackListElementNameHeight">24dp</dimen>
     <dimen name="searchBarHeight">56dp</dimen>
+    <dimen name="searchPlaceholderErrorTextSize">19sp</dimen>
+    <dimen name="size14sp">14sp</dimen>
+    <dimen name="size32dp">32dp</dimen>
+    <dimen name="size88dp">88dp</dimen>
+    <dimen name="size120dp">120dp</dimen>
 </resources>

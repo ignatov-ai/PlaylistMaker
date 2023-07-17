@@ -1,7 +1,5 @@
 package com.example.playlistmaker
 
-
-
 data class Track(
     var trackName: String,
     var artistName: String,
