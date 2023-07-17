@@ -13,7 +13,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnMedia: Button
     private lateinit var btnSettings: Button
 
-
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
