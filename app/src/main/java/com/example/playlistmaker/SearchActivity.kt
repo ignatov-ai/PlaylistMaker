@@ -1,9 +1,11 @@
 package com.example.playlistmaker
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -57,6 +59,11 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        searchPlaceholder = findViewById(R.id.searchPlaceholder)
+        searchPlaceholderErrorIcon = findViewById(R.id.searchPlaceholderErrorIcon)
+        searchPlaceholderErrorText = findViewById(R.id.searchPlaceholderErrorText)
+        searchPlaceholderRefreshButton = findViewById(R.id.searchPlaceholderRefreshButton)
+
         trackListView = findViewById(R.id.trackList)
         trackListView.layoutManager = LinearLayoutManager(this)
 
@@ -80,8 +87,6 @@ class SearchActivity : AppCompatActivity() {
         searchField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack(searchField.text.toString())
-                tracks.add(Track("567345345","123","1:23","234"))
-                true
             }
             false
         }
@@ -92,9 +97,12 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchField.clearFocus()
                 clearButton.visibility = clearButtonVisibility(s)
                 searchText = s.toString()
-
+                //Log.d("searchText", searchText.toString())
+                //отправка запроса после каждого измененного символа
+                searchTrack(searchText.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -102,11 +110,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         searchField.addTextChangedListener(searchTextWatcher)
-
-        searchPlaceholder = findViewById(R.id.searchPlaceholder)
-        searchPlaceholderErrorIcon = findViewById(R.id.searchPlaceholderErrorIcon)
-        searchPlaceholderErrorText = findViewById(R.id.searchPlaceholderErrorText)
-        searchPlaceholderRefreshButton = findViewById(R.id.searchPlaceholderRefreshButton)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -130,16 +133,17 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchTrack(query: String) {
         val lastQuery = query
+        tracks.clear()
         if (query.isNotEmpty()) {
             iTunesService.search(query).enqueue(object : Callback<TrackResponse> {
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
                     call: Call<TrackResponse>, response: Response<TrackResponse>
                 ) {
-                    tracks.clear()
                     if (response.code() == 200) {
-                        tracks.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
+                            adapter.notifyDataSetChanged()
                         }
                         if (tracks.isEmpty()) {
                             // плейсхолдер с пустым поиском
@@ -177,20 +181,20 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderErrorText.visibility = View.GONE
         searchPlaceholderRefreshButton.visibility = View.GONE
         trackListView.visibility = View.VISIBLE
-        adapter.notifyDataSetChanged()
     }
 
     private fun emptySearchPlaceholder(){
+        adapter.notifyDataSetChanged()
         trackListView.visibility = View.INVISIBLE
         searchPlaceholder.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.visibility = View.VISIBLE
         searchPlaceholderErrorText.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_tracks)
         searchPlaceholderErrorText.text = getString(R.string.nothingWasFound)
-        adapter.notifyDataSetChanged()
     }
 
     private fun errorPlaceholder(){
+        adapter.notifyDataSetChanged()
         trackListView.visibility = View.INVISIBLE
         searchPlaceholder.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.visibility = View.VISIBLE
@@ -198,21 +202,5 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderRefreshButton.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_internet)
         searchPlaceholderErrorText.text = getString(R.string.noInternet)
-        adapter.notifyDataSetChanged()
-    }
-
-    private fun showMessage(text: String, additionalMessage: String) {
-        if (text.isNotEmpty()) {
-            searchPlaceholderErrorText.visibility = View.VISIBLE
-            tracks.clear()
-            adapter.notifyDataSetChanged()
-            searchPlaceholderErrorText.text = text
-            if (additionalMessage.isNotEmpty()) {
-                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
-                    .show()
-            }
-        } else {
-            searchPlaceholderErrorText.visibility = View.GONE
-        }
     }
 }
