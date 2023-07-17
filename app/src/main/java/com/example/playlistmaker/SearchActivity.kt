@@ -102,7 +102,7 @@ class SearchActivity : AppCompatActivity() {
                 searchText = s.toString()
                 //Log.d("searchText", searchText.toString())
                 //отправка запроса после каждого измененного символа
-                searchTrack(searchText.toString())
+                //searchTrack(searchText.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
