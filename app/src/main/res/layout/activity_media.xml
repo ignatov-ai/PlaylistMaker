@@ -29,7 +29,7 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/ysregular"
             android:text="@string/mediaHeader"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/text_size" />
     </LinearLayout>
 

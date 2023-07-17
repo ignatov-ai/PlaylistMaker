@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
-    companion object {
+    private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
     }
 
@@ -82,7 +82,6 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             searchField.setText("")
-            searchField.clearFocus()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(searchField.windowToken, 0)
         }
