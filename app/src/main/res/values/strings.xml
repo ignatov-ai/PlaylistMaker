@@ -17,5 +17,5 @@
     <string name="agreementLink">https://yandex.ru/legal/practicum_offer/</string>
     <string name="switchNightTheme">Тёмная тема</string>
     <string name="nothingWasFound">Ничего не нашлось</string>
-    <string name="noInternet">Проблемы со связью/nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="noInternet">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
 </resources>

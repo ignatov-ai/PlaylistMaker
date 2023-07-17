@@ -7,7 +7,9 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -29,8 +31,10 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var clearButton: ImageView
     private lateinit var btnBackToMain: ImageView
 
+    private lateinit var searchPlaceholder: FrameLayout
     private lateinit var searchPlaceholderErrorIcon: ImageView
     private lateinit var searchPlaceholderErrorText: TextView
+    private lateinit var searchPlaceholderRefreshButton: Button
 
     private var searchText: String? = null
 
@@ -43,9 +47,10 @@ class SearchActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val iTunesService = retrofit.create(ITunesAPI::class.java)
+    // Добавление треков в список
+    val tracks: MutableList<Track> = mutableListOf()
 
-    private val tracks = ArrayList<Track>()
+    private val iTunesService = retrofit.create(ITunesAPI::class.java)
     private val adapter = TrackAdapter(tracks)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,10 +60,7 @@ class SearchActivity : AppCompatActivity() {
         trackListView = findViewById(R.id.trackList)
         trackListView.layoutManager = LinearLayoutManager(this)
 
-        // Добавление треков в список
-        val trackList: MutableList<Track> = mutableListOf()
-
-        val trackAdapter = TrackAdapter(trackList)
+        val trackAdapter = TrackAdapter(tracks)
         trackListView.adapter = trackAdapter
 
         btnBackToMain = findViewById(R.id.backToMain)
@@ -78,6 +80,7 @@ class SearchActivity : AppCompatActivity() {
         searchField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack(searchField.text.toString())
+                tracks.add(Track("123","123","1:23","234"))
                 true
             }
             false
@@ -100,8 +103,10 @@ class SearchActivity : AppCompatActivity() {
         }
         searchField.addTextChangedListener(searchTextWatcher)
 
+        searchPlaceholder = findViewById(R.id.searchPlaceholder)
         searchPlaceholderErrorIcon = findViewById(R.id.searchPlaceholderErrorIcon)
         searchPlaceholderErrorText = findViewById(R.id.searchPlaceholderErrorText)
+        searchPlaceholderRefreshButton = findViewById(R.id.searchPlaceholderRefreshButton)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -124,36 +129,71 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchTrack(query: String) {
-        if (searchField.text.isNotEmpty()) {
-            iTunesService.findTrack(searchField.text.toString())
-                .enqueue(object : Callback<TrackResponse> {
-                    override fun onResponse(
-                        call: Call<TrackResponse>, response: Response<TrackResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            tracks.clear()
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                tracks.addAll(response.body()?.results!!)
-                                adapter.notifyDataSetChanged()
-                            }
-                            if (tracks.isEmpty()) {
-                                showMessage("Ничего не нашлось...", "")
-                            } else {
-                                showMessage("Результаты поиска:", "")
-                            }
+        val lastQuery = query
+        if (query.isNotEmpty()) {
+            iTunesService.findTrack(query).enqueue(object : Callback<TrackResponse> {
+                override fun onResponse(
+                    call: Call<TrackResponse>, response: Response<TrackResponse>
+                ) {
+                    tracks.clear()
+                    if (response.code() == 200) {
+                        tracks.clear()
+                        if (response.body()?.results?.isNotEmpty() == true) {
+                            tracks.addAll(response.body()?.results!!)
+                        }
+                        if (tracks.isEmpty()) {
+                            // плейсхолдер с пустым поиском
+                            emptySearchPlaceholder()
                         } else {
-                            showMessage(
-                                "Что-то пошло не так...",
-                                response.code().toString()
-                            )
+                            // убираем плейсхолдер
+                            hidePlaceholder()
+                        }
+                    } else {
+                        // плейсхолдер с ошибкой
+                        errorPlaceholder()
+                        searchPlaceholderRefreshButton.setOnClickListener{
+                            searchTrack(lastQuery)
                         }
                     }
+                    adapter.notifyDataSetChanged()
+                }
 
-                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                        showMessage("Что-то пошло не так...", "")
+                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                    errorPlaceholder()
+                    searchPlaceholderRefreshButton.setOnClickListener{
+                        searchTrack(lastQuery)
                     }
-                })
+
+                }
+            })
         }
+    }
+
+    private fun hidePlaceholder(){
+        searchPlaceholder.visibility = View.GONE
+        searchPlaceholderErrorIcon.visibility = View.GONE
+        searchPlaceholderErrorText.visibility = View.GONE
+        searchPlaceholderRefreshButton.visibility = View.GONE
+        trackListView.visibility = View.VISIBLE
+    }
+
+    private fun emptySearchPlaceholder(){
+        trackListView.visibility = View.INVISIBLE
+        searchPlaceholder.visibility = View.VISIBLE
+        searchPlaceholderErrorIcon.visibility = View.VISIBLE
+        searchPlaceholderErrorText.visibility = View.VISIBLE
+        searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_tracks)
+        searchPlaceholderErrorText.text = getString(R.string.nothingWasFound)
+    }
+
+    private fun errorPlaceholder(){
+        trackListView.visibility = View.INVISIBLE
+        searchPlaceholder.visibility = View.VISIBLE
+        searchPlaceholderErrorIcon.visibility = View.VISIBLE
+        searchPlaceholderErrorText.visibility = View.VISIBLE
+        searchPlaceholderRefreshButton.visibility = View.VISIBLE
+        searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_internet)
+        searchPlaceholderErrorText.text = getString(R.string.noInternet)
     }
 
     private fun showMessage(text: String, additionalMessage: String) {

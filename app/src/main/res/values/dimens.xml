@@ -27,4 +27,5 @@
     <dimen name="size32dp">32dp</dimen>
     <dimen name="size88dp">88dp</dimen>
     <dimen name="size120dp">120dp</dimen>
+    <dimen name="size56dp">56dp</dimen>
 </resources>

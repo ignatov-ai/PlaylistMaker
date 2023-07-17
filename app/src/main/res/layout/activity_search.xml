@@ -89,16 +89,11 @@
         </LinearLayout>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
     <FrameLayout
         android:id="@+id/searchPlaceholder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,7 +104,8 @@
                 android:layout_width="@dimen/size120dp"
                 android:layout_height="@dimen/size120dp"
                 android:src="@drawable/error_no_tracks"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/searchPlaceholderErrorText"
@@ -121,19 +117,28 @@
                 android:layout_marginLeft="@dimen/marginStart24dp"
                 android:layout_marginRight="@dimen/marginStart24dp"
                 android:layout_gravity="center"
-                android:text="@string/nothingWasFound"/>
+                android:textAlignment="center"
+                android:text="@string/nothingWasFound"
+                android:visibility="gone"/>
             
             <Button
                 android:id="@+id/searchPlaceholderRefreshButton"
-                android:layout_width="@dimen/size88dp"
-                android:layout_height="@dimen/size32dp"
-                android:fontFamily="@font/ysmedium"
-                android:textSize="@dimen/size14sp"
+                style="@style/refreshButton"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size56dp"
                 android:layout_marginTop="@dimen/marginStart24dp"
                 android:layout_gravity="center"
-                android:text="Обновить"/>
+                android:text="Обновить"
+                android:visibility="gone"/>
         </LinearLayout>
 
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
 
 </LinearLayout>
