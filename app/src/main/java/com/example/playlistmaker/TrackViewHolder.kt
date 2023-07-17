@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -26,5 +27,8 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .fitCenter()
             .transform(RoundedCorners(10))
             .into(trackUrl)
+
+        Log.d("artistName", artistName.text.toString()+".")
+
     }
 }

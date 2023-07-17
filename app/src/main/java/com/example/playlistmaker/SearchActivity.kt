@@ -80,7 +80,7 @@ class SearchActivity : AppCompatActivity() {
         searchField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack(searchField.text.toString())
-                tracks.add(Track("123","123","1:23","234"))
+                tracks.add(Track("567345345","123","1:23","234"))
                 true
             }
             false
@@ -131,7 +131,7 @@ class SearchActivity : AppCompatActivity() {
     private fun searchTrack(query: String) {
         val lastQuery = query
         if (query.isNotEmpty()) {
-            iTunesService.findTrack(query).enqueue(object : Callback<TrackResponse> {
+            iTunesService.search(query).enqueue(object : Callback<TrackResponse> {
                 override fun onResponse(
                     call: Call<TrackResponse>, response: Response<TrackResponse>
                 ) {
@@ -152,6 +152,7 @@ class SearchActivity : AppCompatActivity() {
                         // плейсхолдер с ошибкой
                         errorPlaceholder()
                         searchPlaceholderRefreshButton.setOnClickListener{
+                            hidePlaceholder()
                             searchTrack(lastQuery)
                         }
                     }
@@ -161,6 +162,7 @@ class SearchActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     errorPlaceholder()
                     searchPlaceholderRefreshButton.setOnClickListener{
+                        hidePlaceholder()
                         searchTrack(lastQuery)
                     }
 
@@ -175,6 +177,7 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderErrorText.visibility = View.GONE
         searchPlaceholderRefreshButton.visibility = View.GONE
         trackListView.visibility = View.VISIBLE
+        adapter.notifyDataSetChanged()
     }
 
     private fun emptySearchPlaceholder(){
@@ -184,6 +187,7 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderErrorText.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_tracks)
         searchPlaceholderErrorText.text = getString(R.string.nothingWasFound)
+        adapter.notifyDataSetChanged()
     }
 
     private fun errorPlaceholder(){
@@ -194,6 +198,7 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderRefreshButton.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_internet)
         searchPlaceholderErrorText.text = getString(R.string.noInternet)
+        adapter.notifyDataSetChanged()
     }
 
     private fun showMessage(text: String, additionalMessage: String) {
