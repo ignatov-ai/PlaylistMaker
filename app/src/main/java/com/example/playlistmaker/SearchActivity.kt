@@ -14,7 +14,6 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -64,7 +63,7 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderErrorText = findViewById(R.id.searchPlaceholderErrorText)
         searchPlaceholderRefreshButton = findViewById(R.id.searchPlaceholderRefreshButton)
 
-        trackListView = findViewById(R.id.trackList)
+        trackListView = findViewById(R.id.trackListView)
         trackListView.layoutManager = LinearLayoutManager(this)
 
         val trackAdapter = TrackAdapter(tracks)
@@ -84,23 +83,15 @@ class SearchActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(searchField.windowToken, 0)
         }
 
-        searchField.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTrack(searchField.text.toString())
-            }
-            false
-        }
-
         val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchField.clearFocus()
                 clearButton.visibility = clearButtonVisibility(s)
                 searchText = s.toString()
-                //Log.d("searchText", searchText.toString())
+                Log.d("my_response_searchText", searchText.toString())
                 //отправка запроса после каждого измененного символа
                 //searchTrack(searchText.toString())
             }
@@ -110,6 +101,20 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         searchField.addTextChangedListener(searchTextWatcher)
+
+        searchField.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                searchTrack()
+                Log.d("my_response_searchText", searchText.toString())
+            }
+            false
+        }
+
+        searchPlaceholderRefreshButton.setOnClickListener {
+            searchTrack()
+            hidePlaceholder()
+        }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -131,45 +136,39 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun searchTrack(query: String) {
-        val lastQuery = query
-        tracks.clear()
-        if (query.isNotEmpty()) {
-            iTunesService.search(query).enqueue(object : Callback<TrackResponse> {
+    private fun searchTrack() {
+        if (searchText.toString().isNotEmpty()) {
+            tracks.clear()
+            adapter.notifyDataSetChanged()
+
+            iTunesService.search(searchText.toString()).enqueue(object : Callback<TrackResponse> {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
                     call: Call<TrackResponse>, response: Response<TrackResponse>
                 ) {
                     if (response.code() == 200) {
+
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
+                            hidePlaceholder()
                             adapter.notifyDataSetChanged()
-                        }
-                        if (tracks.isEmpty()) {
-                            // плейсхолдер с пустым поиском
-                            emptySearchPlaceholder()
+                            Log.d("my_response_200", searchText.toString())
+                            Log.d("my_response_200_list", tracks.toString())
                         } else {
-                            // убираем плейсхолдер
-                            hidePlaceholder()
-                        }
-                    } else {
-                        // плейсхолдер с ошибкой
-                        errorPlaceholder()
-                        searchPlaceholderRefreshButton.setOnClickListener{
-                            hidePlaceholder()
-                            searchTrack(lastQuery)
+                            if (tracks.isEmpty()) {
+                                emptySearchPlaceholder()
+                                Log.d("my_response_empty", searchText.toString())
+                            } else {
+                                errorPlaceholder()
+                                Log.d("my_response_error", searchText.toString())
+                            }
                         }
                     }
-                    adapter.notifyDataSetChanged()
                 }
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     errorPlaceholder()
-                    searchPlaceholderRefreshButton.setOnClickListener{
-                        hidePlaceholder()
-                        searchTrack(lastQuery)
-                    }
-
+                    Log.d("my_response_error_override", searchText.toString())
                 }
             })
         }
@@ -180,27 +179,26 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderErrorIcon.visibility = View.GONE
         searchPlaceholderErrorText.visibility = View.GONE
         searchPlaceholderRefreshButton.visibility = View.GONE
-        trackListView.visibility = View.VISIBLE
+        adapter.notifyDataSetChanged()
     }
 
     private fun emptySearchPlaceholder(){
-        adapter.notifyDataSetChanged()
-        trackListView.visibility = View.INVISIBLE
         searchPlaceholder.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.visibility = View.VISIBLE
         searchPlaceholderErrorText.visibility = View.VISIBLE
+        searchPlaceholderRefreshButton.visibility = View.GONE
         searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_tracks)
         searchPlaceholderErrorText.text = getString(R.string.nothingWasFound)
+        adapter.notifyDataSetChanged()
     }
 
     private fun errorPlaceholder(){
-        adapter.notifyDataSetChanged()
-        trackListView.visibility = View.INVISIBLE
         searchPlaceholder.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.visibility = View.VISIBLE
         searchPlaceholderErrorText.visibility = View.VISIBLE
         searchPlaceholderRefreshButton.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_internet)
         searchPlaceholderErrorText.text = getString(R.string.noInternet)
+        adapter.notifyDataSetChanged()
     }
 }

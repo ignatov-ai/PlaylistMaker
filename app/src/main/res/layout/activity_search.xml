@@ -57,22 +57,18 @@
 
             <EditText
                 android:id="@+id/searchField"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin8dp"
                 android:layout_marginRight="@dimen/margin8dp"
-                android:autofillHints=""
                 android:background="@null"
                 android:hint="@string/searchHeader"
-                android:inputType="textAutoComplete"
-                android:maxLines="1"
-                android:maxLength="75"
+                android:inputType="text"
                 android:textColor="@color/ypDark"
                 android:textColorHint="?attr/colorOnSecondaryContainer"
                 android:textCursorDrawable="@drawable/color_cursor"
-                tools:ignore="TouchTargetSizeCheck"
                 android:imeOptions="actionDone"
                 android:singleLine="true"/>
 
@@ -135,10 +131,8 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackList"
+        android:id="@+id/trackListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-
 </LinearLayout>
