@@ -37,7 +37,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchPlaceholderErrorText: TextView
     private lateinit var searchPlaceholderRefreshButton: Button
 
-    private var searchText: String? = null
+    var searchText: String? = null
 
     private lateinit var trackListView: RecyclerView
 
@@ -105,6 +105,7 @@ class SearchActivity : AppCompatActivity() {
         searchField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack()
+                true
                 Log.d("my_response_searchText", searchText.toString())
             }
             false
@@ -143,9 +144,8 @@ class SearchActivity : AppCompatActivity() {
 
             iTunesService.search(searchText.toString()).enqueue(object : Callback<TrackResponse> {
                 @SuppressLint("NotifyDataSetChanged")
-                override fun onResponse(
-                    call: Call<TrackResponse>, response: Response<TrackResponse>
-                ) {
+                override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>)
+                    {
                     if (response.code() == 200) {
 
                         if (response.body()?.results?.isNotEmpty() == true) {

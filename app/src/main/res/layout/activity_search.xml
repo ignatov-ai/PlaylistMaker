@@ -109,6 +109,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/searchPlaceholderErrorTextSize"
                 android:fontFamily="@font/ysmedium"
+                android:textColor="?attr/colorOnPrimary"
                 android:layout_marginTop="@dimen/margin16dp"
                 android:layout_marginLeft="@dimen/marginStart24dp"
                 android:layout_marginRight="@dimen/marginStart24dp"
@@ -124,6 +125,7 @@
                 android:layout_height="@dimen/size56dp"
                 android:layout_marginTop="@dimen/marginStart24dp"
                 android:layout_gravity="center"
+                android:textColor="?attr/colorOnSecondary"
                 android:text="Обновить"
                 android:visibility="gone"/>
         </LinearLayout>
