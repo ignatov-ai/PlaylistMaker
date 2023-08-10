@@ -12,7 +12,7 @@
     <ImageView
         android:id="@+id/trackListElementIcon"
         android:layout_width="@dimen/trackListElementIconSize"
-        android:layout_height="@dimen/trackListElementIconSize"
+        android:layout_height="wrap_content"
         android:layout_gravity="center|start"
         android:layout_marginLeft="@dimen/margin_l_r"
         android:orientation="horizontal"
@@ -29,7 +29,7 @@
         <TextView
             android:id="@+id/trackListElementName"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/trackListElementNameHeight"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal"
             android:textColor="?attr/colorOnPrimary"
@@ -40,7 +40,7 @@
         <LinearLayout
             android:id="@+id/trackListElementProperties"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size16dp"
+            android:layout_height="@dimen/size20dp"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
             <TextView

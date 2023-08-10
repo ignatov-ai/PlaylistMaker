@@ -66,8 +66,7 @@ class SearchActivity : AppCompatActivity() {
         trackListView = findViewById(R.id.trackListView)
         trackListView.layoutManager = LinearLayoutManager(this)
 
-        val trackAdapter = TrackAdapter(tracks)
-        trackListView.adapter = trackAdapter
+        trackListView.adapter = adapter
 
         btnBackToMain = findViewById(R.id.backToMain)
         btnBackToMain.setOnClickListener {
@@ -179,7 +178,6 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderErrorIcon.visibility = View.GONE
         searchPlaceholderErrorText.visibility = View.GONE
         searchPlaceholderRefreshButton.visibility = View.GONE
-        adapter.notifyDataSetChanged()
     }
 
     private fun emptySearchPlaceholder(){

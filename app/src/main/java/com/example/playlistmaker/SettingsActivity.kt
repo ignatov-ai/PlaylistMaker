@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -22,6 +23,18 @@ class SettingsActivity : AppCompatActivity() {
         btnBackToMain = findViewById(R.id.backToMain)
         btnBackToMain.setOnClickListener {
             finish()
+        }
+
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        val sharedPrefs = getSharedPreferences(THEME_PREFS, MODE_PRIVATE)
+
+        themeSwitcher.isChecked = sharedPrefs.getBoolean(DARK_THEME, false)
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+            sharedPrefs.edit()
+                .putBoolean(DARK_THEME, checked)
+                .apply()
         }
 
         btnShare = findViewById(R.id.share)

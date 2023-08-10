@@ -24,7 +24,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/layerHeight24dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/marginStart24dp"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/ysregular"
@@ -58,19 +58,20 @@
             <EditText
                 android:id="@+id/searchField"
                 android:layout_width="match_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin8dp"
                 android:layout_marginRight="@dimen/margin8dp"
+                android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/searchHeader"
+                android:imeOptions="actionDone"
                 android:inputType="text"
+                android:singleLine="true"
                 android:textColor="@color/ypDark"
                 android:textColorHint="?attr/colorOnSecondaryContainer"
                 android:textCursorDrawable="@drawable/color_cursor"
-                android:imeOptions="actionDone"
-                android:singleLine="true"/>
+                tools:ignore="TouchTargetSizeCheck" />
 
             <ImageView
                 android:id="@+id/searchClearBar"
@@ -81,11 +82,10 @@
                 tools:ignore="ContentDescription"
                 android:src="@android:drawable/ic_menu_close_clear_cancel"
                 android:visibility="invisible"/>
-
         </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
+        <FrameLayout
         android:id="@+id/searchPlaceholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -129,7 +129,6 @@
                 android:text="Обновить"
                 android:visibility="gone"/>
         </LinearLayout>
-
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -137,4 +136,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    
 </LinearLayout>

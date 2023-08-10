@@ -28,4 +28,7 @@
     <dimen name="size88dp">88dp</dimen>
     <dimen name="size120dp">120dp</dimen>
     <dimen name="size56dp">56dp</dimen>
+    <dimen name="size_0dp">0dp</dimen>
+    <dimen name="size24dp">24dp</dimen>
+    <dimen name="size20dp">20dp</dimen>
 </resources>
