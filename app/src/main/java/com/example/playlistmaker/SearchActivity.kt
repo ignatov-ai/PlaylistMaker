@@ -78,6 +78,8 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             searchField.setText("")
+            tracks.clear()
+            adapter.notifyDataSetChanged()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(searchField.windowToken, 0)
         }
