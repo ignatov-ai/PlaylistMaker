@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/colorSecondary"
     android:orientation="vertical"
     tools:context=".SettingsActivity">
@@ -23,7 +24,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/layerHeight24dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/marginStart24dp"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/ysregular"
@@ -42,15 +43,14 @@
             style="@style/settingsTextRow"
             android:text="@string/switchNightTheme"/>
 
-        <Switch
-            android:id="@+id/switchTheme"
-            style="@style/settingsImageRow"
-            android:trackTint="?attr/colorSurface"
-            android:thumbTint="?attr/colorSurface"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/themeSwitcher"
+            style="@style/settingsSwither"
+            app:trackTint="?attr/colorOnPrimarySurface"
+            app:thumbTint="?attr/colorSurface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="0dp"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:layout_marginRight="0dp"/>
     </LinearLayout>
 
     <LinearLayout

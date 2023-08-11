@@ -24,7 +24,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/layerHeight24dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/marginStart24dp"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/ysregular"
@@ -57,23 +57,18 @@
 
             <EditText
                 android:id="@+id/searchField"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin8dp"
                 android:layout_marginRight="@dimen/margin8dp"
-                android:autofillHints=""
+                android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/searchHeader"
-                android:inputType="textAutoComplete"
-
-                android:maxLines="1"
-                android:maxLength="75"
-               
-
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:singleLine="true"
                 android:textColor="@color/ypDark"
-
                 android:textColorHint="?attr/colorOnSecondaryContainer"
                 android:textCursorDrawable="@drawable/color_cursor"
                 tools:ignore="TouchTargetSizeCheck" />
@@ -87,14 +82,59 @@
                 tools:ignore="ContentDescription"
                 android:src="@android:drawable/ic_menu_close_clear_cancel"
                 android:visibility="invisible"/>
-
         </LinearLayout>
     </LinearLayout>
 
+        <FrameLayout
+        android:id="@+id/searchPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <ImageView
+                android:id="@+id/searchPlaceholderErrorIcon"
+                android:layout_width="@dimen/size120dp"
+                android:layout_height="@dimen/size120dp"
+                android:src="@drawable/error_no_tracks"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/searchPlaceholderErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/searchPlaceholderErrorTextSize"
+                android:fontFamily="@font/ysmedium"
+                android:textColor="?attr/colorOnPrimary"
+                android:layout_marginTop="@dimen/margin16dp"
+                android:layout_marginLeft="@dimen/marginStart24dp"
+                android:layout_marginRight="@dimen/marginStart24dp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:text="@string/nothingWasFound"
+                android:visibility="gone"/>
+            
+            <Button
+                android:id="@+id/searchPlaceholderRefreshButton"
+                style="@style/refreshButton"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size56dp"
+                android:layout_marginTop="@dimen/marginStart24dp"
+                android:layout_gravity="center"
+                android:textColor="?attr/colorOnSecondary"
+                android:text="Обновить"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </FrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackList"
+        android:id="@+id/trackListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
+    
 </LinearLayout>
