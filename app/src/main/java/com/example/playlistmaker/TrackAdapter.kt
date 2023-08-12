@@ -20,4 +20,14 @@ class TrackAdapter(
     override fun getItemCount(): Int {
         return tracks.size
     }
+
+    private var onListElementClickListener: OnListElementClickListener? = null
+
+    interface OnListElementClickListener {
+        fun onListElementClick(position: Int)
+    }
+    fun setOnItemClickListener(listener: OnListElementClickListener) {
+        onListElementClickListener = listener
+    }
+
 }

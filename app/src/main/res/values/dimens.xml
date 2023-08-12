@@ -31,4 +31,5 @@
     <dimen name="size_0dp">0dp</dimen>
     <dimen name="size24dp">24dp</dimen>
     <dimen name="size20dp">20dp</dimen>
+    <dimen name="size19sp">19sp</dimen>
 </resources>

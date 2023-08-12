@@ -28,39 +28,45 @@ class SearchActivity : AppCompatActivity() {
         const val SEARCH_TEXT = "SEARCH_TEXT"
     }
 
+    var searchText: String? = null
+
     private lateinit var searchField: EditText
     private lateinit var clearButton: ImageView
     private lateinit var btnBackToMain: ImageView
+
+    private lateinit var historyHeaderText: TextView
+    private lateinit var historyTrackListView: RecyclerView
+    private lateinit var historyClearButton: Button
+
+    private lateinit var trackListView: RecyclerView
 
     private lateinit var searchPlaceholder: FrameLayout
     private lateinit var searchPlaceholderErrorIcon: ImageView
     private lateinit var searchPlaceholderErrorText: TextView
     private lateinit var searchPlaceholderRefreshButton: Button
 
-    var searchText: String? = null
-
-    private lateinit var trackListView: RecyclerView
-
     private val iTunesBaseUrl = "https://itunes.apple.com"
-
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    // Добавление треков в список
+    // Основной список треков
     val tracks: MutableList<Track> = mutableListOf()
-
-    // Список с треками истории
-    val historyTracks: MutableList<String> = mutableListOf()
-    val HISTORY_TRACK_COUNT = 3
-
     private val iTunesService = retrofit.create(ITunesAPI::class.java)
     private var tracksAdapter = TrackAdapter(tracks)
+
+    // Список треков истории
+    val historyTracks: MutableList<Track> = mutableListOf()
+    private var historyAdapter = TrackAdapter(historyTracks)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        btnBackToMain = findViewById(R.id.backToMain)
+        searchField = findViewById(R.id.searchField)
+        clearButton = findViewById(R.id.searchClearBar)
 
         searchPlaceholder = findViewById(R.id.searchPlaceholder)
         searchPlaceholderErrorIcon = findViewById(R.id.searchPlaceholderErrorIcon)
@@ -68,30 +74,31 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderRefreshButton = findViewById(R.id.searchPlaceholderRefreshButton)
 
         trackListView = findViewById(R.id.trackListView)
-        trackListView.layoutManager = LinearLayoutManager(this)
 
+        historyHeaderText = findViewById(R.id.historyHeaderText)
+        historyTrackListView = findViewById(R.id.historyTrackListView)
+        historyClearButton = findViewById(R.id.historyClearButton)
+
+        //адаптеры списков
+        trackListView.layoutManager = LinearLayoutManager(this)
         trackListView.adapter = tracksAdapter
 
-        tracksAdapter.setOnItemClickListener(object : TrackAdapter.OnListElementClickListener {
-            override fun onListElementClick(position: Int) {
-                searchHistory.addToHistory(tracksAdapter.getTrack(position))
-            }
-        })
+        historyTrackListView.layoutManager = LinearLayoutManager(this)
+        historyTrackListView.adapter = historyAdapter
 
-        btnBackToMain = findViewById(R.id.backToMain)
+        // Обработчик нажатия стрелки НАЗАД
         btnBackToMain.setOnClickListener {
             finish()
         }
 
-        searchField = findViewById(R.id.searchField)
-        clearButton = findViewById(R.id.searchClearBar)
-
+        // Обработчик нажатия на КРЕСТИК ОЧИСТКИ ПОЛЯ ВВОДА
         clearButton.setOnClickListener {
             searchField.setText("")
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(searchField.windowToken, 0)
         }
 
+        // Отслеживание изменений поля ввода
         val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
@@ -108,6 +115,7 @@ class SearchActivity : AppCompatActivity() {
         }
         searchField.addTextChangedListener(searchTextWatcher)
 
+        // Применение поискового запроса по нажатию галочки экранной клавиатуры
         searchField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack()
@@ -116,11 +124,11 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
+        // Обработчик нажатия кнопки ОБНОВИТЬ при отсутствии сети
         searchPlaceholderRefreshButton.setOnClickListener {
             searchTrack()
             hidePlaceholder()
         }
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -134,6 +142,7 @@ class SearchActivity : AppCompatActivity() {
         searchField.setText(searchText)
     }
 
+    // Обработка появления/исчезновения крестика очистки поля ввода
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
@@ -142,6 +151,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    // Обработчик поиска трека на сервисе iTunesAPI
     private fun searchTrack() {
         if (searchText.toString().isNotEmpty()) {
             tracks.clear()
@@ -150,14 +160,10 @@ class SearchActivity : AppCompatActivity() {
             iTunesService.search(searchText.toString()).enqueue(object : Callback<TrackResponse> {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>)
-                    {
+                {
                     if (response.code() == 200) {
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
-
-                            historyListAdd(searchText.toString())
-
-                            Log.d("history_list", historyTracks.toString())
                             hidePlaceholder()
                             tracksAdapter.notifyDataSetChanged()
                         } else {
@@ -177,21 +183,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun historyListAdd(id: String){
-        if (!historyTracks.contains(id)) {
-            historyTracks.add(0, id)
-            if (historyTracks.size > HISTORY_TRACK_COUNT){
-                historyTracks.removeAt(HISTORY_TRACK_COUNT)
-            }
-        }
-        else{
-            historyTracks.remove(id)
-            historyTracks.add(0, id)
-            if (historyTracks.size > HISTORY_TRACK_COUNT){
-                historyTracks.removeAt(HISTORY_TRACK_COUNT)
-            }
-        }
-    }
+    // Обработчик скрытия плейсхолдера
     private fun hidePlaceholder(){
         searchPlaceholder.visibility = View.GONE
         searchPlaceholderErrorIcon.visibility = View.GONE
@@ -199,6 +191,7 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderRefreshButton.visibility = View.GONE
     }
 
+    // Обработчик отображения плейсхолдера ПУСТОГО СПИСКА
     private fun emptySearchPlaceholder(){
         searchPlaceholder.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.visibility = View.VISIBLE
@@ -209,6 +202,7 @@ class SearchActivity : AppCompatActivity() {
         tracksAdapter.notifyDataSetChanged()
     }
 
+    // Обработчик отображения плейсхолдера ОТСУТСТВИЯ СЕТИ
     private fun errorPlaceholder(){
         searchPlaceholder.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.visibility = View.VISIBLE

@@ -1,36 +1,62 @@
 package com.example.playlistmaker
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 const val HISTORY_PREFS = "Playlist_Maker_History"
 const val HISTORY_KEY = "history_key"
 
-class SearchTrackHistory: AppCompatActivity() {
+class SearchTrackHistory(var sharedPref: SharedPreferences) {
 
-    val sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
-    fun addHistory(trackHistoryList: MutableList<String>){
-        val json = Gson()
-        val historyToString = json.toJson(trackHistoryList)
-        sharedPrefs.edit()
-            .putString(HISTORY_KEY, historyToString)
-            .apply()
+    companion object {
+        private const val HISTORY_TRACK_COUNT = 3
     }
 
-    fun getHistory(): ArrayList<Track>{
-        val jsonFromString = sharedPrefs.getString(HISTORY_KEY, "")
+    fun getHistoryList(): Array<Track>? {
+        val jsonHistory = sharedPref.getString(HISTORY_KEY, null)
+        return Gson().fromJson(jsonHistory, Array<Track>::class.java)
+    }
 
-        val json = Gson()
-        val trackListType = object : TypeToken<List<Track>>() {}.type
-        val trackHistoryList: ArrayList<Track> = json.fromJson(jsonFromString, trackListType)
+    fun historyListAdd(track: Track) {
+        var historyTracks = getHistoryList()?: emptyArray()
+        val historyTracksList = historyTracks.toMutableList()
 
-        return trackHistoryList
+        var replyIndex: Int = -1
+        for(i in historyTracksList){
+            if(i.trackId == track.trackId){
+                replyIndex = historyTracksList.indexOf(i)
+            }
+        }
+
+        if(replyIndex != -1){
+            historyTracksList.moveToFirst(replyIndex)
+        }
+
+        if(replyIndex == -1) {
+            historyTracksList.add(0, track)
+
+            if (historyTracksList.size > Companion.HISTORY_TRACK_COUNT) {
+                historyTracksList.removeAt(Companion.HISTORY_TRACK_COUNT)
+            }
+        }
+
+        historyTracks = historyTracksList.toTypedArray()
+        val jsonHistory = Gson().toJson(historyTracks)
+        sharedPref.edit()
+            .putString(HISTORY_KEY, jsonHistory)
+            .apply()
     }
 
     fun clearHistory(){
-        sharedPrefs.edit()
+        sharedPref.edit()
             .remove(HISTORY_KEY)
             .apply()
+    }
+
+    fun <T> MutableList<T>.moveToFirst(index: Int) {
+        if (index > 0 && index < size) {
+            val item = removeAt(index)
+            add(0, item)
+        }
     }
 }
