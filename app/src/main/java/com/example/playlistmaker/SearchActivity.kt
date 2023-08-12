@@ -56,7 +56,7 @@ class SearchActivity : AppCompatActivity() {
     val HISTORY_TRACK_COUNT = 3
 
     private val iTunesService = retrofit.create(ITunesAPI::class.java)
-    private val adapter = TrackAdapter(tracks)
+    private var tracksAdapter = TrackAdapter(tracks)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +70,13 @@ class SearchActivity : AppCompatActivity() {
         trackListView = findViewById(R.id.trackListView)
         trackListView.layoutManager = LinearLayoutManager(this)
 
-        trackListView.adapter = adapter
+        trackListView.adapter = tracksAdapter
+
+        tracksAdapter.setOnItemClickListener(object : TrackAdapter.OnListElementClickListener {
+            override fun onListElementClick(position: Int) {
+                searchHistory.addToHistory(tracksAdapter.getTrack(position))
+            }
+        })
 
         btnBackToMain = findViewById(R.id.backToMain)
         btnBackToMain.setOnClickListener {
@@ -139,7 +145,7 @@ class SearchActivity : AppCompatActivity() {
     private fun searchTrack() {
         if (searchText.toString().isNotEmpty()) {
             tracks.clear()
-            adapter.notifyDataSetChanged()
+            tracksAdapter.notifyDataSetChanged()
 
             iTunesService.search(searchText.toString()).enqueue(object : Callback<TrackResponse> {
                 @SuppressLint("NotifyDataSetChanged")
@@ -153,7 +159,7 @@ class SearchActivity : AppCompatActivity() {
 
                             Log.d("history_list", historyTracks.toString())
                             hidePlaceholder()
-                            adapter.notifyDataSetChanged()
+                            tracksAdapter.notifyDataSetChanged()
                         } else {
                             if (tracks.isEmpty()) {
                                 emptySearchPlaceholder()
@@ -200,7 +206,7 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderRefreshButton.visibility = View.GONE
         searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_tracks)
         searchPlaceholderErrorText.text = getString(R.string.nothingWasFound)
-        adapter.notifyDataSetChanged()
+        tracksAdapter.notifyDataSetChanged()
     }
 
     private fun errorPlaceholder(){
@@ -210,6 +216,6 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderRefreshButton.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_internet)
         searchPlaceholderErrorText.text = getString(R.string.noInternet)
-        adapter.notifyDataSetChanged()
+        tracksAdapter.notifyDataSetChanged()
     }
 }
