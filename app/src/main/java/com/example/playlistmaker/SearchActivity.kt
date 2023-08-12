@@ -51,6 +51,10 @@ class SearchActivity : AppCompatActivity() {
     // Добавление треков в список
     val tracks: MutableList<Track> = mutableListOf()
 
+    // Список с треками истории
+    val historyTracks: MutableList<String> = mutableListOf()
+    val HISTORY_TRACK_COUNT = 3
+
     private val iTunesService = retrofit.create(ITunesAPI::class.java)
     private val adapter = TrackAdapter(tracks)
 
@@ -90,9 +94,6 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 searchText = s.toString()
-                Log.d("my_response_searchText", searchText.toString())
-                //отправка запроса после каждого измененного символа
-                //searchTrack(searchText.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -105,7 +106,6 @@ class SearchActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack()
                 true
-                Log.d("my_response_searchText", searchText.toString())
             }
             false
         }
@@ -146,20 +146,19 @@ class SearchActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>)
                     {
                     if (response.code() == 200) {
-
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
+
+                            historyListAdd(searchText.toString())
+
+                            Log.d("history_list", historyTracks.toString())
                             hidePlaceholder()
                             adapter.notifyDataSetChanged()
-                            Log.d("my_response_200", searchText.toString())
-                            Log.d("my_response_200_list", tracks.toString())
                         } else {
                             if (tracks.isEmpty()) {
                                 emptySearchPlaceholder()
-                                Log.d("my_response_empty", searchText.toString())
                             } else {
                                 errorPlaceholder()
-                                Log.d("my_response_error", searchText.toString())
                             }
                         }
                     }
@@ -167,12 +166,26 @@ class SearchActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     errorPlaceholder()
-                    Log.d("my_response_error_override", searchText.toString())
                 }
             })
         }
     }
 
+    private fun historyListAdd(id: String){
+        if (!historyTracks.contains(id)) {
+            historyTracks.add(0, id)
+            if (historyTracks.size > HISTORY_TRACK_COUNT){
+                historyTracks.removeAt(HISTORY_TRACK_COUNT)
+            }
+        }
+        else{
+            historyTracks.remove(id)
+            historyTracks.add(0, id)
+            if (historyTracks.size > HISTORY_TRACK_COUNT){
+                historyTracks.removeAt(HISTORY_TRACK_COUNT)
+            }
+        }
+    }
     private fun hidePlaceholder(){
         searchPlaceholder.visibility = View.GONE
         searchPlaceholderErrorIcon.visibility = View.GONE
