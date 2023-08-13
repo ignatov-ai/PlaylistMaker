@@ -52,14 +52,14 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
+    private val iTunesService = retrofit.create(ITunesAPI::class.java)
+
     // Основной список треков
     val tracks: MutableList<Track> = mutableListOf()
-
-    private val iTunesService = retrofit.create(ITunesAPI::class.java)
     private var tracksAdapter = TrackAdapter(tracks,this)
 
     // Список треков истории
-    var historyTracks: MutableList<Track> = mutableListOf()
+    val historyTracks: MutableList<Track> = mutableListOf()
     private var historyAdapter = TrackAdapter(historyTracks,this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +95,18 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
 
         // Обработчик нажатия на КРЕСТИК ОЧИСТКИ ПОЛЯ ВВОДА
         clearButton.setOnClickListener {
+            searchField.clearFocus()
             searchField.setText("")
+            tracks.clear()
+            tracksAdapter.notifyDataSetChanged()
+            historyAdapter.notifyDataSetChanged()
+
+            if (historySize() > 0) {
+                historyPlaceholder()
+            }else{
+                hidePlaceholder()
+            }
+
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(searchField.windowToken, 0)
         }
@@ -117,26 +128,39 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         }
         searchField.addTextChangedListener(searchTextWatcher)
 
+        // Проверяем фокус в поле ввода и убираем историю поиска, если поставим курсор в поле ввода
+        searchField.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                hidePlaceholder()
+            }
+        }
+
+        // Получаем список треков из истории при загрузке экрана
+        if (historySize()>0) {
+            historyPlaceholder()
+        }else{
+            hidePlaceholder()
+        }
+        Log.d("row_select_flag",historySize().toString())
+
+        // Обработчик нажатия кнопки ОЧИСТИТЬ ИСТОРИЮ
+        historyClearButton.setOnClickListener {
+            var sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
+            SearchTrackHistory(sharedPrefs).clearHistory()
+            historyTracks.clear()
+            historyAdapter.notifyDataSetChanged()
+            hidePlaceholder()
+
+        }
+
         // Применение поискового запроса по нажатию галочки экранной клавиатуры
         searchField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack()
-                Log.d("row_select_history", historyTracks.toString())
                 true
             }
             false
         }
-
-        // Получаем список треков из истории при загрузке экрана
-        var sharedPreferences = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
-        val historyTracks = SearchTrackHistory(sharedPreferences).getHistoryList()?.toCollection(ArrayList())
-
-//        tracksAdapter = { track ->
-//            val sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
-//            SearchTrackHistory(sharedPrefs).historyListAdd(track)
-//            tracksAdapter.notifyDataSetChanged()
-//            Log.d("history_list",historyTracks.toString())
-//        }
 
         // Обработчик нажатия кнопки ОБНОВИТЬ при отсутствии сети
         searchPlaceholderRefreshButton.setOnClickListener {
@@ -199,6 +223,10 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
 
     // Обработчик скрытия плейсхолдера
     private fun hidePlaceholder(){
+        historyHeaderText.visibility = View.GONE
+        historyTrackListView.visibility = View.GONE
+        historyClearButton.visibility = View.GONE
+
         searchPlaceholder.visibility = View.GONE
         searchPlaceholderErrorIcon.visibility = View.GONE
         searchPlaceholderErrorText.visibility = View.GONE
@@ -227,7 +255,29 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         tracksAdapter.notifyDataSetChanged()
     }
 
+    private fun historySize(): Int{
+        var sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
+        historyTracks.clear()
+        historyTracks.addAll(SearchTrackHistory(sharedPrefs).getHistoryList()!!.toMutableList())
+        return historyTracks.size
+    }
+    private fun historyPlaceholder(){
+        var sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
+        historyTracks.clear()
+        historyTracks.addAll(SearchTrackHistory(sharedPrefs).getHistoryList()!!.toMutableList())
+        historyAdapter.notifyDataSetChanged()
+        historyHeaderText.visibility = View.VISIBLE
+        historyTrackListView.visibility = View.VISIBLE
+        historyClearButton.visibility = View.VISIBLE
+    }
+
     override fun onItemClick(track: Track) {
-        Toast.makeText(this, "Нажали на трек ${track.trackId} ${track.trackName} ${track.artistName}", Toast.LENGTH_SHORT).show()
+        var sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
+
+
+        SearchTrackHistory(sharedPrefs).historyAddTrack(track)
+        historyAdapter.notifyDataSetChanged()
+        Log.d("row_select_history", historyTracks.toString())
+        //Toast.makeText(this, "Нажали на трек ${track.trackId} ${track.trackName} ${track.artistName}", Toast.LENGTH_SHORT).show()
     }
 }

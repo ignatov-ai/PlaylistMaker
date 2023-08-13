@@ -2,7 +2,6 @@ package com.example.playlistmaker
 
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,7 +11,6 @@ import java.util.Locale
 
 class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
-    val trackRow: LinearLayout = itemView.findViewById(R.id.trackListElement)
     private val trackName: TextView = itemView.findViewById(R.id.trackListElementName)
     private val artistName: TextView = itemView.findViewById(R.id.trackListElementPropertiesArtist)
     private val trackTime: TextView = itemView.findViewById(R.id.trackListElementPropertiesTime)

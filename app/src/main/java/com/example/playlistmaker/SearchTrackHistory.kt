@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.gson.Gson
 
 const val HISTORY_PREFS = "Playlist_Maker_History"
@@ -9,11 +10,11 @@ const val HISTORY_KEY = "history_key"
 class SearchTrackHistory (var sharedPref: SharedPreferences) {
 
     companion object {
-        private const val HISTORY_TRACK_COUNT = 3
+        private const val HISTORY_TRACK_COUNT = 10
     }
 
     fun getHistoryList(): Array<Track>? {
-        val jsonHistory = sharedPref.getString(HISTORY_KEY, null)
+        val jsonHistory = sharedPref.getString(HISTORY_KEY, null) ?: return emptyArray()
         return Gson().fromJson(jsonHistory, Array<Track>::class.java)
     }
 
@@ -45,12 +46,14 @@ class SearchTrackHistory (var sharedPref: SharedPreferences) {
         sharedPref.edit()
             .putString(HISTORY_KEY, jsonHistory)
             .apply()
+        Log.d("row_select_json", jsonHistory.toString())
     }
 
     fun clearHistory(){
         sharedPref.edit()
             .remove(HISTORY_KEY)
             .apply()
+        Log.d("row_select_json", "История поиска очищена")
     }
 
     fun <T> MutableList<T>.moveToFirst(index: Int) {
