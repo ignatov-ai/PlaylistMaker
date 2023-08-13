@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
     }
@@ -53,12 +54,13 @@ class SearchActivity : AppCompatActivity() {
 
     // Основной список треков
     val tracks: MutableList<Track> = mutableListOf()
+
     private val iTunesService = retrofit.create(ITunesAPI::class.java)
-    private var tracksAdapter = TrackAdapter(tracks)
+    private var tracksAdapter = TrackAdapter(tracks,this)
 
     // Список треков истории
-    val historyTracks: MutableList<Track> = mutableListOf()
-    private var historyAdapter = TrackAdapter(historyTracks)
+    var historyTracks: MutableList<Track> = mutableListOf()
+    private var historyAdapter = TrackAdapter(historyTracks,this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,10 +121,22 @@ class SearchActivity : AppCompatActivity() {
         searchField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack()
+                Log.d("row_select_history", historyTracks.toString())
                 true
             }
             false
         }
+
+        // Получаем список треков из истории при загрузке экрана
+        var sharedPreferences = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
+        val historyTracks = SearchTrackHistory(sharedPreferences).getHistoryList()?.toCollection(ArrayList())
+
+//        tracksAdapter = { track ->
+//            val sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
+//            SearchTrackHistory(sharedPrefs).historyListAdd(track)
+//            tracksAdapter.notifyDataSetChanged()
+//            Log.d("history_list",historyTracks.toString())
+//        }
 
         // Обработчик нажатия кнопки ОБНОВИТЬ при отсутствии сети
         searchPlaceholderRefreshButton.setOnClickListener {
@@ -211,5 +225,9 @@ class SearchActivity : AppCompatActivity() {
         searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_internet)
         searchPlaceholderErrorText.text = getString(R.string.noInternet)
         tracksAdapter.notifyDataSetChanged()
+    }
+
+    override fun onItemClick(track: Track) {
+        Toast.makeText(this, "Нажали на трек ${track.trackId} ${track.trackName} ${track.artistName}", Toast.LENGTH_SHORT).show()
     }
 }

@@ -6,7 +6,7 @@ import com.google.gson.Gson
 const val HISTORY_PREFS = "Playlist_Maker_History"
 const val HISTORY_KEY = "history_key"
 
-class SearchTrackHistory(var sharedPref: SharedPreferences) {
+class SearchTrackHistory (var sharedPref: SharedPreferences) {
 
     companion object {
         private const val HISTORY_TRACK_COUNT = 3
@@ -17,7 +17,7 @@ class SearchTrackHistory(var sharedPref: SharedPreferences) {
         return Gson().fromJson(jsonHistory, Array<Track>::class.java)
     }
 
-    fun historyListAdd(track: Track) {
+    fun historyAddTrack(track: Track) {
         var historyTracks = getHistoryList()?: emptyArray()
         val historyTracksList = historyTracks.toMutableList()
 

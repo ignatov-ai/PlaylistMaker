@@ -1,12 +1,12 @@
 package com.example.playlistmaker
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class TrackAdapter(
-    private var tracks: List<Track>
-) : RecyclerView.Adapter<TrackViewHolder> () {
+class TrackAdapter(private var tracks: List<Track>, val listener: RecycleViewListener) : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_list_element, parent, false)
@@ -14,20 +14,14 @@ class TrackAdapter(
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks[position])
+        holder.bind(tracks[position], listener)
     }
 
     override fun getItemCount(): Int {
         return tracks.size
     }
 
-    private var onListElementClickListener: OnListElementClickListener? = null
-
-    interface OnListElementClickListener {
-        fun onListElementClick(position: Int)
+    interface RecycleViewListener{
+        fun onItemClick(track: Track)
     }
-    fun setOnItemClickListener(listener: OnListElementClickListener) {
-        onListElementClickListener = listener
-    }
-
 }
