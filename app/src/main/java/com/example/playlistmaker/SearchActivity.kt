@@ -275,12 +275,11 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     override fun onItemClick(track: Track) {
         var sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
 
-        val playerIntent = Intent(this, PlayerActivity::class.java)
-        startActivity(playerIntent)
-
         SearchTrackHistory(sharedPrefs).historyAddTrack(track)
         historyAdapter.notifyDataSetChanged()
 
+        val playerIntent = Intent(this@SearchActivity, PlayerActivity::class.java)
+        startActivity(playerIntent)
     //Log.d("row_select_history", historyTracks.toString())
         //Toast.makeText(this, "Нажали на трек ${track.trackId} ${track.trackName} ${track.artistName}", Toast.LENGTH_SHORT).show()
     }

@@ -33,7 +33,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/margin24dp" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/backToTracks"
         style="@style/trackImage"
         android:layout_width="@dimen/size16dp"
@@ -82,7 +82,7 @@
         android:textFontWeight="500"
         android:text="The Beatles "/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/playPauseButton"
         android:layout_width="@dimen/size100dp"
         android:layout_height="@dimen/size100dp"
@@ -93,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@id/artistName"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/addToPlaylistButton"
         android:layout_width="@dimen/size52dp"
         android:layout_height="@dimen/size52dp"
@@ -103,7 +103,7 @@
         app:layout_constraintTop_toTopOf="@id/playPauseButton"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/likeButton"
         android:layout_width="@dimen/size52dp"
         android:layout_height="@dimen/size52dp"
