@@ -32,7 +32,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/margin24dp" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/backToTracks"
         android:layout_width="@dimen/size16dp"
         android:layout_height="@dimen/size16dp"
@@ -40,7 +40,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/margin16dp"
-        android:layout_marginLeft="@dimen/margin16dp" />
+        android:layout_marginLeft="@dimen/margin16dp"
+        style="@style/trackImage"/>
 
     <ImageView
         android:id="@+id/trackImage"
@@ -63,7 +64,7 @@
         android:layout_marginTop="@dimen/size24dp"
         android:fontFamily="@font/ysmedium"
         android:textSize="@dimen/font22sp"
-        android:textFontWeight="500"
+        android:FontWeight="500"
         android:text="Yesterday (Remastered 2009)"/>
 
     <TextView
@@ -76,7 +77,7 @@
         android:layout_marginTop="@dimen/size12dp"
         android:fontFamily="@font/ysmedium"
         android:textSize="@dimen/font14sp"
-        android:textFontWeight="500"
+        android:FontWeight="500"
         android:text="The Beatles "/>
 
     <ImageButton
@@ -117,9 +118,146 @@
         android:layout_marginTop="@dimen/size4dp"
         android:fontFamily="@font/ysmedium"
         android:textSize="@dimen/font14sp"
-        android:textFontWeight="500"
+        android:FontWeight="500"
         android:textAlignment="center"
         android:text="0:30"/>
+
+    <!--    Параметр длительность-->
+    <TextView
+        android:id="@+id/trackTimeMillsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/playedTime"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="@dimen/margin16dp"
+        android:layout_marginTop="@dimen/size40dp"
+        android:fontFamily="@font/ysregular"
+        android:textSize="@dimen/font13sp"
+        android:FontWeight="500"
+        android:text="Длительность"/>
+
+    <TextView
+        android:id="@+id/trackTimeMills"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/trackTimeMillsLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/size40dp"
+        android:layout_marginRight="@dimen/margin16dp"
+        android:fontFamily="@font/ysregular"
+        android:textSize="@dimen/font13sp"
+        android:FontWeight="500"
+        android:text="5:35"/>
+
+    <!--    Параметр альбом-->
+    <TextView
+        android:id="@+id/collectionNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/trackTimeMillsLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="@dimen/margin16dp"
+        android:layout_marginTop="@dimen/margin16dp"
+        android:fontFamily="@font/ysregular"
+        android:textSize="@dimen/font13sp"
+        android:FontWeight="500"
+        android:text="Альбом"/>
+
+    <TextView
+        android:id="@+id/collectionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/collectionNameLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin16dp"
+        android:layout_marginRight="@dimen/margin16dp"
+        android:fontFamily="@font/ysregular"
+        android:textSize="@dimen/font13sp"
+        android:FontWeight="500"
+        android:text="Yesterday (Remastered 2009)"/>
+
+    <!--    Параметр год-->
+    <TextView
+        android:id="@+id/releaseDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/collectionNameLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="@dimen/margin16dp"
+        android:layout_marginTop="@dimen/margin16dp"
+        android:fontFamily="@font/ysregular"
+        android:textSize="@dimen/font13sp"
+        android:FontWeight="500"
+        android:text="Год"/>
+
+    <TextView
+        android:id="@+id/releaseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/releaseDateLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin16dp"
+        android:layout_marginRight="@dimen/margin16dp"
+        android:fontFamily="@font/ysregular"
+        android:textSize="@dimen/font13sp"
+        android:FontWeight="500"
+        android:text="1965"/>
+
+    <!--    Параметр год-->
+    <TextView
+        android:id="@+id/primaryGenreNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/releaseDateLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="@dimen/margin16dp"
+        android:layout_marginTop="@dimen/margin16dp"
+        android:fontFamily="@font/ysregular"
+        android:textSize="@dimen/font13sp"
+        android:FontWeight="500"
+        android:text="Жанр"/>
+
+    <TextView
+        android:id="@+id/primaryGenreName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/primaryGenreNameLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin16dp"
+        android:layout_marginRight="@dimen/margin16dp"
+        android:fontFamily="@font/ysregular"
+        android:textSize="@dimen/font13sp"
+        android:FontWeight="500"
+        android:text="Rock"/>
+
+    <!--    Параметр cтрана-->
+    <TextView
+        android:id="@+id/countryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/primaryGenreNameLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="@dimen/margin16dp"
+        android:layout_marginTop="@dimen/margin16dp"
+        android:fontFamily="@font/ysregular"
+        android:textSize="@dimen/font13sp"
+        android:FontWeight="500"
+        android:text="Страна"/>
+
+    <TextView
+        android:id="@+id/country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/countryLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin16dp"
+        android:layout_marginRight="@dimen/margin16dp"
+        android:fontFamily="@font/ysregular"
+        android:textSize="@dimen/font13sp"
+        android:FontWeight="500"
+        android:text="Великобритания"/>
+
+
 
 
 
