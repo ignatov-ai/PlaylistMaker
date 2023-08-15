@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -274,10 +275,13 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     override fun onItemClick(track: Track) {
         var sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
 
+        val playerIntent = Intent(this, PlayerActivity::class.java)
+        startActivity(playerIntent)
 
         SearchTrackHistory(sharedPrefs).historyAddTrack(track)
         historyAdapter.notifyDataSetChanged()
-        Log.d("row_select_history", historyTracks.toString())
+
+    //Log.d("row_select_history", historyTracks.toString())
         //Toast.makeText(this, "Нажали на трек ${track.trackId} ${track.trackName} ${track.artistName}", Toast.LENGTH_SHORT).show()
     }
 }
