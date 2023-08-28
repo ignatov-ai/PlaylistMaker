@@ -274,13 +274,24 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
 
     override fun onItemClick(track: Track) {
         var sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
-
         SearchTrackHistory(sharedPrefs).historyAddTrack(track)
         historyAdapter.notifyDataSetChanged()
 
-        val playerIntent = Intent(this@SearchActivity, PlayerActivity::class.java)
+        // передаем данные на следующий экран
+        val bundle = Bundle().apply{
+            putString("trackImage", track.artworkUrl512)
+            putString("trackName", track.trackName)
+            putString("artistName", track.artistName)
+            putString("country", track.country)
+            putString("trackTimeMills", track.timeToMins)
+            putString("collectionName",track.collectionName)
+            putString("releaseDate",track.releaseYear)
+            putString("primaryGenreName",track.primaryGenreName)
+        }
+
+        val playerIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
+            putExtras(bundle)
+        }
         startActivity(playerIntent)
-    //Log.d("row_select_history", historyTracks.toString())
-        //Toast.makeText(this, "Нажали на трек ${track.trackId} ${track.trackName} ${track.artistName}", Toast.LENGTH_SHORT).show()
     }
 }

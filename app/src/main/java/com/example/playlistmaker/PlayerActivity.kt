@@ -20,28 +20,35 @@ class PlayerActivity: AppCompatActivity() {
             finish()
         }
 
-        // Получаем список из историию Выбираем первый из этого списка, т.е. последний нажатый
-        var tracks: MutableList<Track> = mutableListOf()
-        val sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
-        tracks = SearchTrackHistory(sharedPrefs).getHistoryList()!!.toMutableList()
+        // получаем данные для отображения с предыдущего экрана
+        val bundle = intent.extras
+        if (bundle != null) {
+            val trackImage = bundle.getString("trackImage")
+            val trackName = bundle.getString("trackName")
+            val artistName = bundle.getString("artistName")
+            val country = bundle.getString("country")
+            val trackTimeMills = bundle.getString("trackTimeMills")
+            val collectionName = bundle.getString("collectionName")
+            val releaseDate = bundle.getString("releaseDate")
+            val primaryGenreName = bundle.getString("primaryGenreName")
 
-        val track = tracks.first()
-        val cover = track.artworkUrl512
+            Glide.with(this)
+                .load(trackImage)
+                .placeholder(R.drawable.noalbumicon)
+                .centerCrop()
+                .fitCenter()
+                .transform(RoundedCorners(cornerRadius))
+                .into(binding.trackImage)
 
-        Glide.with(this)
-            .load(cover)
-            .placeholder(R.drawable.noalbumicon)
-            .centerCrop()
-            .fitCenter()
-            .transform(RoundedCorners(cornerRadius))
-            .into(binding.trackImage)
+            binding.trackName.text = trackName
+            binding.artistName.text = artistName
+            binding.country.text = country
+            binding.trackTimeMills.text = trackTimeMills
+            binding.collectionName.text = collectionName
+            binding.releaseDate.text = releaseDate
+            binding.primaryGenreName.text = primaryGenreName
+        }
 
-        binding.trackName.text = track.trackName
-        binding.artistName.text = track.artistName
-        binding.country.text = track.country
-        binding.trackTimeMills.text = track.timeToMins
-        binding.collectionName.text = track.collectionName
-        binding.releaseDate.text = track.releaseYear
-        binding.primaryGenreName.text = track.primaryGenreName
+
     }
 }
