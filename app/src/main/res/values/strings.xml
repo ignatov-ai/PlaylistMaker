@@ -19,4 +19,9 @@
     <string name="nothingWasFound">Ничего не нашлось</string>
     <string name="noInternet">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="clearHistory">Очистить историю</string>
+    <string name="countryLabel">Страна</string>
+    <string name="ganreLabel">Жанр</string>
+    <string name="yearLabel">Год</string>
+    <string name="albumNameLabel">Альбом</string>
+    <string name="timeLabel">Длительность</string>
 </resources>

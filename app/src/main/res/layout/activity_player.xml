@@ -140,7 +140,7 @@
         android:fontFamily="@font/ysregular"
         android:textSize="@dimen/font13sp"
         android:textFontWeight="500"
-        android:text="Длительность"/>
+        android:text="@string/timeLabel"/>
 
     <TextView
         android:id="@+id/trackTimeMills"
@@ -167,7 +167,7 @@
         android:fontFamily="@font/ysregular"
         android:textSize="@dimen/font13sp"
         android:textFontWeight="500"
-        android:text="Альбом"/>
+        android:text="@string/albumNameLabel"/>
 
     <TextView
         android:id="@+id/collectionName"
@@ -194,7 +194,7 @@
         android:fontFamily="@font/ysregular"
         android:textSize="@dimen/font13sp"
         android:textFontWeight="500"
-        android:text="Год"/>
+        android:text="@string/yearLabel"/>
 
     <TextView
         android:id="@+id/releaseDate"
@@ -221,7 +221,7 @@
         android:fontFamily="@font/ysregular"
         android:textSize="@dimen/font13sp"
         android:textFontWeight="500"
-        android:text="Жанр"/>
+        android:text="@string/ganreLabel"/>
 
     <TextView
         android:id="@+id/primaryGenreName"
@@ -248,7 +248,7 @@
         android:fontFamily="@font/ysregular"
         android:textSize="@dimen/font13sp"
         android:textFontWeight="500"
-        android:text="Страна"/>
+        android:text="@string/countryLabel"/>
 
     <TextView
         android:id="@+id/country"
