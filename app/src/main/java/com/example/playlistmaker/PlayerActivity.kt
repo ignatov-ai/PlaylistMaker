@@ -8,7 +8,7 @@ import com.example.playlistmaker.databinding.ActivityPlayerBinding
 
 class PlayerActivity: AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
-    val cornerRadius = 8
+    val trackImageCornerRadius = 8
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +37,7 @@ class PlayerActivity: AppCompatActivity() {
                 .placeholder(R.drawable.noalbumicon)
                 .centerCrop()
                 .fitCenter()
-                .transform(RoundedCorners(cornerRadius))
+                .transform(RoundedCorners(trackImageCornerRadius))
                 .into(binding.trackImage)
 
             binding.trackName.text = trackName
