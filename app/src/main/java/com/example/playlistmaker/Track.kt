@@ -20,6 +20,7 @@ data class Track(
     val releaseYear: String?
         get() = releaseDate?.substring(0,4)
 
-    val timeToMins = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis.toInt())
+    val timeToMins: String?
+        get() = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis.toInt())
 }
 

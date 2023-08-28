@@ -106,7 +106,7 @@
         android:id="@+id/likeButton"
         android:layout_width="@dimen/size52dp"
         android:layout_height="@dimen/size52dp"
-        android:src="@drawable/liketrackbuttontrue"
+        android:src="@drawable/liketrackbuttonfalse"
         app:layout_constraintBottom_toBottomOf="@id/playPauseButton"
         app:layout_constraintEnd_toEndOf="@id/right_guideline"
         app:layout_constraintTop_toTopOf="@id/playPauseButton"
