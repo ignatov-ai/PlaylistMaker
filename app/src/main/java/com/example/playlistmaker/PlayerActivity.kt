@@ -11,6 +11,8 @@ import java.util.Locale
 
 class PlayerActivity: AppCompatActivity() {
 
+    val cornerRadius = 10
+
     private lateinit var playerBackToTracksButton: ImageView
     private lateinit var playerTrackImage: ImageView
     private lateinit var playerTrackName: TextView
@@ -28,6 +30,7 @@ class PlayerActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
+
 
         playerBackToTracksButton = findViewById(R.id.backToTracks)
         playerTrackImage = findViewById(R.id.trackImage)
@@ -50,29 +53,26 @@ class PlayerActivity: AppCompatActivity() {
 
         // Получаем список из историию Выбираем первый из этого списка, т.е. последний нажатый
         var tracks: MutableList<Track> = mutableListOf()
-        var sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences(HISTORY_PREFS, MODE_PRIVATE)
         tracks = SearchTrackHistory(sharedPrefs).getHistoryList()!!.toMutableList()
-        var track = tracks[0]
 
-        var cover = track.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
+        val track = tracks[0]
+        val cover = track.artworkUrl512
 
         Glide.with(this)
             .load(cover)
             .placeholder(R.drawable.noalbumicon)
             .centerCrop()
             .fitCenter()
-            .transform(RoundedCorners(10))
+            .transform(RoundedCorners(cornerRadius))
             .into(playerTrackImage)
 
         playerTrackName.setText(track.trackName)
         playerArtistName.setText(track.artistName)
         playerCountry.setText(track.country)
-
-        var timeToMins = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis.toInt())
-
-        playerTrackTimeMills.setText(timeToMins)
+        playerTrackTimeMills.setText(track.timeToMins)
         playerCollectionName.setText(track.collectionName)
-        playerReleaseDate.setText(track.releaseDate.substring(0,4))
+        playerReleaseDate.setText(track.releaseYear)
         playerPrimaryGenreName.setText(track.primaryGenreName)
     }
 }
