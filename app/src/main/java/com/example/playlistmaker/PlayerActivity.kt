@@ -48,7 +48,5 @@ class PlayerActivity: AppCompatActivity() {
             binding.releaseDate.text = releaseDate
             binding.primaryGenreName.text = primaryGenreName
         }
-
-
     }
 }
