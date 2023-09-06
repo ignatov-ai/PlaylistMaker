@@ -131,6 +131,44 @@
         </LinearLayout>
     </FrameLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/historyHeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Вы искали"
+            android:textSize="@dimen/size19sp"
+            android:fontFamily="@font/ysmedium"
+            android:textColor="?attr/colorOnPrimary"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:height="@dimen/size56dp"
+            android:layout_marginTop="@dimen/size24dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyTrackListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <Button
+            android:id="@+id/historyClearButton"
+            style="@style/refreshButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size56dp"
+            android:layout_marginTop="@dimen/marginStart24dp"
+            android:layout_gravity="center"
+            android:textColor="?attr/colorOnSecondary"
+            android:text="@string/clearHistory"/>
+
+    </LinearLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trackListView"
         android:layout_width="match_parent"

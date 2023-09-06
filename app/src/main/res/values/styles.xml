@@ -55,4 +55,8 @@
         <item name="android:textSize">@dimen/size14sp</item>
     </style>
 
+    <style name="trackImage" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="cornerRadius">@dimen/btn_radius</item>
+    </style>
+
 </resources>
