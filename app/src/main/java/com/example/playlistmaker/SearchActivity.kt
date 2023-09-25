@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -28,6 +30,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
+        const val SEARCH_DEBOUNCE_DELAY = 1500L
+    }
+
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, SEARCH_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
     var searchText: String? = null
@@ -58,6 +73,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     // Основной список треков
     val tracks: MutableList<Track> = mutableListOf()
     private var tracksAdapter = TrackAdapter(tracks,this)
+
+    private val searchRunnable = Runnable { searchTrack() }
 
     // Список треков истории
     val historyTracks: MutableList<Track> = mutableListOf()
@@ -121,6 +138,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 searchText = s.toString()
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -155,13 +173,13 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         }
 
         // Применение поискового запроса по нажатию галочки экранной клавиатуры
-        searchField.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTrack()
-                true
-            }
-            false
-        }
+//        searchField.setOnEditorActionListener { _, actionId, _ ->
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                searchTrack()
+//                true
+//            }
+//            false
+//        }
 
         // Обработчик нажатия кнопки ОБНОВИТЬ при отсутствии сети
         searchPlaceholderRefreshButton.setOnClickListener {
@@ -220,6 +238,11 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
                 }
             })
         }
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     // Обработчик скрытия плейсхолдера
