@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -31,7 +32,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
         const val CLICK_DEBOUNCE_DELAY = 1000L
-        const val SEARCH_DEBOUNCE_DELAY = 1500L
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
     private var isClickAllowed = true
@@ -53,6 +54,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private lateinit var searchPlaceholderErrorIcon: ImageView
     private lateinit var searchPlaceholderErrorText: TextView
     private lateinit var searchPlaceholderRefreshButton: Button
+
+    private lateinit var progressBar: ProgressBar
 
     private val iTunesBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
@@ -85,6 +88,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         searchPlaceholderErrorIcon = findViewById(R.id.searchPlaceholderErrorIcon)
         searchPlaceholderErrorText = findViewById(R.id.searchPlaceholderErrorText)
         searchPlaceholderRefreshButton = findViewById(R.id.searchPlaceholderRefreshButton)
+
+        progressBar = findViewById(R.id.progressBar)
 
         trackListView = findViewById(R.id.trackListView)
 
@@ -207,11 +212,15 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             tracks.clear()
             tracksAdapter.notifyDataSetChanged()
 
+            searchPlaceholder.visibility = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
+
             iTunesService.search(searchText.toString()).enqueue(object : Callback<TrackResponse> {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>)
                 {
                     if (response.code() == 200) {
+
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
                             hidePlaceholder()
@@ -242,13 +251,14 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, SEARCH_DEBOUNCE_DELAY)
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
         }
         return current
     }
 
     // Обработчик скрытия плейсхолдера
     private fun hidePlaceholder(){
+        progressBar.visibility = View.GONE
         historyHeaderText.visibility = View.GONE
         historyTrackListView.visibility = View.GONE
         historyClearButton.visibility = View.GONE
@@ -261,6 +271,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
 
     // Обработчик отображения плейсхолдера ПУСТОГО СПИСКА
     private fun emptySearchPlaceholder(){
+        progressBar.visibility = View.GONE
         searchPlaceholder.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.visibility = View.VISIBLE
         searchPlaceholderErrorText.visibility = View.VISIBLE
@@ -272,6 +283,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
 
     // Обработчик отображения плейсхолдера ОТСУТСТВИЯ СЕТИ
     private fun errorPlaceholder(){
+        progressBar.visibility = View.GONE
         searchPlaceholder.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.visibility = View.VISIBLE
         searchPlaceholderErrorText.visibility = View.VISIBLE
