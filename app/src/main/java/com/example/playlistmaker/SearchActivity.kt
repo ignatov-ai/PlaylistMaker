@@ -30,20 +30,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
+        const val CLICK_DEBOUNCE_DELAY = 1000L
         const val SEARCH_DEBOUNCE_DELAY = 1500L
     }
 
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
-
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, SEARCH_DEBOUNCE_DELAY)
-        }
-        return current
-    }
 
     var searchText: String? = null
 
@@ -79,6 +71,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     // Список треков истории
     val historyTracks: MutableList<Track> = mutableListOf()
     private var historyAdapter = TrackAdapter(historyTracks,this)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -245,6 +238,15 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, SEARCH_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
     // Обработчик скрытия плейсхолдера
     private fun hidePlaceholder(){
         historyHeaderText.visibility = View.GONE
@@ -312,9 +314,11 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             putString("primaryGenreName",track.primaryGenreName)
         }
 
-        val playerIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
-            putExtras(bundle)
+        if (clickDebounce()) {
+            val playerIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
+                putExtras(bundle)
+            }
+            startActivity(playerIntent)
         }
-        startActivity(playerIntent)
     }
 }
