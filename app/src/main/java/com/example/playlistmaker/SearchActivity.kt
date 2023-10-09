@@ -324,6 +324,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             putString("collectionName",track.collectionName)
             putString("releaseDate",track.releaseYear)
             putString("primaryGenreName",track.primaryGenreName)
+            putString("previewUrl",track.previewUrl)
         }
 
         if (clickDebounce()) {
