@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -14,6 +16,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +31,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
+        const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
+
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
 
     var searchText: String? = null
 
@@ -47,6 +55,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private lateinit var searchPlaceholderErrorText: TextView
     private lateinit var searchPlaceholderRefreshButton: Button
 
+    private lateinit var progressBar: ProgressBar
+
     private val iTunesBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
@@ -59,9 +69,12 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     val tracks: MutableList<Track> = mutableListOf()
     private var tracksAdapter = TrackAdapter(tracks,this)
 
+    private val searchRunnable = Runnable { searchTrack() }
+
     // Список треков истории
     val historyTracks: MutableList<Track> = mutableListOf()
     private var historyAdapter = TrackAdapter(historyTracks,this)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +88,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         searchPlaceholderErrorIcon = findViewById(R.id.searchPlaceholderErrorIcon)
         searchPlaceholderErrorText = findViewById(R.id.searchPlaceholderErrorText)
         searchPlaceholderRefreshButton = findViewById(R.id.searchPlaceholderRefreshButton)
+
+        progressBar = findViewById(R.id.progressBar)
 
         trackListView = findViewById(R.id.trackListView)
 
@@ -121,6 +136,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 searchText = s.toString()
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -155,13 +171,13 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         }
 
         // Применение поискового запроса по нажатию галочки экранной клавиатуры
-        searchField.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTrack()
-                true
-            }
-            false
-        }
+//        searchField.setOnEditorActionListener { _, actionId, _ ->
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                searchTrack()
+//                true
+//            }
+//            false
+//        }
 
         // Обработчик нажатия кнопки ОБНОВИТЬ при отсутствии сети
         searchPlaceholderRefreshButton.setOnClickListener {
@@ -196,11 +212,15 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             tracks.clear()
             tracksAdapter.notifyDataSetChanged()
 
+            searchPlaceholder.visibility = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
+
             iTunesService.search(searchText.toString()).enqueue(object : Callback<TrackResponse> {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>)
                 {
                     if (response.code() == 200) {
+
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
                             hidePlaceholder()
@@ -222,8 +242,23 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         }
     }
 
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
     // Обработчик скрытия плейсхолдера
     private fun hidePlaceholder(){
+        progressBar.visibility = View.GONE
         historyHeaderText.visibility = View.GONE
         historyTrackListView.visibility = View.GONE
         historyClearButton.visibility = View.GONE
@@ -236,6 +271,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
 
     // Обработчик отображения плейсхолдера ПУСТОГО СПИСКА
     private fun emptySearchPlaceholder(){
+        progressBar.visibility = View.GONE
         searchPlaceholder.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.visibility = View.VISIBLE
         searchPlaceholderErrorText.visibility = View.VISIBLE
@@ -247,6 +283,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
 
     // Обработчик отображения плейсхолдера ОТСУТСТВИЯ СЕТИ
     private fun errorPlaceholder(){
+        progressBar.visibility = View.GONE
         searchPlaceholder.visibility = View.VISIBLE
         searchPlaceholderErrorIcon.visibility = View.VISIBLE
         searchPlaceholderErrorText.visibility = View.VISIBLE
@@ -287,11 +324,14 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             putString("collectionName",track.collectionName)
             putString("releaseDate",track.releaseYear)
             putString("primaryGenreName",track.primaryGenreName)
+            putString("previewUrl",track.previewUrl)
         }
 
-        val playerIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
-            putExtras(bundle)
+        if (clickDebounce()) {
+            val playerIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
+                putExtras(bundle)
+            }
+            startActivity(playerIntent)
         }
-        startActivity(playerIntent)
     }
 }
