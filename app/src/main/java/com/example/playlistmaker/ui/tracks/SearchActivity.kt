@@ -23,9 +23,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.HISTORY_PREFS
 import com.example.playlistmaker.R
 import com.example.playlistmaker.SearchTrackHistory
-import com.example.playlistmaker.data.dto.TrackResponse
+import com.example.playlistmaker.data.dto.TrackSearchResponse
 import com.example.playlistmaker.data.network.ITunesAPI
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.ui.player.PlayerActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -221,9 +221,9 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             searchPlaceholder.visibility = View.VISIBLE
             progressBar.visibility = View.VISIBLE
 
-            iTunesService.search(searchText.toString()).enqueue(object : Callback<TrackResponse> {
+            iTunesService.search(searchText.toString()).enqueue(object : Callback<TrackSearchResponse> {
                 @SuppressLint("NotifyDataSetChanged")
-                override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>)
+                override fun onResponse(call: Call<TrackSearchResponse>, response: Response<TrackSearchResponse>)
                 {
                     if (response.code() == 200) {
 
@@ -241,7 +241,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
                     }
                 }
 
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
                     errorPlaceholder()
                 }
             })

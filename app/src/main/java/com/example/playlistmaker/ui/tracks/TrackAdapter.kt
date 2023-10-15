@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.dto.Track
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.domain.models.Track
 
 class TrackAdapter(private var tracks: List<Track>, val listener: RecycleViewListener) : RecyclerView.Adapter<TrackViewHolder>() {
 

@@ -2,7 +2,7 @@ package com.example.playlistmaker
 
 import android.content.SharedPreferences
 import android.util.Log
-import com.example.playlistmaker.data.dto.Track
+import com.example.playlistmaker.domain.models.Track
 import com.google.gson.Gson
 
 const val HISTORY_PREFS = "Playlist_Maker_History"
