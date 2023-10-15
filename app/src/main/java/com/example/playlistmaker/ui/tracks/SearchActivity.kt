@@ -20,12 +20,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.Creator
 import com.example.playlistmaker.HISTORY_PREFS
 import com.example.playlistmaker.R
 import com.example.playlistmaker.SearchTrackHistory
 import com.example.playlistmaker.data.dto.TrackSearchResponse
 import com.example.playlistmaker.data.network.ITunesAPI
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentations.tracks.TrackPresenter
 import com.example.playlistmaker.ui.player.PlayerActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -72,10 +74,10 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private val iTunesService = retrofit.create(ITunesAPI::class.java)
 
     // Основной список треков
-    val tracks: MutableList<Track> = mutableListOf()
+    var tracks: MutableList<Track> = mutableListOf()
     private var tracksAdapter = TrackAdapter(tracks,this)
 
-    private val searchRunnable = Runnable { searchTrack() }
+    private val searchRunnable = Runnable { searchTrackRequest() }
 
     // Список треков истории
     val historyTracks: MutableList<Track> = mutableListOf()
@@ -187,7 +189,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
 
         // Обработчик нажатия кнопки ОБНОВИТЬ при отсутствии сети
         searchPlaceholderRefreshButton.setOnClickListener {
-            searchTrack()
+            searchTrackRequest()
             hidePlaceholder()
         }
     }
@@ -213,38 +215,25 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     }
 
     // Обработчик поиска трека на сервисе iTunesAPI
-    private fun searchTrack() {
+    private fun searchTrackRequest() {
         if (searchText.toString().isNotEmpty()) {
             tracks.clear()
             tracksAdapter.notifyDataSetChanged()
-
             searchPlaceholder.visibility = View.VISIBLE
             progressBar.visibility = View.VISIBLE
 
-            iTunesService.search(searchText.toString()).enqueue(object : Callback<TrackSearchResponse> {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onResponse(call: Call<TrackSearchResponse>, response: Response<TrackSearchResponse>)
-                {
-                    if (response.code() == 200) {
+            val trackConsumer = TrackPresenter()
+            Creator.provideTracksInteractor().searchTrack(searchText.toString(), trackConsumer)
 
-                        if (response.body()?.results?.isNotEmpty() == true) {
-                            tracks.addAll(response.body()?.results!!)
-                            hidePlaceholder()
-                            tracksAdapter.notifyDataSetChanged()
-                        } else {
-                            if (tracks.isEmpty()) {
-                                emptySearchPlaceholder()
-                            } else {
-                                errorPlaceholder()
-                            }
-                        }
-                    }
-                }
+            tracks = trackConsumer.getTrackList()
+            hidePlaceholder()
+            tracksAdapter.notifyDataSetChanged()
 
-                override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-                    errorPlaceholder()
-                }
-            })
+            if (tracks.isEmpty()) {
+                emptySearchPlaceholder()
+            } else {
+                errorPlaceholder()
+            }
         }
     }
 
