@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.tracks
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -20,13 +20,19 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.data.dto.Track
+import com.example.playlistmaker.HISTORY_PREFS
+import com.example.playlistmaker.R
+import com.example.playlistmaker.SearchTrackHistory
 import com.example.playlistmaker.data.dto.TrackResponse
+import com.example.playlistmaker.data.network.ITunesAPI
+import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.ui.player.PlayerActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private companion object {

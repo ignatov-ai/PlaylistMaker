@@ -1,3 +1,5 @@
 package com.example.playlistmaker.data.dto
 
-class TrackResponse(val results: List<TrackDto>) : Response()
+import com.example.playlistmaker.domain.entity.Track
+
+class TrackResponse(val results: List<Track>) : Response()
