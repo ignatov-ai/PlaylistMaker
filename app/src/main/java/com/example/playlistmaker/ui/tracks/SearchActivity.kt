@@ -24,14 +24,10 @@ import com.example.playlistmaker.Creator
 import com.example.playlistmaker.HISTORY_PREFS
 import com.example.playlistmaker.R
 import com.example.playlistmaker.SearchTrackHistory
-import com.example.playlistmaker.data.dto.TrackSearchResponse
 import com.example.playlistmaker.data.network.ITunesAPI
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentations.tracks.TrackPresenter
 import com.example.playlistmaker.ui.player.PlayerActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -74,7 +70,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private val iTunesService = retrofit.create(ITunesAPI::class.java)
 
     // Основной список треков
-    var tracks: MutableList<Track> = mutableListOf()
+    private val tracks: MutableList<Track> = mutableListOf()
     private var tracksAdapter = TrackAdapter(tracks,this)
 
     private val searchRunnable = Runnable { searchTrackRequest() }
@@ -225,7 +221,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             val trackConsumer = TrackPresenter()
             Creator.provideTracksInteractor().searchTrack(searchText.toString(), trackConsumer)
 
-            tracks = trackConsumer.getTrackList()
+            tracks.addAll(trackConsumer.getTrackList())
             hidePlaceholder()
             tracksAdapter.notifyDataSetChanged()
 
