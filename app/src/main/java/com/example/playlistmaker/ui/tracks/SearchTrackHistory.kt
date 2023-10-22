@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.tracks
 
 import android.content.SharedPreferences
 import android.util.Log
@@ -37,8 +37,8 @@ class SearchTrackHistory (var sharedPref: SharedPreferences) {
         if(replyIndex == -1) {
             historyTracksList.add(0, track)
 
-            if (historyTracksList.size > Companion.HISTORY_TRACK_COUNT) {
-                historyTracksList.removeAt(Companion.HISTORY_TRACK_COUNT)
+            if (historyTracksList.size > HISTORY_TRACK_COUNT) {
+                historyTracksList.removeAt(HISTORY_TRACK_COUNT)
             }
         }
 

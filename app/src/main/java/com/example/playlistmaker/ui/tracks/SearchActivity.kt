@@ -1,6 +1,5 @@
 package com.example.playlistmaker.ui.tracks
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -20,14 +19,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.Creator
-import com.example.playlistmaker.HISTORY_PREFS
 import com.example.playlistmaker.R
-import com.example.playlistmaker.SearchTrackHistory
+import com.example.playlistmaker.data.dto.TrackSearchResponse
 import com.example.playlistmaker.data.network.ITunesAPI
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentations.tracks.TrackPresenter
 import com.example.playlistmaker.ui.player.PlayerActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -71,7 +70,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
 
     // Основной список треков
     private val tracks: MutableList<Track> = mutableListOf()
-    private var tracksAdapter = TrackAdapter(tracks,this)
+    private val tracksAdapter = TrackAdapter(tracks,this)
 
     private val searchRunnable = Runnable { searchTrackRequest() }
 
@@ -162,7 +161,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         }else{
             hidePlaceholder()
         }
-        Log.d("row_select_flag",historySize().toString())
 
         // Обработчик нажатия кнопки ОЧИСТИТЬ ИСТОРИЮ
         historyClearButton.setOnClickListener {
@@ -173,15 +171,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             hidePlaceholder()
 
         }
-
-        // Применение поискового запроса по нажатию галочки экранной клавиатуры
-//        searchField.setOnEditorActionListener { _, actionId, _ ->
-//            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                searchTrack()
-//                true
-//            }
-//            false
-//        }
 
         // Обработчик нажатия кнопки ОБНОВИТЬ при отсутствии сети
         searchPlaceholderRefreshButton.setOnClickListener {
@@ -218,18 +207,56 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
             searchPlaceholder.visibility = View.VISIBLE
             progressBar.visibility = View.VISIBLE
 
-            val trackConsumer = TrackPresenter()
-            Creator.provideTracksInteractor().searchTrack(searchText.toString(), trackConsumer)
+            iTunesService.search(searchText.toString()).enqueue(object :
+                Callback<TrackSearchResponse> {
+                override fun onResponse(call: Call<TrackSearchResponse>,
+                                        response: Response<TrackSearchResponse>
+                ) {
+                    progressBar.visibility = View.GONE
+                    if (response.code() == 200) {
+                        tracks.clear()
+                        if (response.body()?.results?.isNotEmpty() == true) {
+                            trackListView.visibility = View.VISIBLE
 
-            tracks.addAll(trackConsumer.getTrackList())
-            hidePlaceholder()
-            tracksAdapter.notifyDataSetChanged()
+                            /*
+                            исправил ошибку несовпадения типов, т.к. в уроке с imdb была строка
+                            movies.addAll(response.body()?.results!!)
+                            дающая ошибку несовпадения типов.
+                            другого сполсоба пока не придумал, прошу помочь, если есть способ проще
+                            */
+                            val trackList = mutableListOf<Track>()
+                            for (trackDto in response.body()?.results!!) {
+                                val track = Track(
+                                    trackDto.trackId,
+                                    trackDto.trackName,
+                                    trackDto.artistName,
+                                    trackDto.trackTimeMillis,
+                                    trackDto.artworkUrl100,
+                                    trackDto.collectionName,
+                                    trackDto.releaseDate,
+                                    trackDto.primaryGenreName,
+                                    trackDto.country,
+                                    trackDto.previewUrl)
+                                trackList.add(track)
+                            }
+                            tracks.addAll(trackList)
+                            tracksAdapter.notifyDataSetChanged()
+                        }
+                        if (tracks.isEmpty()) {
+                            emptySearchPlaceholder()
+                        } else {
+                            hidePlaceholder()
+                        }
+                    } else {
+                        errorPlaceholder()
+                    }
+                }
 
-            if (tracks.isEmpty()) {
-                emptySearchPlaceholder()
-            } else {
-                errorPlaceholder()
-            }
+                override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
+                    progressBar.visibility = View.GONE
+                    errorPlaceholder()
+                }
+            })
         }
     }
 
