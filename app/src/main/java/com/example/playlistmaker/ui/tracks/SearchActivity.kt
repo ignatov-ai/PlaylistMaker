@@ -1,6 +1,5 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.tracks
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -18,15 +16,20 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
+import com.example.playlistmaker.data.dto.TrackSearchResponse
+import com.example.playlistmaker.data.network.ITunesAPI
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.ui.player.PlayerActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private companion object {
@@ -66,10 +69,10 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     private val iTunesService = retrofit.create(ITunesAPI::class.java)
 
     // Основной список треков
-    val tracks: MutableList<Track> = mutableListOf()
-    private var tracksAdapter = TrackAdapter(tracks,this)
+    private val tracks: MutableList<Track> = mutableListOf()
+    private val tracksAdapter = TrackAdapter(tracks,this)
 
-    private val searchRunnable = Runnable { searchTrack() }
+    private val searchRunnable = Runnable { searchTrackRequest() }
 
     // Список треков истории
     val historyTracks: MutableList<Track> = mutableListOf()
@@ -158,7 +161,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
         }else{
             hidePlaceholder()
         }
-        Log.d("row_select_flag",historySize().toString())
 
         // Обработчик нажатия кнопки ОЧИСТИТЬ ИСТОРИЮ
         historyClearButton.setOnClickListener {
@@ -170,18 +172,9 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
 
         }
 
-        // Применение поискового запроса по нажатию галочки экранной клавиатуры
-//        searchField.setOnEditorActionListener { _, actionId, _ ->
-//            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                searchTrack()
-//                true
-//            }
-//            false
-//        }
-
         // Обработчик нажатия кнопки ОБНОВИТЬ при отсутствии сети
         searchPlaceholderRefreshButton.setOnClickListener {
-            searchTrack()
+            searchTrackRequest()
             hidePlaceholder()
         }
     }
@@ -207,35 +200,60 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.RecycleViewListener {
     }
 
     // Обработчик поиска трека на сервисе iTunesAPI
-    private fun searchTrack() {
+    private fun searchTrackRequest() {
         if (searchText.toString().isNotEmpty()) {
             tracks.clear()
             tracksAdapter.notifyDataSetChanged()
-
             searchPlaceholder.visibility = View.VISIBLE
             progressBar.visibility = View.VISIBLE
 
-            iTunesService.search(searchText.toString()).enqueue(object : Callback<TrackResponse> {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>)
-                {
+            iTunesService.search(searchText.toString()).enqueue(object :
+                Callback<TrackSearchResponse> {
+                override fun onResponse(call: Call<TrackSearchResponse>,
+                                        response: Response<TrackSearchResponse>
+                ) {
+                    progressBar.visibility = View.GONE
                     if (response.code() == 200) {
-
+                        tracks.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
-                            tracks.addAll(response.body()?.results!!)
-                            hidePlaceholder()
-                            tracksAdapter.notifyDataSetChanged()
-                        } else {
-                            if (tracks.isEmpty()) {
-                                emptySearchPlaceholder()
-                            } else {
-                                errorPlaceholder()
+                            trackListView.visibility = View.VISIBLE
+
+                            /*
+                            исправил ошибку несовпадения типов, т.к. в уроке с imdb была строка
+                            movies.addAll(response.body()?.results!!)
+                            дающая ошибку несовпадения типов.
+                            другого сполсоба пока не придумал, прошу помочь, если есть способ проще
+                            */
+                            val trackList = mutableListOf<Track>()
+                            for (trackDto in response.body()?.results!!) {
+                                val track = Track(
+                                    trackDto.trackId,
+                                    trackDto.trackName,
+                                    trackDto.artistName,
+                                    trackDto.trackTimeMillis,
+                                    trackDto.artworkUrl100,
+                                    trackDto.collectionName,
+                                    trackDto.releaseDate,
+                                    trackDto.primaryGenreName,
+                                    trackDto.country,
+                                    trackDto.previewUrl)
+                                trackList.add(track)
                             }
+                            tracks.addAll(trackList)
+                            tracksAdapter.notifyDataSetChanged()
                         }
+                        if (tracks.isEmpty()) {
+                            emptySearchPlaceholder()
+                        } else {
+                            hidePlaceholder()
+                        }
+                    } else {
+                        errorPlaceholder()
                     }
                 }
 
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
+                    progressBar.visibility = View.GONE
                     errorPlaceholder()
                 }
             })
