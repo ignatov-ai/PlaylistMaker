@@ -8,40 +8,20 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.ui.PlayerState
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
+import com.example.playlistmaker.search.ui.model.Track
 
 class PlayerActivity: AppCompatActivity() {
 
-    companion object {
-        private const val DELAY = 500L
-    }
-
-    private lateinit var playButton : ImageView
-    private lateinit var playedTime : TextView
-
-    private var playerState = PlayerState.STATE_DEFAULT
-    private var mediaPlayer = MediaPlayer()
-
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val runnable = object : Runnable{
-        override fun run() {
-            if (mediaPlayer.isPlaying){
-                playedTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
-                handler.postDelayed(this, DELAY)
-            }
-        }
-    }
-
+    private lateinit var track: Track
     private lateinit var binding: ActivityPlayerBinding
-    private val cornerRadius = 8
-    private var previewUrl: String? = ""
+    private lateinit var viewModel: PlayerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +36,64 @@ class PlayerActivity: AppCompatActivity() {
         }
 
         // получаем данные для отображения с предыдущего экрана
+        getData()
+
+        // подключаем ViewModel
+        viewModel = ViewModelProvider(
+            this,
+            PlayerViewModel.getViewModelFactory(track.previewUrl)
+        )[PlayerViewModel::class.java]
+
+        viewModel.playerStateLiveData.observe(this) {
+            render(it)
+        }
+
+        viewModel.playerPositionLiveData.observe(this) {
+            setTimer(it)
+        }
+
+        // Кнопка плей/пауза к трекам
+        binding.playPauseButton.setOnClickListener {
+            viewModel.onPlayerButtonClick()
+        }
+    }
+
+    private fun setTimer(time: String?) {
+        binding.trackTimeMills.text = time
+    }
+
+    private fun render(state: PlayerState) {
+        when(state){
+            PlayerState.STATE_DEFAULT -> renderStateDefault()
+            PlayerState.STATE_PREPARED -> renderStatePrepared()
+            PlayerState.STATE_PLAYING -> renderStatePlaying()
+            PlayerState.STATE_PAUSED -> renderStatePaused()
+        }
+    }
+
+    private fun renderStatePaused() {
+        binding.playPauseButton.setImageResource(R.drawable.playbutton)
+    }
+
+    private fun renderStatePlaying() {
+        binding.playPauseButton.setImageResource(R.drawable.pausebutton)
+    }
+
+    private fun renderStatePrepared() {
+        binding.playPauseButton.isEnabled = true
+        binding.playPauseButton.setImageResource(R.drawable.playbutton)
+    }
+
+    private fun renderStateDefault() {
+        binding.playPauseButton.isEnabled = false
+    }
+
+    private fun getData() {
         val bundle = intent.extras
+
+        val cornerRadius = 8
+        var previewUrl: String? = ""
+
         if (bundle != null) {
             val trackImage = bundle.getString("trackImage")
             val trackName = bundle.getString("trackName")
@@ -84,65 +121,5 @@ class PlayerActivity: AppCompatActivity() {
             binding.releaseDate.text = releaseDate
             binding.primaryGenreName.text = primaryGenreName
         }
-
-        playButton = findViewById(R.id.playPauseButton)
-        playedTime = findViewById(R.id.playedTime)
-
-        preparePlayer()
-        playButton.setOnClickListener{
-            Log.d("playButton_","play")
-            playbackControl()
-        }
     }
-
-    private fun preparePlayer() {
-        mediaPlayer.setDataSource(previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            playerState = PlayerState.STATE_PREPARED
-            playButton.setImageResource(R.drawable.playbutton)
-        }
-        mediaPlayer.setOnCompletionListener {
-            playButton.setImageResource(R.drawable.playbutton)
-            playerState = PlayerState.STATE_PREPARED
-            playedTime.text = "00:00"
-            handler.removeCallbacks(runnable)
-        }
-    }
-
-    private fun startPlayer() {
-        mediaPlayer.start()
-        playButton.setImageResource(R.drawable.pausebutton)
-        playerState = PlayerState.STATE_PLAYING
-        handler.post(runnable)
-    }
-
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        playButton.setImageResource(R.drawable.playbutton)
-        playerState = PlayerState.STATE_PAUSED
-        handler.removeCallbacks(runnable)
-    }
-
-    private fun playbackControl(playerState: PlayerState) {
-        when(playerState) {
-            PlayerState.STATE_PLAYING -> {
-                pausePlayer()
-            }
-            PlayerState.STATE_PREPARED, PlayerState.STATE_PAUSED -> {
-                startPlayer()
-            }
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        pausePlayer()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer.release()
-    }
-
 }

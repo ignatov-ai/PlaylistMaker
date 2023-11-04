@@ -1,6 +1,6 @@
 package com.example.playlistmaker.data.old
 
-import com.example.playlistmaker.domain.old.Track
+import com.example.playlistmaker.search.ui.model.Track
 
 class TrackMapper {
     fun mapToDomain(trackDto: TrackDto): Track {
