@@ -11,7 +11,7 @@ object Creator {
         return PlayerRepositoryImpl(AndroidMediaPlayer())
     }
 
-    fun provideTracksInteractor(): PlayerInteractor {
+    fun providePlayerInteractor(): PlayerInteractor {
         return PlayerInteractorImpl(getPlayerRepository())
     }
 }
