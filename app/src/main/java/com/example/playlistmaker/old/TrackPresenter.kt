@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.old
 
 import com.example.playlistmaker.domain.old.TracksInteractor
 import com.example.playlistmaker.domain.old.Track
