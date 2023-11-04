@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.old
+package com.example.playlistmaker.player.ui.activity
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -12,23 +12,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.player.ui.PlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity: AppCompatActivity() {
 
     companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
         private const val DELAY = 500L
     }
 
     private lateinit var playButton : ImageView
     private lateinit var playedTime : TextView
 
-    private var playerState = STATE_DEFAULT
+    private var playerState = PlayerState.STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
 
     private val handler = Handler(Looper.getMainLooper())
@@ -102,12 +99,12 @@ class PlayerActivity: AppCompatActivity() {
         mediaPlayer.setDataSource(previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            playerState = STATE_PREPARED
+            playerState = PlayerState.STATE_PREPARED
             playButton.setImageResource(R.drawable.playbutton)
         }
         mediaPlayer.setOnCompletionListener {
             playButton.setImageResource(R.drawable.playbutton)
-            playerState = STATE_PREPARED
+            playerState = PlayerState.STATE_PREPARED
             playedTime.text = "00:00"
             handler.removeCallbacks(runnable)
         }
@@ -116,23 +113,23 @@ class PlayerActivity: AppCompatActivity() {
     private fun startPlayer() {
         mediaPlayer.start()
         playButton.setImageResource(R.drawable.pausebutton)
-        playerState = STATE_PLAYING
+        playerState = PlayerState.STATE_PLAYING
         handler.post(runnable)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         playButton.setImageResource(R.drawable.playbutton)
-        playerState = STATE_PAUSED
+        playerState = PlayerState.STATE_PAUSED
         handler.removeCallbacks(runnable)
     }
 
-    private fun playbackControl() {
+    private fun playbackControl(playerState: PlayerState) {
         when(playerState) {
-            STATE_PLAYING -> {
+            PlayerState.STATE_PLAYING -> {
                 pausePlayer()
             }
-            STATE_PREPARED, STATE_PAUSED -> {
+            PlayerState.STATE_PREPARED, PlayerState.STATE_PAUSED -> {
                 startPlayer()
             }
         }
