@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.settings.activity
+package com.example.playlistmaker.ui.old
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,10 +6,10 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
-import com.example.playlistmaker.old.App
-import com.example.playlistmaker.old.DARK_THEME
+import com.example.playlistmaker.app.App
+import com.example.playlistmaker.app.DARK_THEME
 import com.example.playlistmaker.R
-import com.example.playlistmaker.old.THEME_PREFS
+import com.example.playlistmaker.app.THEME_PREFS
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
