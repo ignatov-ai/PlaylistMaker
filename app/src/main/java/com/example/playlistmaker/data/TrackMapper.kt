@@ -1,7 +1,6 @@
-package com.example.playlistmaker.data.repository
+package com.example.playlistmaker.data
 
-import com.example.playlistmaker.data.dto.TrackDto
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.Track
 
 class TrackMapper {
     fun mapToDomain(trackDto: TrackDto): Track {

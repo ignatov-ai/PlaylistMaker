@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.settings
+package com.example.playlistmaker.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent

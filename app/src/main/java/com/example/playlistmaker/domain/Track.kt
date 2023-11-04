@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.models
+package com.example.playlistmaker.domain
 
 import java.text.SimpleDateFormat
 import java.util.Locale

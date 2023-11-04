@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.tracks
+package com.example.playlistmaker.ui
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -20,10 +19,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.dto.TrackSearchResponse
-import com.example.playlistmaker.data.network.ITunesAPI
-import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.ui.player.PlayerActivity
+import com.example.playlistmaker.data.TrackSearchResponse
+import com.example.playlistmaker.data.ITunesAPI
+import com.example.playlistmaker.domain.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
