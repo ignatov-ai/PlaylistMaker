@@ -1,7 +1,7 @@
-package com.example.playlistmaker.data
+package com.example.playlistmaker.data.old
 
-import com.example.playlistmaker.domain.TracksRepository
-import com.example.playlistmaker.domain.Track
+import com.example.playlistmaker.domain.old.TracksRepository
+import com.example.playlistmaker.domain.old.Track
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient, private val trackMapper: TrackMapper):
     TracksRepository {

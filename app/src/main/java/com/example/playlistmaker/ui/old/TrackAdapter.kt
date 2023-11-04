@@ -1,10 +1,10 @@
-package com.example.playlistmaker.ui
+package com.example.playlistmaker.ui.old
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.Track
+import com.example.playlistmaker.domain.old.Track
 
 class TrackAdapter(private var tracks: List<Track>, val listener: RecycleViewListener) : RecyclerView.Adapter<TrackViewHolder>() {
 

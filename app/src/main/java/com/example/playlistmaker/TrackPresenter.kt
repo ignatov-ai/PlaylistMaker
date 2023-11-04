@@ -1,7 +1,7 @@
 package com.example.playlistmaker
 
-import com.example.playlistmaker.domain.TracksInteractor
-import com.example.playlistmaker.domain.Track
+import com.example.playlistmaker.domain.old.TracksInteractor
+import com.example.playlistmaker.domain.old.Track
 
 class TrackPresenter: TracksInteractor.TrackConsumer {
     private val tracks = ArrayList<Track>()

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain
+package com.example.playlistmaker.domain.old
 
 interface TracksInteractor {
     fun searchTrack(expression: String, consumer: TrackConsumer)
