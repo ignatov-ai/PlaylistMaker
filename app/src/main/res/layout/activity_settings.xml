@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/colorSecondary"
     android:orientation="vertical"
-    tools:context=".ui.old.SettingsActivity">
+    tools:context=".settings.ui.activity.SettingsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
