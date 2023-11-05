@@ -1,6 +1,8 @@
 package com.example.playlistmaker.settings.data
 
-class DarkThemeRepositoryImpl(private val darkTheme: DarkTheme) : DarkTheme {
+import com.example.playlistmaker.settings.domain.api.DarkThemeRepository
+
+class DarkThemeRepositoryImpl(private val darkTheme: DarkTheme) : DarkThemeRepository {
     override fun darkThemeState(): Boolean {
         return darkTheme.darkThemeState()
     }
