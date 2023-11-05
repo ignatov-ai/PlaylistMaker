@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.old
+package com.example.playlistmaker.search.ui.activity
 
 import android.content.Context
 import android.content.Intent
@@ -23,6 +23,9 @@ import com.example.playlistmaker.data.old.TrackSearchResponse
 import com.example.playlistmaker.data.old.ITunesAPI
 import com.example.playlistmaker.search.ui.model.Track
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
+import com.example.playlistmaker.ui.old.HISTORY_PREFS
+import com.example.playlistmaker.ui.old.SearchTrackHistory
+import com.example.playlistmaker.search.ui.recycler.TrackAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
