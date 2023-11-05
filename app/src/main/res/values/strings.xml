@@ -24,4 +24,5 @@
     <string name="yearLabel">Год</string>
     <string name="albumNameLabel">Альбом</string>
     <string name="timeLabel">Длительность</string>
+    <string name="practicumLink">https://practicum.yandex.ru/android-developer/</string>
 </resources>

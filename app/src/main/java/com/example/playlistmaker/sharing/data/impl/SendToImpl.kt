@@ -14,6 +14,7 @@ class SendToImpl (private val context: Context) : SendTo {
         emailIntent.putExtra(Intent.EXTRA_EMAIL, email)
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
         emailIntent.putExtra(Intent.EXTRA_TEXT, text)
+        emailIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(emailIntent)
     }
 }

@@ -4,7 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
+
 class SettingsViewModel(application: Application) : AndroidViewModel(application){
     private var mutableDarkThemeStateLiveData = MutableLiveData<DarkThemeState>()
     val darkThemeStateLiveData: LiveData<DarkThemeState> = mutableDarkThemeStateLiveData
@@ -34,5 +39,33 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     private fun darkThemeStateSave(isDarkTheme: Boolean) {
         darkThemeInteractor.darkThemeStateSave(isDarkTheme)
+    }
+
+    fun themeSwitcher(isChecked: Boolean) {
+        changeState(isDarkTheme = isChecked)
+    }
+
+    fun shareBtnClick() {
+        send.execute(text = getApplication<Application>().getString(R.string.practicumLink))
+    }
+
+    fun supportBtnClick() {
+        sendTo.execute(
+            email = arrayOf(getApplication<Application>().getString(R.string.mailto)),
+            subject = getApplication<Application>().getString(R.string.mailTheme),
+            text = getApplication<Application>().getString(R.string.mailMessage)
+        )
+    }
+
+    fun licenseAgreementBtnClick() {
+        view.execute(url = getApplication<Application>().getString(R.string.agreementLink))
+    }
+
+    companion object {
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                SettingsViewModel(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
+            }
+        }
     }
 }

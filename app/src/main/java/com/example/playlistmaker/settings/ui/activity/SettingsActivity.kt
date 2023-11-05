@@ -6,77 +6,63 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.app.App
 import com.example.playlistmaker.app.DARK_THEME
 import com.example.playlistmaker.R
 import com.example.playlistmaker.app.THEME_PREFS
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import com.example.playlistmaker.settings.ui.view_model.DarkThemeState
+import com.example.playlistmaker.settings.ui.view_model.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var btnBackToMain: ImageView
-    private lateinit var btnShare: ImageView
-    private lateinit var btnSupport: ImageView
-    private lateinit var btnUserAgreement: ImageView
+    private lateinit var binding: ActivitySettingsBinding
+    private lateinit var viewModel: SettingsViewModel
 
-    @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
 
-        btnBackToMain = findViewById(R.id.backToMain)
-        btnBackToMain.setOnClickListener {
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        viewModel = ViewModelProvider(
+            this,
+            SettingsViewModel.getViewModelFactory()
+        )[SettingsViewModel::class.java]
+
+        viewModel.darkThemeStateLiveData.observe(this) {
+            render(it)
+        }
+
+        binding.backToMain.setOnClickListener {
             finish()
         }
 
-        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        val sharedPrefs = getSharedPreferences(THEME_PREFS, MODE_PRIVATE)
+        binding.themeSwitcher.isChecked = (viewModel.darkThemeStateLiveData.value == DarkThemeState.DARK_THEME)
 
-        themeSwitcher.isChecked = sharedPrefs.getBoolean(DARK_THEME, false)
-
-        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
-            (applicationContext as App).switchTheme(checked)
-            sharedPrefs.edit()
-                .putBoolean(DARK_THEME, checked)
-                .apply()
+        binding.themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            viewModel.themeSwitcher(checked)
         }
 
-        btnShare = findViewById(R.id.share)
-        btnShare.setOnClickListener {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "text/plain"
-            shareIntent.putExtra(
-                Intent.EXTRA_TEXT,
-                getString(R.string.shareMessage)
-            )
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.shareLabel)))
+        binding.share.setOnClickListener {
+            viewModel.shareBtnClick()
         }
 
-        btnSupport = findViewById(R.id.support)
-        btnSupport.setOnClickListener {
-            val emailIntent = Intent(Intent.ACTION_SENDTO)
-            emailIntent.data = Uri.parse("mailto:")
-            emailIntent.putExtra(
-                Intent.EXTRA_EMAIL,
-                arrayOf(getString(R.string.mailto))
-            )
-            emailIntent.putExtra(
-                Intent.EXTRA_SUBJECT,
-                getString(R.string.mailTheme)
-            )
-            emailIntent.putExtra(
-                Intent.EXTRA_TEXT,
-                getString(R.string.mailMessage)
-            )
-            startActivity(emailIntent)
+        binding.support.setOnClickListener {
+            viewModel.supportBtnClick()
         }
 
-        btnUserAgreement = findViewById(R.id.userAgreement)
-        btnUserAgreement.setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW)
-            browserIntent.data =
-                Uri.parse(getString(R.string.agreementLink))
-            startActivity(browserIntent)
+        binding.userAgreement.setOnClickListener {
+            viewModel.licenseAgreementBtnClick()
+        }
+    }
+
+    private fun render(state: DarkThemeState) {
+        when (state) {
+            DarkThemeState.DARK_THEME -> (application as App).switchTheme(true)
+            DarkThemeState.LIGHT_THEME -> (application as App).switchTheme(false)
         }
     }
 }

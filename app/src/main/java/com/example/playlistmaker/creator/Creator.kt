@@ -1,6 +1,5 @@
 package com.example.playlistmaker.creator
 
-import android.app.Application
 import android.content.Context
 import com.example.playlistmaker.player.data.PlayerRepositoryImpl
 import com.example.playlistmaker.player.data.player.AndroidMediaPlayer
@@ -21,6 +20,9 @@ import com.example.playlistmaker.sharing.data.impl.ViewImpl
 import com.example.playlistmaker.sharing.domain.api.SendRepository
 import com.example.playlistmaker.sharing.domain.api.SendToRepository
 import com.example.playlistmaker.sharing.domain.api.ViewRepository
+import com.example.playlistmaker.sharing.domain.impl.SendToUseCase
+import com.example.playlistmaker.sharing.domain.impl.SendUseCase
+import com.example.playlistmaker.sharing.domain.impl.ViewUseCase
 
 object Creator {
     private fun getPlayerRepository(): PlayerRepository {
@@ -31,16 +33,28 @@ object Creator {
         return PlayerInteractorImpl(getPlayerRepository())
     }
 
-    fun provideSendUseCase(context: Context): SendRepository {
+    private fun SendRepository(context: Context): SendRepository {
         return SendRepositoryImpl(SendImpl(context))
     }
 
-    fun provideSendToUseCase(context: Context): SendToRepository {
+    fun provideSendUseCase(context: Context): SendUseCase {
+        return SendUseCase(SendRepository(context))
+    }
+
+    private fun SendToRepository(context: Context): SendToRepository {
         return SendToRepositoryImpl(SendToImpl(context))
     }
 
-    fun provideViewUseCase(context: Context): ViewRepository {
+    fun provideSendToUseCase(context: Context): SendToUseCase {
+        return SendToUseCase(SendToRepository(context))
+    }
+
+    private fun ViewRepository(context: Context): ViewRepository {
         return ViewRepositoryImpl(ViewImpl(context))
+    }
+
+    fun provideViewUseCase(context: Context): ViewUseCase {
+        return ViewUseCase(ViewRepository(context))
     }
 
     private fun getDarkThemeRepository(context: Context): DarkThemeRepository {
