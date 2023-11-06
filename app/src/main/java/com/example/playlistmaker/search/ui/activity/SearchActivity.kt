@@ -19,12 +19,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.old.TrackSearchResponse
-import com.example.playlistmaker.data.old.ITunesAPI
-import com.example.playlistmaker.search.ui.model.Track
+import com.example.playlistmaker.search.data.dto.TrackSearchResponse
+import com.example.playlistmaker.search.data.network.ITunesAPI
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
-import com.example.playlistmaker.ui.old.HISTORY_PREFS
-import com.example.playlistmaker.ui.old.SearchTrackHistory
+import com.example.playlistmaker.search.HISTORY_PREFS
+import com.example.playlistmaker.search.SearchTrackHistory
+import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.recycler.TrackAdapter
 import retrofit2.Call
 import retrofit2.Callback

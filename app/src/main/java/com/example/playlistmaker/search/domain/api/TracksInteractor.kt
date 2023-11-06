@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain_old.old
+package com.example.playlistmaker.search.domain.api
 
 import com.example.playlistmaker.search.ui.model.Track
 

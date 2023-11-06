@@ -1,7 +1,10 @@
-package com.example.playlistmaker.data.old
+package com.example.playlistmaker.search.data.storage
 
-import com.example.playlistmaker.domain_old.old.TracksRepository
-import com.example.playlistmaker.search.ui.model.Track
+import com.example.playlistmaker.search.domain.api.TracksRepository
+import com.example.playlistmaker.search.data.dto.TrackSearchRequest
+import com.example.playlistmaker.search.data.dto.TrackSearchResponse
+import com.example.playlistmaker.search.data.mapper.TrackMapper
+import com.example.playlistmaker.search.domain.model.Track
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient, private val trackMapper: TrackMapper):
     TracksRepository {

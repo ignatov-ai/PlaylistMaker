@@ -1,5 +1,8 @@
-package com.example.playlistmaker.data.old
+package com.example.playlistmaker.search.data.network
 
+import com.example.playlistmaker.search.data.storage.NetworkClient
+import com.example.playlistmaker.search.data.dto.Response
+import com.example.playlistmaker.search.data.dto.TrackSearchRequest
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

@@ -1,6 +1,6 @@
-package com.example.playlistmaker.data.old
+package com.example.playlistmaker.search.domain.model
 
-data class TrackDto(
+data class Track(
     val trackId: String,
     val trackName: String,
     val artistName: String,
