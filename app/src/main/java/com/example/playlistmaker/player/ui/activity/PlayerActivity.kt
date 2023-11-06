@@ -9,7 +9,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.ui.PlayerState
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
-import com.example.playlistmaker.search.ui.model.Track
+import com.example.playlistmaker.search.domain.model.Track
 
 class PlayerActivity: AppCompatActivity() {
 
