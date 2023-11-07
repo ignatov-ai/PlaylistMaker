@@ -24,7 +24,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     companion object {
         const val CLICK_DEBOUNCE_DELAY = 1000L
         const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val SEARCH_REQUEST_TOKEN = Any()
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -33,7 +32,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    var searchText: String? = null
+    private var searchText: String? = null
 
     private val trackSearchInteractor =
         Creator.provideTrackInteractor(getApplication<Application>())

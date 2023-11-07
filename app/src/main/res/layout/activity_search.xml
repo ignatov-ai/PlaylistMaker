@@ -85,57 +85,59 @@
         </LinearLayout>
     </LinearLayout>
 
-        <FrameLayout
+    <FrameLayout
         android:id="@+id/searchPlaceholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <ProgressBar android:id="@+id/progressBar"
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_gravity="center"
             android:indeterminateTint="@color/ypBlue"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/searchPlaceholderErrorIcon"
                 android:layout_width="@dimen/size120dp"
                 android:layout_height="@dimen/size120dp"
-                android:src="@drawable/error_no_tracks"
                 android:layout_gravity="center"
-                android:visibility="gone"/>
+                android:src="@drawable/error_no_tracks"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/searchPlaceholderErrorText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/searchPlaceholderErrorTextSize"
-                android:fontFamily="@font/ysmedium"
-                android:textColor="?attr/colorOnPrimary"
-                android:layout_marginTop="@dimen/margin16dp"
-                android:layout_marginLeft="@dimen/marginStart24dp"
-                android:layout_marginRight="@dimen/marginStart24dp"
                 android:layout_gravity="center"
-                android:textAlignment="center"
+                android:layout_marginLeft="@dimen/marginStart24dp"
+                android:layout_marginTop="@dimen/margin16dp"
+                android:layout_marginRight="@dimen/marginStart24dp"
+                android:fontFamily="@font/ysmedium"
                 android:text="@string/nothingWasFound"
-                android:visibility="gone"/>
-            
+                android:textAlignment="center"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="@dimen/searchPlaceholderErrorTextSize"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/searchPlaceholderRefreshButton"
                 style="@style/refreshButton"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size56dp"
-                android:layout_marginTop="@dimen/marginStart24dp"
                 android:layout_gravity="center"
-                android:textColor="?attr/colorOnSecondary"
+                android:layout_marginTop="@dimen/marginStart24dp"
                 android:text="Обновить"
-                android:visibility="gone"/>
+                android:textColor="?attr/colorOnSecondary"
+                android:visibility="gone" />
         </LinearLayout>
     </FrameLayout>
 

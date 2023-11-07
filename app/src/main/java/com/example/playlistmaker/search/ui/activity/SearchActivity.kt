@@ -3,7 +3,6 @@ package com.example.playlistmaker.search.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.provider.MediaStore.Audio.AudioColumns.TRACK
 import android.text.Editable
 import android.text.TextWatcher
@@ -101,6 +100,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
         binding.searchField.removeTextChangedListener(searchTextWatcher)
     }
 
@@ -115,20 +115,10 @@ class SearchActivity : AppCompatActivity() {
         binding.searchField.setText(searchText)
     }
 
-    private fun clearButtonOnClick() {
-        binding.searchField.clearFocus()
-        binding.searchField.setText("")
-
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
-
-        viewModel.onClearButtonClick()
-    }
-
     private fun render(state: TrackSearchState) {
         when (state) {
             is TrackSearchState.History -> historyPlaceholder(state.tracks)
-            is TrackSearchState.Content -> hidePlaceholder(state.tracks)
+            is TrackSearchState.Content -> showSearchedTrackList(state.tracks)
             is TrackSearchState.Empty -> emptySearchPlaceholder(state.message)
             is TrackSearchState.Error -> errorPlaceholder(state.errorMessage)
             TrackSearchState.Loading -> progressBarPlaceholder()
@@ -146,16 +136,12 @@ class SearchActivity : AppCompatActivity() {
         tracksAdapter.notifyDataSetChanged()
     }
 
-    // Обработчик скрытия плейсхолдера
-    private fun hidePlaceholder(tracks: List<TrackUi>){
-        binding.progressBar.visibility = View.GONE
+    // Обработчик показа найденных треков
+    private fun showSearchedTrackList(tracks: List<TrackUi>){
         binding.historyHeaderText.visibility = View.GONE
         binding.historyTrackListView.visibility = View.GONE
         binding.historyClearButton.visibility = View.GONE
         binding.searchPlaceholder.visibility = View.GONE
-        binding.searchPlaceholderErrorIcon.visibility = View.GONE
-        binding.searchPlaceholderErrorText.visibility = View.GONE
-        binding.searchPlaceholderRefreshButton.visibility = View.GONE
         binding.trackListView.visibility = View.VISIBLE
 
         tracksAdapter.tracks.clear()
@@ -172,8 +158,6 @@ class SearchActivity : AppCompatActivity() {
         binding.searchPlaceholderRefreshButton.visibility = View.GONE
         binding.searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_tracks)
         binding.searchPlaceholderErrorText.text = getString(R.string.nothingWasFound)
-
-        tracksAdapter.notifyDataSetChanged()
     }
 
     // Обработчик отображения плейсхолдера ОТСУТСТВИЯ СЕТИ
@@ -185,23 +169,17 @@ class SearchActivity : AppCompatActivity() {
         binding.searchPlaceholderRefreshButton.visibility = View.VISIBLE
         binding.searchPlaceholderErrorIcon.setImageResource(R.drawable.error_no_internet)
         binding.searchPlaceholderErrorText.text = getString(R.string.noInternet)
-
-        tracksAdapter.notifyDataSetChanged()
     }
 
     // Обработчик отображения плейсхолдера прогресс бара
     private fun progressBarPlaceholder() {
+        binding.progressBar.visibility = View.VISIBLE
         binding.searchPlaceholder.visibility = View.GONE
         binding.historyHeaderText.visibility = View.GONE
         binding.historyTrackListView.visibility = View.GONE
-        binding.searchPlaceholderErrorIcon.visibility = View.GONE
-        binding.searchPlaceholderErrorText.visibility = View.GONE
-        binding.searchPlaceholderRefreshButton.visibility = View.GONE
+        binding.historyClearButton.visibility = View.GONE
         binding.trackListView.visibility = View.GONE
-        binding.progressBar.visibility = View.VISIBLE
     }
-
-
 
     // Обработка появления/исчезновения крестика очистки поля ввода
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -210,5 +188,15 @@ class SearchActivity : AppCompatActivity() {
         } else {
             View.VISIBLE
         }
+    }
+
+    private fun clearButtonOnClick() {
+        binding.searchField.clearFocus()
+        binding.searchField.setText("")
+
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
+
+        viewModel.onClearButtonClick()
     }
 }
