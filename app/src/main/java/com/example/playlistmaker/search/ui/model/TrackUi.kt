@@ -1,8 +1,11 @@
 package com.example.playlistmaker.search.ui.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+@Parcelize
 data class TrackUi(
     val trackId: String,
     val trackName: String,
@@ -15,7 +18,7 @@ data class TrackUi(
     val country: String,
     val previewUrl: String,
     val artworkUrl512: String
-){
+) : Parcelable {
 
     val releaseYear: String?
         get() = releaseDate?.substring(0,4)

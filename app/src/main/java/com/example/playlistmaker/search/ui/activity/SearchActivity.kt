@@ -34,7 +34,7 @@ class SearchActivity : AppCompatActivity() {
     private val tracksAdapter = TrackAdapter {
         if (isClickAllowed) {
             val playerActivityIntent = Intent(this, PlayerActivity::class.java)
-            playerActivityIntent.putExtra(TRACK, it as Parcelable)
+            playerActivityIntent.putExtra(TRACK, it)
             startActivity(playerActivityIntent)
             viewModel.onItemClick(it)
         }
@@ -156,6 +156,7 @@ class SearchActivity : AppCompatActivity() {
         binding.searchPlaceholderErrorIcon.visibility = View.GONE
         binding.searchPlaceholderErrorText.visibility = View.GONE
         binding.searchPlaceholderRefreshButton.visibility = View.GONE
+        binding.trackListView.visibility = View.VISIBLE
 
         tracksAdapter.tracks.clear()
         tracksAdapter.tracks.addAll(tracks)
