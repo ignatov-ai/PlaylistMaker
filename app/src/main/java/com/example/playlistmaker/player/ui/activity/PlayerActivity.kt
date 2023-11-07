@@ -1,6 +1,8 @@
 package com.example.playlistmaker.player.ui.activity
 
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore.Audio.AudioColumns.TRACK
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -10,10 +12,13 @@ import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.ui.PlayerState
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.search.ui.mapper.TrackToTrackUi
+import com.example.playlistmaker.search.ui.model.TrackUi
 
+@Suppress("INFERRED_TYPE_VARIABLE_INTO_POSSIBLE_EMPTY_INTERSECTION")
 class PlayerActivity: AppCompatActivity() {
 
-    private lateinit var track: Track
+    private lateinit var track: TrackUi
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var viewModel: PlayerViewModel
 
@@ -29,8 +34,8 @@ class PlayerActivity: AppCompatActivity() {
             finish()
         }
 
-        // получаем данные для отображения с предыдущего экрана
-        getData()
+        track = getTrack()
+        println(track)
 
         // подключаем ViewModel
         viewModel = ViewModelProvider(
@@ -47,6 +52,12 @@ class PlayerActivity: AppCompatActivity() {
         }
 
         // Кнопка плей/пауза к трекам
+        binding.playPauseButton.setOnClickListener {
+            viewModel.onPlayerButtonClick()
+        }
+
+        setTrackInfo()
+
         binding.playPauseButton.setOnClickListener {
             viewModel.onPlayerButtonClick()
         }
@@ -82,38 +93,50 @@ class PlayerActivity: AppCompatActivity() {
         binding.playPauseButton.isEnabled = false
     }
 
-    private fun getData() {
-        val bundle = intent.extras
+    private fun getTrack(): TrackUi =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(TRACK, TrackUi::class.java)
+                ?: TrackToTrackUi().map(
+                    Track()
+                )
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra(TRACK) ?: TrackToTrackUi().map(
+                Track()
+            )
+        }
 
+    private fun setTrackInfo() {
+//        val bundle = intent.extras
+//
         val cornerRadius = 8
-        var previewUrl: String? = ""
-
-        if (bundle != null) {
-            val trackImage = bundle.getString("trackImage")
-            val trackName = bundle.getString("trackName")
-            val artistName = bundle.getString("artistName")
-            val country = bundle.getString("country")
-            val trackTimeMills = bundle.getString("trackTimeMills")
-            val collectionName = bundle.getString("collectionName")
-            val releaseDate = bundle.getString("releaseDate")
-            val primaryGenreName = bundle.getString("primaryGenreName")
-            previewUrl = bundle.getString("previewUrl")
+//        var previewUrl: String? = ""
+//
+//        if (bundle != null) {
+//            val trackImage = bundle.getString("trackImage")
+//            val trackName = bundle.getString("trackName")
+//            val artistName = bundle.getString("artistName")
+//            val country = bundle.getString("country")
+//            val trackTimeMills = bundle.getString("trackTimeMills")
+//            val collectionName = bundle.getString("collectionName")
+//            val releaseDate = bundle.getString("releaseDate")
+//            val primaryGenreName = bundle.getString("primaryGenreName")
+//            previewUrl = bundle.getString("previewUrl")
 
             Glide.with(this)
-                .load(trackImage)
+                .load(track.artworkUrl512)
                 .placeholder(R.drawable.noalbumicon)
                 .centerCrop()
                 .fitCenter()
                 .transform(RoundedCorners(cornerRadius))
                 .into(binding.trackImage)
 
-            binding.trackName.text = trackName
-            binding.artistName.text = artistName
-            binding.country.text = country
-            binding.trackTimeMills.text = trackTimeMills
-            binding.collectionName.text = collectionName
-            binding.releaseDate.text = releaseDate
-            binding.primaryGenreName.text = primaryGenreName
-        }
+            binding.trackName.text = track.trackName
+            binding.artistName.text = track.artistName
+            binding.country.text = track.country
+            binding.trackTimeMills.text = track.trackTimeMillis
+            binding.collectionName.text = track.collectionName
+            binding.releaseDate.text = track.releaseDate
+            binding.primaryGenreName.text = track.primaryGenreName
     }
 }

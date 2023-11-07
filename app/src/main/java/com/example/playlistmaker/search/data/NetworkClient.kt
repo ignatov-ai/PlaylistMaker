@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.data.storage
+package com.example.playlistmaker.search.data
 
 import com.example.playlistmaker.search.data.dto.Response
 

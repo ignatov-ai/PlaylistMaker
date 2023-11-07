@@ -4,24 +4,37 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.TrackListElementBinding
 import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.search.ui.model.TrackUi
 
-class TrackAdapter(private var tracks: List<Track>, val listener: RecycleViewListener) : RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(private val recycleViewListener: OnItemClickListener? = null) : RecyclerView.Adapter<TrackViewHolder>() {
+
+    var tracks = ArrayList<TrackUi>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.track_list_element, parent, false)
-        return TrackViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks[position], listener)
+        val view = LayoutInflater.from(parent.context)
+        return TrackViewHolder(TrackListElementBinding.inflate(view, parent, false))
     }
 
     override fun getItemCount(): Int {
         return tracks.size
     }
 
-    interface RecycleViewListener{
-        fun onItemClick(track: Track)
+    override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
+        holder.bind(tracks[position])
+
+        holder.itemView.setOnClickListener {
+            recycleViewListener?.onItemClick(tracks[position])
+        }
     }
+
+    fun interface OnItemClickListener {
+        fun onItemClick(track: TrackUi)
+    }
+
+
+
+
+
 }
