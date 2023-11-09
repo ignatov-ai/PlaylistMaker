@@ -33,7 +33,6 @@ import com.example.playlistmaker.sharing.domain.api.ViewRepository
 import com.example.playlistmaker.sharing.domain.impl.SendToUseCase
 import com.example.playlistmaker.sharing.domain.impl.SendUseCase
 import com.example.playlistmaker.sharing.domain.impl.ViewUseCase
-
 object Creator {
 
     private fun getPlayerRepository(): PlayerRepository {
