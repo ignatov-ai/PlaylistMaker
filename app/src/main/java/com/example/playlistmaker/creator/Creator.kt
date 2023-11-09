@@ -36,7 +36,6 @@ import com.example.playlistmaker.sharing.domain.impl.ViewUseCase
 
 object Creator {
 
-    // проигрыватель
     private fun getPlayerRepository(): PlayerRepository {
         return PlayerRepositoryImpl(AndroidMediaPlayer())
     }
@@ -45,7 +44,6 @@ object Creator {
         return PlayerInteractorImpl(getPlayerRepository())
     }
 
-    // Поиск трека
     private fun getTrackRepository(context: Context): TracksRepository {
         return TracksRepositoryImpl(RetrofitNetworkClient(context))
     }
@@ -54,7 +52,6 @@ object Creator {
         return TracksInteractorImpl(getTrackRepository(context))
     }
 
-    // история поиска
     private fun getTrackHistoryRepository(context: Context): TracksHistoryRepository {
         return TracksHistoryRepositoryImpl(SharedPrefsHistory(context))
     }
@@ -63,7 +60,6 @@ object Creator {
         return TracksHistoryInteractorImpl(getTrackHistoryRepository(context))
     }
 
-    // обраблотчики экрана настроек
     private fun SendRepository(context: Context): SendRepository {
         return SendRepositoryImpl(SendImpl(context))
     }
