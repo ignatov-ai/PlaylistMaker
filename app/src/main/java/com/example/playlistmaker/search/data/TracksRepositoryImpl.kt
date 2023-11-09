@@ -8,6 +8,7 @@ import com.example.playlistmaker.search.domain.model.Resource
 import com.example.playlistmaker.search.domain.model.Track
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
+
     companion object{
         const val CONNECTION_ERROR = "Проверьте подключение к интернету"
         const val SERVER_ERROR = "Ошибка сервера"
