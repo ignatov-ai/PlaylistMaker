@@ -1,43 +1,52 @@
 package com.example.playlistmaker.search.ui.view_model
 
 import android.app.Application
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.bumptech.glide.Glide.init
 import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.search.domain.api.TracksHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.search.ui.activity.SearchActivity
 import com.example.playlistmaker.search.ui.mapper.TrackToTrackUi
 import com.example.playlistmaker.search.ui.mapper.TrackUiToDomain
 import com.example.playlistmaker.search.ui.model.TrackUi
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
+class SearchViewModel(
+    private val trackInteractor: TracksInteractor,
+    private val trackHistoryInteractor: TracksHistoryInteractor) : ViewModel() {
 
     companion object {
         const val CLICK_DEBOUNCE_DELAY = 1000L
         const val SEARCH_DEBOUNCE_DELAY = 2000L
 
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+        const val ERROR_MESSAGE = "Проблемы со связью\\n\\nЗагрузка не удалась. Проверьте подключение к интернету"
+        const val MESSAGE = "Ничего не нашлось"
+
+        fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                SearchViewModel(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
+                SearchViewModel(
+                    trackInteractor = Creator.provideTrackInteractor(context),
+                    trackHistoryInteractor = Creator.provideTracksHistoryInteractor(context)
+                )
             }
         }
+
     }
 
     private var searchText: String? = null
 
-    private val trackSearchInteractor =
-        Creator.provideTrackInteractor(getApplication<Application>())
-    private val trackHistoryInteractor =
-        Creator.provideTracksHistoryInteractor(getApplication<Application>())
     private val handler = Handler(Looper.getMainLooper())
 
     private val stateLiveData = MutableLiveData<TrackSearchState>()
@@ -74,7 +83,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private fun searchTrackRequest(lastText: String) {
         if (lastText.isNotEmpty()) {
             renderState(TrackSearchState.Loading)
-            trackSearchInteractor.searchTrack(lastText, object : TracksInteractor.TrackConsumer {
+            trackInteractor.searchTrack(lastText, object : TracksInteractor.TrackConsumer {
                     override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
                         val tracks = mutableListOf<TrackUi>()
                         if (foundTracks != null) {
@@ -85,17 +94,17 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                             errorMessage != null -> {
                                 renderState(
                                     TrackSearchState.Error(
-                                        errorMessage = getApplication<Application>().getString(R.string.noInternet)
+                                        errorMessage =  ERROR_MESSAGE)
                                     )
-                                )
+
                             }
 
                             tracks.isEmpty() -> {
                                 renderState(
                                     TrackSearchState.Empty(
-                                        message = getApplication<Application>().getString(R.string.nothingWasFound)
+                                        message = MESSAGE)
                                     )
-                                )
+
                             }
 
                             else -> {

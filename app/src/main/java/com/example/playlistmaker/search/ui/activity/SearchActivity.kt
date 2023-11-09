@@ -9,11 +9,14 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
+import com.example.playlistmaker.search.domain.api.TracksHistoryInteractor
+import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.ui.model.TrackUi
 import com.example.playlistmaker.search.ui.recycler.TrackAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
@@ -44,7 +47,13 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this, SearchViewModel.getViewModelFactory(applicationContext)
+        )[SearchViewModel::class.java]
+
+        viewModel.observeStateLiveData().observe(this) {
+            render(it)
+        }
 
         //адаптеры списков
         binding.trackListView.layoutManager = LinearLayoutManager(this)
@@ -138,6 +147,7 @@ class SearchActivity : AppCompatActivity() {
 
     // Обработчик показа найденных треков
     private fun showSearchedTrackList(tracks: List<TrackUi>){
+        binding.progressBar.visibility = View.GONE
         binding.historyHeaderText.visibility = View.GONE
         binding.historyTrackListView.visibility = View.GONE
         binding.historyClearButton.visibility = View.GONE

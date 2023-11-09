@@ -95,6 +95,4 @@ object Creator {
     fun provideDarkThemeInteractor(context: Context): DarkThemeInteractor {
         return DarkThemeInteractorImpl(getDarkThemeRepository(context))
     }
-
-
 }

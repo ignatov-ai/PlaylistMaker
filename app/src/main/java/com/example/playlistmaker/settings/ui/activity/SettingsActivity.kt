@@ -29,7 +29,7 @@ class SettingsActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(
             this,
-            SettingsViewModel.getViewModelFactory()
+            SettingsViewModel.getViewModelFactory(applicationContext)
         )[SettingsViewModel::class.java]
 
         viewModel.darkThemeStateLiveData.observe(this) {
