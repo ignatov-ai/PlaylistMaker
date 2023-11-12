@@ -6,6 +6,7 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.playlistmaker.R
 import com.example.playlistmaker.search.domain.api.TracksHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.model.Track
@@ -21,9 +22,6 @@ class SearchViewModel(
     companion object {
         const val CLICK_DEBOUNCE_DELAY = 1000L
         const val SEARCH_DEBOUNCE_DELAY = 2000L
-
-        const val ERROR_MESSAGE = "Проблемы со связью\\n\\nЗагрузка не удалась. Проверьте подключение к интернету"
-        const val MESSAGE = "Ничего не нашлось"
     }
 
     private var searchText: String? = null
@@ -61,23 +59,21 @@ class SearchViewModel(
         handler.post(searchRunnable)
     }
 
-    private fun searchTrackRequest(lastText: String) {
-        if (lastText.isNotEmpty()) {
+    private fun searchTrackRequest(newLastText: String) {
+        if (newLastText.isNotEmpty()) {
             renderState(TrackSearchState.Loading)
-            trackInteractor.searchTrack(lastText, object : TracksInteractor.TrackConsumer {
+            trackInteractor.searchTrack(newLastText, object : TracksInteractor.TrackConsumer {
                     override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
                         val tracks = mutableListOf<TrackUi>()
                         if (foundTracks != null) {
                             tracks.addAll(foundTracks.map { TrackToTrackUi().map(it) })
                         }
 
-                        println("Список ")
-
                         when {
                             errorMessage != null -> {
                                 renderState(
                                     TrackSearchState.Error(
-                                        errorMessage =  ERROR_MESSAGE)
+                                        errorMessage =  R.string.noInternet.toString())
                                     )
 
                             }
@@ -85,9 +81,8 @@ class SearchViewModel(
                             tracks.isEmpty() -> {
                                 renderState(
                                     TrackSearchState.Empty(
-                                        message = MESSAGE)
+                                        message = R.string.nothingWasFound.toString())
                                     )
-
                             }
 
                             else -> {

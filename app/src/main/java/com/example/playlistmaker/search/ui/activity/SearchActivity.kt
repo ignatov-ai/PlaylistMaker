@@ -44,10 +44,6 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.observeStateLiveData().observe(this) {
-            render(it)
-        }
-
         //адаптеры списков
         binding.trackListView.layoutManager = LinearLayoutManager(this)
         binding.trackListView.adapter = tracksAdapter
@@ -83,6 +79,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.observeStateLiveData().observe(this) {
             render(it)
         }
+
         viewModel.isClickAllowedLiveData.observe(this) {
             isClickAllowed = it
         }
@@ -106,29 +103,19 @@ class SearchActivity : AppCompatActivity() {
         binding.searchField.removeTextChangedListener(searchTextWatcher)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT, searchText)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        searchText = savedInstanceState.getString(SEARCH_TEXT, "")
-        binding.searchField.setText(searchText)
-    }
-
     private fun render(state: TrackSearchState) {
         when (state) {
+            TrackSearchState.Loading -> progressBarPlaceholder()
             is TrackSearchState.History -> historyPlaceholder(state.tracks)
             is TrackSearchState.Content -> showSearchedTrackList(state.tracks)
             is TrackSearchState.Empty -> emptySearchPlaceholder(state.message)
             is TrackSearchState.Error -> errorPlaceholder(state.errorMessage)
-            TrackSearchState.Loading -> progressBarPlaceholder()
         }
     }
 
     // Обработчик отображения истории поиска
     private fun historyPlaceholder(historyTracks: List<TrackUi>){
+        binding.progressBar.visibility = View.GONE
         binding.historyHeaderText.visibility = View.VISIBLE
         binding.historyTrackListView.visibility = View.VISIBLE
         binding.historyClearButton.visibility = View.VISIBLE
@@ -176,8 +163,12 @@ class SearchActivity : AppCompatActivity() {
 
     // Обработчик отображения плейсхолдера прогресс бара
     private fun progressBarPlaceholder() {
+        println("Loading")
         binding.progressBar.visibility = View.VISIBLE
         binding.searchPlaceholder.visibility = View.GONE
+        binding.searchPlaceholderErrorIcon.visibility = View.GONE
+        binding.searchPlaceholderErrorText.visibility = View.GONE
+        binding.searchPlaceholderRefreshButton.visibility = View.GONE
         binding.historyHeaderText.visibility = View.GONE
         binding.historyTrackListView.visibility = View.GONE
         binding.historyClearButton.visibility = View.GONE
