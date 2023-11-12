@@ -10,17 +10,10 @@ import com.example.playlistmaker.search.data.dto.TrackSearchResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitNetworkClient(private val context: Context) : NetworkClient {
-
-    private val iTunesBaseUrl = "https://itunes.apple.com"
-
-    private val retrofit = Retrofit
-        .Builder()
-        .baseUrl(iTunesBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val iTunesApiService = retrofit.create(ITunesAPI::class.java)
+class RetrofitNetworkClient(
+    private val iTunesApiService: ITunesAPI,
+    private val capabilities: NetworkCapabilities?,
+) : NetworkClient {
 
     override fun searchTrackRequest(dto: Any): TrackResponse {
         if (!isConnected()) {
@@ -44,11 +37,6 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
     }
 
     private fun isConnected(): Boolean {
-        val connectivityManager = context.getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager
-        val capabilities =
-            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
             when {
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> return true

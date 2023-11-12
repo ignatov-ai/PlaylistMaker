@@ -3,9 +3,7 @@ package com.example.playlistmaker.search.ui.recycler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.TrackListElementBinding
-import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.model.TrackUi
 
 class TrackAdapter(private val recycleViewListener: OnItemClickListener? = null) : RecyclerView.Adapter<TrackViewHolder>() {

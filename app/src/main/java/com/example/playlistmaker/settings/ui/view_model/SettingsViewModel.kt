@@ -1,15 +1,8 @@
 package com.example.playlistmaker.settings.ui.view_model
 
-import android.app.Application
-import android.content.Context
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.settings.domain.api.DarkThemeInteractor
 import com.example.playlistmaker.sharing.domain.impl.SendToUseCase
 import com.example.playlistmaker.sharing.domain.impl.SendUseCase
@@ -27,18 +20,6 @@ class SettingsViewModel(
         private const val MAIL_THEME = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
         private const val MAIL_MESSAGE = "Спасибо разработчикам и разработчицам за крутое приложение!"
         private const val AGREEMENT_LINK = "https://yandex.ru/legal/practicum_offer/"
-
-        fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
-                SettingsViewModel(
-                    darkThemeInteractor = Creator.provideDarkThemeInteractor(context),
-                    send = Creator.provideSendUseCase(context),
-                    sendTo = Creator.provideSendToUseCase(context),
-                    view = Creator.provideViewUseCase(context)
-                )
-            }
-        }
     }
 
     private var mutableDarkThemeStateLiveData = MutableLiveData<DarkThemeState>()
