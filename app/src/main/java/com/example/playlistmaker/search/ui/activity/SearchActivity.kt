@@ -165,10 +165,7 @@ class SearchActivity : AppCompatActivity() {
     private fun progressBarPlaceholder() {
         println("Loading")
         binding.progressBar.visibility = View.VISIBLE
-        binding.searchPlaceholder.visibility = View.GONE
-        binding.searchPlaceholderErrorIcon.visibility = View.GONE
-        binding.searchPlaceholderErrorText.visibility = View.GONE
-        binding.searchPlaceholderRefreshButton.visibility = View.GONE
+        binding.searchPlaceholder.visibility = View.VISIBLE
         binding.historyHeaderText.visibility = View.GONE
         binding.historyTrackListView.visibility = View.GONE
         binding.historyClearButton.visibility = View.GONE

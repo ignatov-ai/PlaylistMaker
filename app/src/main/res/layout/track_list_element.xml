@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/trackListElementHeight"
     android:layout_gravity="center_vertical"
-    android:orientation="horizontal"
-    android:layout_marginTop="@dimen/margin16dp">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/trackListElementIcon"
@@ -24,8 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:layout_marginLeft="@dimen/margin_l_r"
-        android:layout_marginRight="@dimen/margin_l_r">
+        android:layout_marginLeft="@dimen/margin8dp"
+        android:layout_marginRight="@dimen/margin8dp">
         <TextView
             android:id="@+id/trackListElementName"
             android:layout_width="wrap_content"
@@ -39,13 +38,14 @@
             android:text="Yesterday (Remastered 2009)"/>
         <LinearLayout
             android:id="@+id/trackListElementProperties"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/size20dp"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/trackListElementPropertiesArtist"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:orientation="horizontal"
@@ -53,7 +53,7 @@
                 android:textSize="@dimen/trackListElementPropertiesFontSize"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="Beatles"/>
+                android:text="Beatles" />
             <ImageView
                 android:layout_width="@dimen/size12dp"
                 android:layout_height="@dimen/size12dp"
@@ -68,6 +68,7 @@
                 android:orientation="horizontal"
                 android:textColor="?attr/colorOnPrimarySurface"
                 android:textSize="@dimen/trackListElementPropertiesFontSize"
+                android:maxLines="1"
                 android:text="2:55"/>
         </LinearLayout>
 

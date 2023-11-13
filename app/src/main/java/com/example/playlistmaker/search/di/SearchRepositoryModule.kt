@@ -14,7 +14,4 @@ val searchRepositoryModule = module {
     single<TracksHistoryRepository> {
         TracksHistoryRepositoryImpl(historyStorage = get())
     }
-    single<MutableList<Track>> {
-        mutableListOf<Track>()
-    }
 }

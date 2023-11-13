@@ -20,7 +20,7 @@ class SearchViewModel(
 ) : ViewModel() {
 
     companion object {
-        const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val CLICK_DEBOUNCE_DELAY = 750L
         const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
