@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".search.ui.activity.SearchActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_height"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/backToMain"
@@ -19,7 +19,6 @@
             android:layout_height="@dimen/layerHeight24dp"
             android:layout_marginStart="@dimen/marginStart24dp"
             android:layout_gravity="center_vertical"
-            tools:ignore="ContentDescription"
             android:src="@drawable/arrow_back"/>
 
         <TextView
@@ -34,8 +33,10 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/searchTextLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/searchBarHeight">
+        android:layout_height="@dimen/searchBarHeight"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,19 +85,69 @@
         </LinearLayout>
     </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/searchTextLayout"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <LinearLayout
+        android:id="@+id/historyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/trackListView"
+        android:layout_marginTop="@dimen/margin24dp">
+
+        <TextView
+            android:id="@+id/historyHeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Вы искали"
+            android:gravity="center"
+            android:textSize="@dimen/size19sp"
+            android:fontFamily="@font/ysmedium"
+            android:textColor="?attr/colorOnPrimary"
+            android:textAlignment="center"
+            android:height="@dimen/size56dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyTrackListView"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <Button
+            android:id="@+id/historyClearButton"
+            style="@style/refreshButton"
+            android:layout_width="wrap_content"
+            android:layout_weight="0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginStart24dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="?attr/colorOnSecondary"
+            android:text="@string/clearHistory" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/ypBlue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone" />
+
     <FrameLayout
         android:id="@+id/searchPlaceholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/ypBlue"
-            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -140,46 +191,5 @@
         </LinearLayout>
     </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/margin24dp">
 
-        <TextView
-            android:id="@+id/historyHeaderText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Вы искали"
-            android:gravity="center"
-            android:textSize="@dimen/size19sp"
-            android:fontFamily="@font/ysmedium"
-            android:textColor="?attr/colorOnPrimary"
-            android:textAlignment="center"
-            android:height="@dimen/size56dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/historyTrackListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        <Button
-            android:id="@+id/historyClearButton"
-            style="@style/refreshButton"
-            android:layout_width="wrap_content"
-            android:layout_weight="0"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/marginStart24dp"
-            android:layout_gravity="center_horizontal"
-            android:textColor="?attr/colorOnSecondary"
-            android:text="@string/clearHistory" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
