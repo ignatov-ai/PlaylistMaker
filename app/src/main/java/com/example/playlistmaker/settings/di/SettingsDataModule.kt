@@ -10,7 +10,7 @@ import org.koin.dsl.module
 
 val settindsDataModule = module {
     single<DarkTheme> {
-        SharedPrefsDarkTheme(context = get())
+        SharedPrefsDarkTheme(sharedPrefs = get())
     }
 
     single<SharedPreferences> {
