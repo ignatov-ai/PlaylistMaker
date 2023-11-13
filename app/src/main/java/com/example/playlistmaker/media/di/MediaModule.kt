@@ -1,4 +1,4 @@
-package com.example.playlistmaker.media.ui.di
+package com.example.playlistmaker.media.di
 
 import org.koin.dsl.module
 
