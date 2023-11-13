@@ -44,7 +44,7 @@ val searchDataModule = module {
     }
 
     single<HistoryStorage> {
-        SharedPrefsHistory(context = get())
+        SharedPrefsHistory(sharedPreferences = get(), gson = get())
     }
 
     single<NetworkClient> {
