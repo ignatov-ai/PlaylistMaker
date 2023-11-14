@@ -60,6 +60,11 @@ class PlayerActivity: AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopPlayer()
+    }
+
     private fun setTimer(time: String?) {
         binding.playedTime.text = time
     }

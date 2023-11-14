@@ -90,4 +90,7 @@ class PlayerViewModel(trackUrl: String, private val mediaPlayerInteractor: Playe
         mediaPlayerInteractor.stopPlayer()
     }
 
+    fun stopPlayer() {
+        mediaPlayerInteractor.stopPlayer()
+    }
 }

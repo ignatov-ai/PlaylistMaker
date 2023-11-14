@@ -20,9 +20,6 @@ import com.example.playlistmaker.search.ui.view_model.TrackSearchState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
-    private companion object {
-        const val SEARCH_TEXT = "SEARCH_TEXT"
-    }
 
     private var searchText: String = ""
     private lateinit var binding: ActivitySearchBinding
@@ -67,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.searchClearBar.visibility = clearButtonVisibility(s)
                 searchText = s.toString()
-                viewModel.searchDebounce(s.toString())
+                viewModel.searchDebounce(searchText)
             }
 
             override fun afterTextChanged(s: Editable?) {
