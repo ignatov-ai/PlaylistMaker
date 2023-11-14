@@ -45,7 +45,7 @@ class SearchViewModel(
         }
 
         searchText = lastText
-        val searchRunnable = Runnable { searchTrackRequest(searchText!!) }
+        val searchRunnable = Runnable { searchTrackRequest(lastText) }
         handler.removeCallbacksAndMessages(Any())
         handler.postAtTime(searchRunnable, Any(), SEARCH_DEBOUNCE_DELAY)
     }
@@ -111,11 +111,13 @@ class SearchViewModel(
         }
     }
 
-    private fun clickDebounce() : Boolean {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            handler.postDelayed(
+                { isClickAllowed = true }, CLICK_DEBOUNCE_DELAY
+            )
         }
         return current
     }

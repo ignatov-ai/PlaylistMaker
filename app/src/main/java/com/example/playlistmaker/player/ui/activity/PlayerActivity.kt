@@ -49,10 +49,6 @@ class PlayerActivity: AppCompatActivity() {
         }
 
         // Кнопка плей/пауза к трекам
-        binding.playPauseButton.setOnClickListener {
-            viewModel.onPlayerButtonClick()
-        }
-
         setTrackInfo()
 
         binding.playPauseButton.setOnClickListener {
