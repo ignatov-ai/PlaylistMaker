@@ -71,7 +71,7 @@
                 android:textColor="@color/ypDark"
                 android:textColorHint="?attr/colorOnSecondaryContainer"
                 android:textCursorDrawable="@drawable/color_cursor"
-                tools:ignore="TouchTargetSizeCheck" />
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck,VisualLintTextFieldSize" />
 
             <ImageView
                 android:id="@+id/searchClearBar"
@@ -134,7 +134,7 @@
                 android:layout_height="@dimen/size56dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/marginStart24dp"
-                android:text="Обновить"
+                android:text="@string/refreshButtonText"
                 android:textColor="?attr/colorOnSecondary"
                 android:visibility="gone" />
         </LinearLayout>
@@ -150,7 +150,7 @@
             android:id="@+id/historyHeaderText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Вы искали"
+            android:text="@string/historyHeaderLabelText"
             android:gravity="center"
             android:textSize="@dimen/size19sp"
             android:fontFamily="@font/ysmedium"
@@ -162,7 +162,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/historyTrackListView"
+                android:id="@+id/trackListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -180,7 +180,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackListView"
+        android:id="@+id/historyTrackListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
