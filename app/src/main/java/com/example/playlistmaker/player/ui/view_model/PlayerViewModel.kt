@@ -74,7 +74,7 @@ class PlayerViewModel(trackUrl: String, private val mediaPlayerInteractor: Playe
         timerUpdate()
     }
 
-    private fun pausePlayer() {
+    fun pausePlayer() {
         mediaPlayerInteractor.pausePlayer()
         changePlayerState(PlayerState.STATE_PAUSED)
         handler.removeCallbacks(timerRunnable)

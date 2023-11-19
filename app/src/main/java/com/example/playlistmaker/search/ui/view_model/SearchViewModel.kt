@@ -25,7 +25,7 @@ class SearchViewModel(
     }
 
     private var searchText: String? = null
-
+    private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
     private val stateLiveData = MutableLiveData<TrackSearchState>()
@@ -33,7 +33,6 @@ class SearchViewModel(
 
     private val mutableIsClickAllowedLiveData = MutableLiveData<Boolean>()
     val isClickAllowedLiveData: LiveData<Boolean> = mutableIsClickAllowedLiveData
-    private var isClickAllowed = true
 
     init {
         renderHistoryCheck()
@@ -46,15 +45,15 @@ class SearchViewModel(
 
         searchText = lastText
         val searchRunnable = Runnable { searchTrackRequest(lastText) }
-        handler.removeCallbacksAndMessages(Any())
-        handler.postAtTime(searchRunnable, Any(), SEARCH_DEBOUNCE_DELAY)
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     fun searchWithoutDebounce(changedText: String) {
         mutableIsClickAllowedLiveData.value = clickDebounce()
         searchText = changedText
-        handler.removeCallbacksAndMessages(Any())
         val searchRunnable = Runnable { searchTrackRequest(changedText) }
+        handler.removeCallbacks(searchRunnable)
         handler.post(searchRunnable)
     }
 

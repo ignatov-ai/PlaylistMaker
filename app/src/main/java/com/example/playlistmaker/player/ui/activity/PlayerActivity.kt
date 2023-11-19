@@ -58,7 +58,7 @@ class PlayerActivity: AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.stopPlayer()
+        viewModel.pausePlayer()
     }
 
     private fun setTimer(time: String?) {
