@@ -1,5 +1,5 @@
 package com.example.playlistmaker.sharing.data
 
-interface View {
+interface ViewAgreement {
     fun share(url: String)
 }

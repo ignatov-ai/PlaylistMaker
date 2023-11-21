@@ -8,7 +8,7 @@ class TracksHistoryRepositoryImpl(private val historyStorage: HistoryStorage) :
     TracksHistoryRepository {
 
     companion object {
-        private const val HISTORY_TRACK_COUNT = 10
+        private const val HISTORY_TRACK_COUNT = 9
     }
 
     private val trackHistory = getTrackHistoryFromStorage().toMutableList()

@@ -9,28 +9,22 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
-import com.example.playlistmaker.search.domain.api.TracksHistoryInteractor
-import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.ui.model.TrackUi
 import com.example.playlistmaker.search.ui.recycler.TrackAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
 import com.example.playlistmaker.search.ui.view_model.TrackSearchState
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
-    private companion object {
-        const val SEARCH_TEXT = "SEARCH_TEXT"
-    }
 
     private var searchText: String = ""
     private lateinit var binding: ActivitySearchBinding
     private var isClickAllowed = true
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModel()
     private lateinit var searchTextWatcher: TextWatcher
 
     private val tracksAdapter = TrackAdapter {
@@ -46,14 +40,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(
-            this, SearchViewModel.getViewModelFactory(applicationContext)
-        )[SearchViewModel::class.java]
-
-        viewModel.observeStateLiveData().observe(this) {
-            render(it)
-        }
 
         //адаптеры списков
         binding.trackListView.layoutManager = LinearLayoutManager(this)
@@ -78,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.searchClearBar.visibility = clearButtonVisibility(s)
                 searchText = s.toString()
-                viewModel.searchDebounce(s.toString())
+                viewModel.searchDebounce(searchText)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -90,6 +76,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.observeStateLiveData().observe(this) {
             render(it)
         }
+
         viewModel.isClickAllowedLiveData.observe(this) {
             isClickAllowed = it
         }
@@ -113,29 +100,19 @@ class SearchActivity : AppCompatActivity() {
         binding.searchField.removeTextChangedListener(searchTextWatcher)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT, searchText)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        searchText = savedInstanceState.getString(SEARCH_TEXT, "")
-        binding.searchField.setText(searchText)
-    }
-
     private fun render(state: TrackSearchState) {
         when (state) {
+            TrackSearchState.Loading -> progressBarPlaceholder()
             is TrackSearchState.History -> historyPlaceholder(state.tracks)
             is TrackSearchState.Content -> showSearchedTrackList(state.tracks)
             is TrackSearchState.Empty -> emptySearchPlaceholder(state.message)
             is TrackSearchState.Error -> errorPlaceholder(state.errorMessage)
-            TrackSearchState.Loading -> progressBarPlaceholder()
         }
     }
 
     // Обработчик отображения истории поиска
     private fun historyPlaceholder(historyTracks: List<TrackUi>){
+        binding.progressBar.visibility = View.GONE
         binding.historyHeaderText.visibility = View.VISIBLE
         binding.historyTrackListView.visibility = View.VISIBLE
         binding.historyClearButton.visibility = View.VISIBLE
@@ -183,8 +160,9 @@ class SearchActivity : AppCompatActivity() {
 
     // Обработчик отображения плейсхолдера прогресс бара
     private fun progressBarPlaceholder() {
+        println("Loading")
         binding.progressBar.visibility = View.VISIBLE
-        binding.searchPlaceholder.visibility = View.GONE
+        binding.searchPlaceholder.visibility = View.VISIBLE
         binding.historyHeaderText.visibility = View.GONE
         binding.historyTrackListView.visibility = View.GONE
         binding.historyClearButton.visibility = View.GONE

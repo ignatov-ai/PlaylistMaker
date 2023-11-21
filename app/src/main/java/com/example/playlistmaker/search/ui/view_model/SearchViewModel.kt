@@ -1,60 +1,40 @@
 package com.example.playlistmaker.search.ui.view_model
 
-import android.app.Application
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.bumptech.glide.Glide.init
 import com.example.playlistmaker.R
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.search.domain.api.TracksHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.model.Track
-import com.example.playlistmaker.search.ui.activity.SearchActivity
 import com.example.playlistmaker.search.ui.mapper.TrackToTrackUi
 import com.example.playlistmaker.search.ui.mapper.TrackUiToDomain
 import com.example.playlistmaker.search.ui.model.TrackUi
 
 class SearchViewModel(
     private val trackInteractor: TracksInteractor,
-    private val trackHistoryInteractor: TracksHistoryInteractor) : ViewModel() {
+    private val trackHistoryInteractor: TracksHistoryInteractor
+) : ViewModel() {
 
     companion object {
-        const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val CLICK_DEBOUNCE_DELAY = 750L
         const val SEARCH_DEBOUNCE_DELAY = 2000L
-
-        const val ERROR_MESSAGE = "Проблемы со связью\\n\\nЗагрузка не удалась. Проверьте подключение к интернету"
-        const val MESSAGE = "Ничего не нашлось"
-
-        fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(
-                    trackInteractor = Creator.provideTrackInteractor(context),
-                    trackHistoryInteractor = Creator.provideTracksHistoryInteractor(context)
-                )
-            }
-        }
-
     }
 
     private var searchText: String? = null
-
+    private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
+    val searchRunnable = Runnable { searchTrackRequest(searchText!!) }
+
 
     private val stateLiveData = MutableLiveData<TrackSearchState>()
     fun observeStateLiveData(): LiveData<TrackSearchState> = stateLiveData
 
     private val mutableIsClickAllowedLiveData = MutableLiveData<Boolean>()
     val isClickAllowedLiveData: LiveData<Boolean> = mutableIsClickAllowedLiveData
-    private var isClickAllowed = true
 
     init {
         renderHistoryCheck()
@@ -66,24 +46,21 @@ class SearchViewModel(
         }
 
         searchText = lastText
-        handler.removeCallbacksAndMessages(Any())
-        val searchRunnable = Runnable { searchTrackRequest(lastText) }
-        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(searchRunnable, Any(), postTime)
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     fun searchWithoutDebounce(changedText: String) {
         mutableIsClickAllowedLiveData.value = clickDebounce()
         searchText = changedText
-        handler.removeCallbacksAndMessages(Any())
-        val searchRunnable = Runnable { searchTrackRequest(changedText) }
+        handler.removeCallbacks(searchRunnable)
         handler.post(searchRunnable)
     }
 
-    private fun searchTrackRequest(lastText: String) {
-        if (lastText.isNotEmpty()) {
+    private fun searchTrackRequest(newLastText: String) {
+        if (newLastText.isNotEmpty()) {
             renderState(TrackSearchState.Loading)
-            trackInteractor.searchTrack(lastText, object : TracksInteractor.TrackConsumer {
+            trackInteractor.searchTrack(newLastText, object : TracksInteractor.TrackConsumer {
                     override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
                         val tracks = mutableListOf<TrackUi>()
                         if (foundTracks != null) {
@@ -94,7 +71,7 @@ class SearchViewModel(
                             errorMessage != null -> {
                                 renderState(
                                     TrackSearchState.Error(
-                                        errorMessage =  ERROR_MESSAGE)
+                                        errorMessage =  R.string.noInternet.toString())
                                     )
 
                             }
@@ -102,9 +79,8 @@ class SearchViewModel(
                             tracks.isEmpty() -> {
                                 renderState(
                                     TrackSearchState.Empty(
-                                        message = MESSAGE)
+                                        message = R.string.nothingWasFound.toString())
                                     )
-
                             }
 
                             else -> {
@@ -138,9 +114,7 @@ class SearchViewModel(
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed(
-                { isClickAllowed = true }, CLICK_DEBOUNCE_DELAY
-            )
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
         }
         return current
     }

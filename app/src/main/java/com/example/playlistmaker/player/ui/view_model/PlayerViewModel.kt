@@ -5,29 +5,18 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.ui.PlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(trackUrl: String) : ViewModel() {
+class PlayerViewModel(trackUrl: String, private val mediaPlayerInteractor: PlayerInteractor) : ViewModel() {
     companion object {
-        private const val DELAY = 500L
-
-        fun getViewModelFactory(trackUrl: String): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerViewModel(trackUrl)
-            }
-        }
+        private const val DELAY = 300L
     }
 
     private var mutablePlayerStateLiveData = MutableLiveData<PlayerState>()
     val playerStateLiveData: LiveData<PlayerState> = mutablePlayerStateLiveData
-    private val mediaPlayerInteractor = Creator.providePlayerInteractor()
 
     private var mutablePlayerPositionLiveData = MutableLiveData<String>()
     val playerPositionLiveData: LiveData<String> = mutablePlayerPositionLiveData
@@ -85,7 +74,7 @@ class PlayerViewModel(trackUrl: String) : ViewModel() {
         timerUpdate()
     }
 
-    private fun pausePlayer() {
+    fun pausePlayer() {
         mediaPlayerInteractor.pausePlayer()
         changePlayerState(PlayerState.STATE_PAUSED)
         handler.removeCallbacks(timerRunnable)
@@ -101,4 +90,7 @@ class PlayerViewModel(trackUrl: String) : ViewModel() {
         mediaPlayerInteractor.stopPlayer()
     }
 
+    fun stopPlayer() {
+        mediaPlayerInteractor.stopPlayer()
+    }
 }

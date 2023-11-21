@@ -18,8 +18,8 @@
     <dimen name="trackListElementNameFontSize">16sp</dimen>
     <dimen name="size12dp">12dp</dimen>
     <dimen name="size16dp">16dp</dimen>
-    <dimen name="trackListElementIconSize">48dp</dimen>
-    <dimen name="trackListElementHeight">64dp</dimen>
+    <dimen name="trackListElementIconSize">44dp</dimen>
+    <dimen name="trackListElementHeight">60dp</dimen>
     <dimen name="trackListElementNameHeight">24dp</dimen>
     <dimen name="searchBarHeight">56dp</dimen>
     <dimen name="searchPlaceholderErrorTextSize">19sp</dimen>

@@ -19,11 +19,5 @@ class MediaActivity : AppCompatActivity() {
         btnBackToMain.setOnClickListener{
             finish()
         }
-
-        viewModel = ViewModelProvider(
-            this,
-            MediaViewModel.getViewModelFactory()
-        )[MediaViewModel::class.java]
-
     }
 }

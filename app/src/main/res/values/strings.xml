@@ -25,4 +25,6 @@
     <string name="albumNameLabel">Альбом</string>
     <string name="timeLabel">Длительность</string>
     <string name="practicumLink">https://practicum.yandex.ru/android-developer/</string>
+    <string name="refreshButtonText">Обновить</string>
+    <string name="historyHeaderLabelText">Вы искали</string>
 </resources>

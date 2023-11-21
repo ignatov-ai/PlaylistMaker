@@ -4,7 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore.Audio.AudioColumns.TRACK
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -14,12 +13,16 @@ import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.mapper.TrackToTrackUi
 import com.example.playlistmaker.search.ui.model.TrackUi
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class PlayerActivity: AppCompatActivity() {
 
     private lateinit var track: TrackUi
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel {
+        parametersOf(track.previewUrl)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +39,6 @@ class PlayerActivity: AppCompatActivity() {
         track = getTrack()
         println(track)
 
-        // подключаем ViewModel
-        viewModel = ViewModelProvider(
-            this,
-            PlayerViewModel.getViewModelFactory(track.previewUrl)
-        )[PlayerViewModel::class.java]
 
         viewModel.playerStateLiveData.observe(this) {
             render(it)
@@ -51,15 +49,16 @@ class PlayerActivity: AppCompatActivity() {
         }
 
         // Кнопка плей/пауза к трекам
-        binding.playPauseButton.setOnClickListener {
-            viewModel.onPlayerButtonClick()
-        }
-
         setTrackInfo()
 
         binding.playPauseButton.setOnClickListener {
             viewModel.onPlayerButtonClick()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.pausePlayer()
     }
 
     private fun setTimer(time: String?) {
