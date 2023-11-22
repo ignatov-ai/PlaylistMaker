@@ -27,4 +27,9 @@
     <string name="practicumLink">https://practicum.yandex.ru/android-developer/</string>
     <string name="refreshButtonText">Обновить</string>
     <string name="historyHeaderLabelText">Вы искали</string>
+    <string name="favouriteTabText">Избранные треки</string>
+    <string name="playlistTabText">Плейлисты</string>
+    <string name="newPlaylistButtonText">Новый плейлист</string>
+    <string name="emptyFavouritesText">Ваша медиатека пуста</string>
+    <string name="emptyPlaylistsText">Вы не создали\nни одного плейлиста</string>
 </resources>

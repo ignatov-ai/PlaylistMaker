@@ -2,22 +2,37 @@ package com.example.playlistmaker.media.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
-import com.example.playlistmaker.media.ui.view_model.MediaViewModel
+import com.example.playlistmaker.databinding.ActivityMediaBinding
+import com.example.playlistmaker.media.ui.fragments.MediaViewPagerAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MediaActivity : AppCompatActivity() {
 
-    private lateinit var btnBackToMain: ImageView
-    private lateinit var viewModel: MediaViewModel
+    private lateinit var binding: ActivityMediaBinding
+    private lateinit var tabMediator: TabLayoutMediator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_media)
+        binding = ActivityMediaBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btnBackToMain = findViewById(R.id.backToMain)
-        btnBackToMain.setOnClickListener{
+        binding.backToMain.setOnClickListener {
             finish()
         }
+
+        binding.pager.adapter = MediaViewPagerAdapter(supportFragmentManager, lifecycle)
+        tabMediator = TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
+            when (position) {
+                0 -> tab.text = getString(R.string.favouriteTabText)
+                1 -> tab.text = getString(R.string.playlistTabText)
+            }
+        }
+        tabMediator.attach()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        tabMediator.detach()
     }
 }
