@@ -34,6 +34,10 @@
         <activity
             android:name=".main.ui.activity.MainActivity"
             android:exported="true">
+        </activity>
+        <activity
+            android:name=".root.ui.activity.RootActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

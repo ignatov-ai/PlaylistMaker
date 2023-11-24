@@ -1,17 +1,20 @@
-package com.example.playlistmaker.search.ui.activity
+package com.example.playlistmaker.search.ui.fragments
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore.Audio.AudioColumns.TRACK
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
 import com.example.playlistmaker.search.ui.model.TrackUi
 import com.example.playlistmaker.search.ui.recycler.TrackAdapter
@@ -19,35 +22,42 @@ import com.example.playlistmaker.search.ui.view_model.SearchViewModel
 import com.example.playlistmaker.search.ui.view_model.TrackSearchState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
     private var searchText: String = ""
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: FragmentSearchBinding
     private var isClickAllowed = true
     private val viewModel: SearchViewModel by viewModel()
     private lateinit var searchTextWatcher: TextWatcher
 
     private val tracksAdapter = TrackAdapter {
         if (isClickAllowed) {
-            val playerActivityIntent = Intent(this, PlayerActivity::class.java)
-            playerActivityIntent.putExtra(TRACK, it)
+            val playerActivityIntent = Intent(requireContext(), PlayerActivity::class.java)
+            playerActivityIntent.putExtra(MediaStore.Audio.AudioColumns.TRACK, it)
             startActivity(playerActivityIntent)
             viewModel.onItemClick(it)
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //адаптеры списков
-        binding.trackListView.layoutManager = LinearLayoutManager(this)
+        binding.trackListView.layoutManager = LinearLayoutManager(requireContext())
         binding.trackListView.adapter = tracksAdapter
 
         // Обработчик нажатия стрелки НАЗАД
         binding.backToMain.setOnClickListener {
-            finish()
+            activity?.finish()
         }
 
         // Обработчик нажатия на КРЕСТИК ОЧИСТКИ ПОЛЯ ВВОДА
@@ -73,11 +83,11 @@ class SearchActivity : AppCompatActivity() {
         }
         binding.searchField.addTextChangedListener(searchTextWatcher)
 
-        viewModel.observeStateLiveData().observe(this) {
+        viewModel.observeStateLiveData().observe(viewLifecycleOwner) {
             render(it)
         }
 
-        viewModel.isClickAllowedLiveData.observe(this) {
+        viewModel.isClickAllowedLiveData.observe(viewLifecycleOwner) {
             isClickAllowed = it
         }
 
@@ -182,7 +192,7 @@ class SearchActivity : AppCompatActivity() {
         binding.searchField.clearFocus()
         binding.searchField.setText("")
 
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
 
         viewModel.onClearButtonClick()
