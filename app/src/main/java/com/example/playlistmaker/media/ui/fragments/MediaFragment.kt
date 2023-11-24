@@ -27,7 +27,7 @@ class MediaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.backToMain.setOnClickListener {
-            activity?.finish()
+            requireActivity().finish()
         }
 
         binding.pager.adapter = MediaViewPagerAdapter(childFragmentManager, lifecycle)

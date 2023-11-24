@@ -1,13 +1,16 @@
-package com.example.playlistmaker.player.ui.activity
+package com.example.playlistmaker.player.ui.fragments
 
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore.Audio.AudioColumns.TRACK
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.player.ui.PlayerState
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.example.playlistmaker.search.domain.model.Track
@@ -16,35 +19,38 @@ import com.example.playlistmaker.search.ui.model.TrackUi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class PlayerActivity: AppCompatActivity() {
+class PlayerFragment: Fragment() {
 
     private lateinit var track: TrackUi
-    private lateinit var binding: ActivityPlayerBinding
+    private lateinit var binding: FragmentPlayerBinding
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(track.previewUrl)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Кнопка назад к трекам
         binding.backToTracks.setOnClickListener {
-            finish()
+            requireActivity().finish()
         }
 
         track = getTrack()
-        println(track)
 
-
-        viewModel.playerStateLiveData.observe(this) {
+        viewModel.playerStateLiveData.observe(viewLifecycleOwner) {
             render(it)
         }
 
-        viewModel.playerPositionLiveData.observe(this) {
+        viewModel.playerPositionLiveData.observe(viewLifecycleOwner) {
             setTimer(it)
         }
 
@@ -93,13 +99,13 @@ class PlayerActivity: AppCompatActivity() {
 
     private fun getTrack(): TrackUi =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(TRACK, TrackUi::class.java)
+            arguments?.getParcelable(TRACK)
                 ?: TrackToTrackUi().map(
                     Track()
                 )
         } else {
             @Suppress("DEPRECATION")
-            intent.getParcelableExtra(TRACK) ?: TrackToTrackUi().map(
+            arguments?.getParcelable(TRACK) ?: TrackToTrackUi().map(
                 Track()
             )
         }

@@ -10,12 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.player.ui.activity.PlayerActivity
+import com.example.playlistmaker.player.ui.fragments.PlayerFragment
 import com.example.playlistmaker.search.ui.model.TrackUi
 import com.example.playlistmaker.search.ui.recycler.TrackAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
@@ -32,7 +31,7 @@ class SearchFragment : Fragment() {
 
     private val tracksAdapter = TrackAdapter {
         if (isClickAllowed) {
-            val playerActivityIntent = Intent(requireContext(), PlayerActivity::class.java)
+            val playerActivityIntent = Intent(requireContext(), PlayerFragment::class.java)
             playerActivityIntent.putExtra(MediaStore.Audio.AudioColumns.TRACK, it)
             startActivity(playerActivityIntent)
             viewModel.onItemClick(it)
@@ -57,7 +56,7 @@ class SearchFragment : Fragment() {
 
         // Обработчик нажатия стрелки НАЗАД
         binding.backToMain.setOnClickListener {
-            activity?.finish()
+            requireActivity().finish()
         }
 
         // Обработчик нажатия на КРЕСТИК ОЧИСТКИ ПОЛЯ ВВОДА
