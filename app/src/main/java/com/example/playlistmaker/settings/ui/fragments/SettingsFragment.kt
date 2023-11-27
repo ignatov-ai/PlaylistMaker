@@ -32,10 +32,6 @@ class SettingsFragment : Fragment() {
             render(it)
         }
 
-        binding.backToMain.setOnClickListener {
-            requireActivity().finish()
-        }
-
         binding.themeSwitcher.isChecked = (viewModel.darkThemeStateLiveData.value == DarkThemeState.DARK_THEME)
 
         binding.themeSwitcher.setOnCheckedChangeListener { switcher, checked ->

@@ -26,10 +26,6 @@ class MediaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backToMain.setOnClickListener {
-            requireActivity().finish()
-        }
-
         binding.pager.adapter = MediaViewPagerAdapter(childFragmentManager, lifecycle)
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             when (position) {

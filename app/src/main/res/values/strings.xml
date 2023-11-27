@@ -32,4 +32,7 @@
     <string name="newPlaylistButtonText">Новый плейлист</string>
     <string name="emptyFavouritesText">Ваша медиатека пуста</string>
     <string name="emptyPlaylistsText">Вы не создали\nни одного плейлиста</string>
+    <string name="searchBottomMenuText">Поиск</string>
+    <string name="mediaBottomMenuText">Медиатека\n</string>
+    <string name="settingsBottomMenuText">Настройки</string>
 </resources>

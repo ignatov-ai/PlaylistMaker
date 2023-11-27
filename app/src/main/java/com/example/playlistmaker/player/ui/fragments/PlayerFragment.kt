@@ -6,7 +6,9 @@ import android.provider.MediaStore.Audio.AudioColumns.TRACK
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -21,6 +23,13 @@ import org.koin.core.parameter.parametersOf
 
 class PlayerFragment: Fragment() {
 
+    companion object {
+        private const val TRACK = "TRACK"
+
+        fun createArgs(track: TrackUi): Bundle =
+            bundleOf(TRACK to track)
+    }
+
     private lateinit var track: TrackUi
     private lateinit var binding: FragmentPlayerBinding
     private val viewModel: PlayerViewModel by viewModel {
@@ -34,22 +43,20 @@ class PlayerFragment: Fragment() {
     ): View? {
         binding = FragmentPlayerBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Кнопка назад к трекам
         binding.backToTracks.setOnClickListener {
-            requireActivity().finish()
+            findNavController().navigateUp()
         }
 
         track = getTrack()
-
         viewModel.playerStateLiveData.observe(viewLifecycleOwner) {
             render(it)
         }
-
         viewModel.playerPositionLiveData.observe(viewLifecycleOwner) {
             setTimer(it)
         }
@@ -99,7 +106,7 @@ class PlayerFragment: Fragment() {
 
     private fun getTrack(): TrackUi =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(TRACK)
+            arguments?.getParcelable(TRACK, TrackUi::class.java)
                 ?: TrackToTrackUi().map(
                     Track()
                 )

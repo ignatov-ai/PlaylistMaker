@@ -5,31 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".search.ui.fragments.SearchFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_height"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/backToMain"
-            android:layout_width="@dimen/layerWidth24dp"
-            android:layout_height="@dimen/layerHeight24dp"
-            android:layout_marginStart="@dimen/marginStart24dp"
-            android:layout_gravity="center_vertical"
-            tools:ignore="ContentDescription"
-            android:src="@drawable/arrow_back"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/marginStart24dp"
+            android:layout_marginStart="@dimen/margin16dp"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/ysregular"
+            android:text="@string/searchHeader"
             android:textColor="?attr/colorOnPrimary"
-            android:textSize="@dimen/text_size"
-            android:text="@string/searchHeader"/>
+            android:textSize="@dimen/text_size" />
     </LinearLayout>
 
     <LinearLayout

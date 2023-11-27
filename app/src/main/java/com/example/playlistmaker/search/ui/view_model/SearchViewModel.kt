@@ -149,4 +149,8 @@ class SearchViewModel(
         handler.removeCallbacksAndMessages(Any())
         saveHistory()
     }
+
+    fun onDestroyView() {
+        handler.removeCallbacks(searchRunnable)
+    }
 }

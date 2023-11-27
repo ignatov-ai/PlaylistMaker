@@ -1,8 +1,9 @@
 package com.example.playlistmaker.search.ui.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,14 +11,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.fragments.PlayerFragment
+import com.example.playlistmaker.player.ui.fragments.PlayerFragment.Companion.createArgs
+import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.model.TrackUi
 import com.example.playlistmaker.search.ui.recycler.TrackAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
+import com.example.playlistmaker.search.ui.view_model.SearchViewModel.Companion.CLICK_DEBOUNCE_DELAY
 import com.example.playlistmaker.search.ui.view_model.TrackSearchState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,14 +38,8 @@ class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by viewModel()
     private lateinit var searchTextWatcher: TextWatcher
 
-    private val tracksAdapter = TrackAdapter {
-        if (isClickAllowed) {
-            val playerActivityIntent = Intent(requireContext(), PlayerFragment::class.java)
-            playerActivityIntent.putExtra(MediaStore.Audio.AudioColumns.TRACK, it)
-            startActivity(playerActivityIntent)
-            viewModel.onItemClick(it)
-        }
-    }
+    private var tracksAdapter: TrackAdapter? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,14 +53,19 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //адаптеры списков
-        binding.trackListView.layoutManager = LinearLayoutManager(requireContext())
-        binding.trackListView.adapter = tracksAdapter
-
-        // Обработчик нажатия стрелки НАЗАД
-        binding.backToMain.setOnClickListener {
-            requireActivity().finish()
+        tracksAdapter = TrackAdapter {
+            if (isClickAllowed) {
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_playerFragment,
+                    PlayerFragment.createArgs(it)
+                )
+                viewModel.onItemClick(it)
+            }
         }
+
+        //адаптеры списков
+        binding.trackListView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        binding.trackListView.adapter = tracksAdapter
 
         // Обработчик нажатия на КРЕСТИК ОЧИСТКИ ПОЛЯ ВВОДА
         binding.searchClearBar.setOnClickListener {
@@ -93,6 +101,7 @@ class SearchFragment : Fragment() {
         // Обработчик нажатия кнопки ОБНОВИТЬ при отсутствии сети
         binding.searchPlaceholderRefreshButton.setOnClickListener {
             if (isClickAllowed) {
+                binding.searchPlaceholder.visibility = View.GONE
                 viewModel.searchWithoutDebounce(searchText)
             }
         }
@@ -103,10 +112,11 @@ class SearchFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    override fun onDestroyView() {
+        super.onDestroyView()
         binding.searchField.removeTextChangedListener(searchTextWatcher)
+        viewModel.onDestroyView()
+        tracksAdapter = null
     }
 
     private fun render(state: TrackSearchState) {
@@ -126,9 +136,9 @@ class SearchFragment : Fragment() {
         binding.historyTrackListView.visibility = View.VISIBLE
         binding.historyClearButton.visibility = View.VISIBLE
 
-        tracksAdapter.tracks.clear()
-        tracksAdapter.tracks.addAll(historyTracks)
-        tracksAdapter.notifyDataSetChanged()
+        tracksAdapter?.tracks?.clear()
+        tracksAdapter?.tracks?.addAll(historyTracks)
+        tracksAdapter?.notifyDataSetChanged()
     }
 
     // Обработчик показа найденных треков
@@ -140,9 +150,9 @@ class SearchFragment : Fragment() {
         binding.searchPlaceholder.visibility = View.GONE
         binding.trackListView.visibility = View.VISIBLE
 
-        tracksAdapter.tracks.clear()
-        tracksAdapter.tracks.addAll(tracks)
-        tracksAdapter.notifyDataSetChanged()
+        tracksAdapter?.tracks?.clear()
+        tracksAdapter?.tracks?.addAll(tracks)
+        tracksAdapter?.notifyDataSetChanged()
     }
 
     // Обработчик отображения плейсхолдера ПУСТОГО СПИСКА
