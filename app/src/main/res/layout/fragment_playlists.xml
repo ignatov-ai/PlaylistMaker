@@ -44,6 +44,7 @@
             android:layout_marginRight="@dimen/margin24dp"
             android:text="@string/emptyPlaylistsText"
             android:textAlignment="center"
+            android:textColor="?attr/colorOnPrimary"
             android:fontFamily="@font/ysmedium"
             android:textSize="@dimen/size19sp"/>
 

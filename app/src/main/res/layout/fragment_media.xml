@@ -30,10 +30,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorOnSecondary"
+        app:tabBackground="?attr/colorOnSecondary"
         app:tabTextColor="?attr/colorOnPrimary"
-        app:tabMode="fixed"
         app:tabIndicatorColor="?attr/colorOnPrimary"
-        app:tabIndicatorFullWidth="false"/>
+        app:tabIndicatorFullWidth="true"
+        app:tabTextAppearance="@style/tabBarNoCapsText" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"

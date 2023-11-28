@@ -27,6 +27,7 @@
             android:layout_marginTop="@dimen/margin16dp"
             android:text="@string/emptyFavouritesText"
             android:textAlignment="center"
+            android:textColor="?attr/colorOnPrimary"
             android:fontFamily="@font/ysmedium"
             android:textSize="@dimen/size19sp"/>
 
