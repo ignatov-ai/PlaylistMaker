@@ -33,7 +33,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment() {
 
     private var searchText: String = ""
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private var isClickAllowed = true
     private val viewModel: SearchViewModel by viewModel()
     private lateinit var searchTextWatcher: TextWatcher
@@ -46,7 +47,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -117,6 +118,7 @@ class SearchFragment : Fragment() {
         binding.searchField.removeTextChangedListener(searchTextWatcher)
         viewModel.onDestroyView()
         tracksAdapter = null
+        _binding = null
     }
 
     private fun render(state: TrackSearchState) {

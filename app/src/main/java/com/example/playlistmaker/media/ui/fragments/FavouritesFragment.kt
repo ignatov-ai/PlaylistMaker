@@ -38,6 +38,12 @@ class FavouritesFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
     private fun render(listOfFavourites: List<TrackUi>?) {
         if (listOfFavourites.isNullOrEmpty()) {
             binding.favouritesPlaceholder.visibility = View.VISIBLE

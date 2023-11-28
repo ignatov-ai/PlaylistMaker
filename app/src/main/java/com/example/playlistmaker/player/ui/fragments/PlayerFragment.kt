@@ -31,7 +31,8 @@ class PlayerFragment: Fragment() {
     }
 
     private lateinit var track: TrackUi
-    private lateinit var binding: FragmentPlayerBinding
+    private var _binding: FragmentPlayerBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(track.previewUrl)
     }
@@ -41,7 +42,7 @@ class PlayerFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -67,6 +68,11 @@ class PlayerFragment: Fragment() {
         binding.playPauseButton.setOnClickListener {
             viewModel.onPlayerButtonClick()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onPause() {
