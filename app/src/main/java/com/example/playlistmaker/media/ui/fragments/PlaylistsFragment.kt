@@ -39,6 +39,11 @@ class PlaylistsFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun render(listOfFavourites: List<Playlist>?) {
         if (listOfFavourites.isNullOrEmpty()) {
             binding.playlistsPlaceholder.visibility = View.VISIBLE

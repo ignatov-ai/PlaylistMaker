@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".media.ui.fragments.PlaylistsFragment">
 
     <LinearLayout
         android:id="@+id/favouritesPlaceholder"
@@ -26,6 +27,7 @@
             android:layout_marginTop="@dimen/margin16dp"
             android:text="@string/emptyFavouritesText"
             android:textAlignment="center"
+            android:textColor="?attr/colorOnPrimary"
             android:fontFamily="@font/ysmedium"
             android:textSize="@dimen/size19sp"/>
 

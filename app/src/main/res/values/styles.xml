@@ -59,4 +59,18 @@
         <item name="cornerRadius">@dimen/btn_radius</item>
     </style>
 
+    <style name="bottomNavMenu">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontWeight">400</item>
+        <item name="font">@font/ysregular</item>
+        <item name="backgroundTint">?attr/colorOnSecondary</item>
+        <item name="itemIconTint">@color/bottom_nav_bar_icon</item>
+        <item name="itemTextColor">@color/bottom_nav_bar_icon</item>
+    </style>
+
+    <style name="tabBarNoCapsText" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>

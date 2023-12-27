@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".media.ui.activity.MediaActivity">
+    android:background="?attr/colorOnSecondary"
+    tools:context=".media.ui.fragments.MediaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_height"
-        android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables,UselessParent">
-
-        <ImageView
-            android:id="@+id/backToMain"
-            android:layout_width="@dimen/layerWidth24dp"
-            android:layout_height="@dimen/layerHeight24dp"
-            android:layout_marginStart="@dimen/marginStart24dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/arrow_back"
-            tools:ignore="ContentDescription" />
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/marginStart24dp"
+            android:layout_marginStart="@dimen/margin16dp"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/ysregular"
             android:text="@string/mediaHeader"
@@ -37,12 +29,12 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin16dp"
         android:background="?attr/colorOnSecondary"
+        app:tabBackground="?attr/colorOnSecondary"
         app:tabTextColor="?attr/colorOnPrimary"
-        app:tabMode="fixed"
         app:tabIndicatorColor="?attr/colorOnPrimary"
-        app:tabIndicatorFullWidth="false"/>
+        app:tabIndicatorFullWidth="true"
+        app:tabTextAppearance="@style/tabBarNoCapsText" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
