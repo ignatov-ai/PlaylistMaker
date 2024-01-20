@@ -12,6 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class PlayerViewModel(trackUrl: String, private val mediaPlayerInteractor: PlayerInteractor) : ViewModel() {
@@ -55,7 +56,8 @@ class PlayerViewModel(trackUrl: String, private val mediaPlayerInteractor: Playe
         val onCompletedListener = object : PlayerInteractor.CompletionListener{
             override fun setOnCompletionListener() {
                 changePlayerState(PlayerState.STATE_PREPARED)
-                mutablePlayerPositionLiveData.value = "00:00"
+                val formatter = SimpleDateFormat("mm:ss", Locale.getDefault())
+                mutablePlayerPositionLiveData.value = formatter.format(Date(0))
             }
         }
 
