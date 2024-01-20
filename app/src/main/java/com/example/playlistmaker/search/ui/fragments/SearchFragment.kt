@@ -41,7 +41,6 @@ class SearchFragment : Fragment() {
 
     private var tracksAdapter: TrackAdapter? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

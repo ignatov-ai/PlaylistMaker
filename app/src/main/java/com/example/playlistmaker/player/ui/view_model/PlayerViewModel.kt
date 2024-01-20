@@ -5,8 +5,12 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.ui.PlayerState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -21,16 +25,15 @@ class PlayerViewModel(trackUrl: String, private val mediaPlayerInteractor: Playe
     private var mutablePlayerPositionLiveData = MutableLiveData<String>()
     val playerPositionLiveData: LiveData<String> = mutablePlayerPositionLiveData
 
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val timerRunnable = Runnable{
-        timerUpdate()
-    }
+    private var timerJob: Job? = null
 
     private fun timerUpdate() {
-        mutablePlayerPositionLiveData.value = getCurrentPosition()
-        handler.postDelayed(timerRunnable, DELAY)
-    }
+        timerJob = viewModelScope.launch {
+            while (mutablePlayerStateLiveData.value == PlayerState.STATE_PLAYING) {
+                mutablePlayerPositionLiveData.value = getCurrentPosition()
+                delay(DELAY)
+            }
+        }}
 
     private fun changePlayerState(playerState: PlayerState) {
         mutablePlayerStateLiveData.value = playerState
@@ -51,7 +54,6 @@ class PlayerViewModel(trackUrl: String, private val mediaPlayerInteractor: Playe
 
         val onCompletedListener = object : PlayerInteractor.CompletionListener{
             override fun setOnCompletionListener() {
-                handler.removeCallbacks(timerRunnable)
                 changePlayerState(PlayerState.STATE_PREPARED)
                 mutablePlayerPositionLiveData.value = "00:00"
             }
@@ -77,7 +79,7 @@ class PlayerViewModel(trackUrl: String, private val mediaPlayerInteractor: Playe
     fun pausePlayer() {
         mediaPlayerInteractor.pausePlayer()
         changePlayerState(PlayerState.STATE_PAUSED)
-        handler.removeCallbacks(timerRunnable)
+        timerJob?.cancel()
     }
 
     private fun getCurrentPosition(): String {
@@ -86,7 +88,6 @@ class PlayerViewModel(trackUrl: String, private val mediaPlayerInteractor: Playe
 
     override fun onCleared() {
         super.onCleared()
-        handler.removeCallbacks(timerRunnable)
         mediaPlayerInteractor.stopPlayer()
     }
 
