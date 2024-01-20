@@ -35,4 +35,6 @@
     <string name="searchBottomMenuText">Поиск</string>
     <string name="mediaBottomMenuText">Медиатека\n</string>
     <string name="settingsBottomMenuText">Настройки</string>
+    <string name="connectionErrorString">Проверьте подключение к интернету</string>
+    <string name="serverErrorString">Ошибка сервера</string>
 </resources>

@@ -64,40 +64,45 @@ class SearchViewModel(
     private fun searchTrackRequest(newLastText: String) {
         if (newLastText.isNotEmpty()) {
             renderState(TrackSearchState.Loading)
-            trackInteractor.searchTrack(newLastText, object : TracksInteractor.TrackConsumer {
-                    override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-                        val tracks = mutableListOf<TrackUi>()
-                        if (foundTracks != null) {
-                            tracks.addAll(foundTracks.map { TrackToTrackUi().map(it) })
-                        }
-
-                        when {
-                            errorMessage != null -> {
-                                renderState(
-                                    TrackSearchState.Error(
-                                        errorMessage =  R.string.noInternet.toString())
-                                    )
-
-                            }
-
-                            tracks.isEmpty() -> {
-                                renderState(
-                                    TrackSearchState.Empty(
-                                        message = R.string.nothingWasFound.toString())
-                                    )
-                            }
-
-                            else -> {
-                                renderState(
-                                    TrackSearchState.Content(
-                                        tracks = tracks
-                                    )
-                                )
-                            }
-                        }
+            viewModelScope.launch {
+                trackInteractor
+                    .searchTracks(newLastText)
+                    .collect{pair ->
+                        processResult(pair.first, pair.second)
                     }
-                }
-            )
+            }
+        }
+    }
+
+    private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
+        val tracks = mutableListOf<TrackUi>()
+        if (foundTracks != null) {
+            tracks.addAll(foundTracks.map { TrackToTrackUi().map(it) })
+        }
+
+        when {
+            errorMessage != null -> {
+                renderState(
+                    TrackSearchState.Error(
+                        errorMessage =  R.string.noInternet.toString())
+                )
+
+            }
+
+            tracks.isEmpty() -> {
+                renderState(
+                    TrackSearchState.Empty(
+                        message = R.string.nothingWasFound.toString())
+                )
+            }
+
+            else -> {
+                renderState(
+                    TrackSearchState.Content(
+                        tracks = tracks
+                    )
+                )
+            }
         }
     }
 
