@@ -15,7 +15,4 @@ val trackInteractorModule = module {
     factory<TracksInteractor> {
         TracksInteractorImpl(repository = get())
     }
-    factory<ExecutorService> {
-        Executors.newCachedThreadPool()
-    }
 }
