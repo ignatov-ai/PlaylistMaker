@@ -1,4 +1,4 @@
-package com.example.playlistmaker.media.ui.fragments
+package com.example.playlistmaker.favourites.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MediaFragment : Fragment() {
+class FavouriteFragment : Fragment() {
 
     private var _binding: FragmentMediaBinding? = null
     private val binding get() = _binding!!
@@ -27,7 +27,7 @@ class MediaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.pager.adapter = MediaViewPagerAdapter(childFragmentManager, lifecycle)
+        binding.pager.adapter = FavouriteViewPagerAdapter(childFragmentManager, lifecycle)
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             when (position) {
                 0 -> tab.text = getString(R.string.favouriteTabText)

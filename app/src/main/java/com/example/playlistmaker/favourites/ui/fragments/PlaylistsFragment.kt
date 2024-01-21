@@ -1,14 +1,13 @@
-package com.example.playlistmaker.media.ui.fragments
+package com.example.playlistmaker.favourites.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.playlistmaker.databinding.FragmentFavouritesBinding
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
-import com.example.playlistmaker.media.domain.model.Playlist
-import com.example.playlistmaker.media.ui.view_model.PlaylistViewModel
+import com.example.playlistmaker.favourites.domain.model.Playlist
+import com.example.playlistmaker.favourites.ui.view_model.PlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {

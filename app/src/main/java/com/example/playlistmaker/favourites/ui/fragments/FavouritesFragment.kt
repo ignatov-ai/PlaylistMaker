@@ -1,4 +1,4 @@
-package com.example.playlistmaker.media.ui.fragments
+package com.example.playlistmaker.favourites.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.databinding.FragmentFavouritesBinding
-import com.example.playlistmaker.media.ui.view_model.FavouritesViewModel
+import com.example.playlistmaker.favourites.ui.view_model.FavouritesViewModel
 import com.example.playlistmaker.search.ui.model.TrackUi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

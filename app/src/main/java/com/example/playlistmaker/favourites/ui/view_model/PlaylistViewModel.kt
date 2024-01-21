@@ -1,9 +1,8 @@
-package com.example.playlistmaker.media.ui.view_model
+package com.example.playlistmaker.favourites.ui.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.media.domain.model.Playlist
-import com.example.playlistmaker.search.ui.model.TrackUi
+import com.example.playlistmaker.favourites.domain.model.Playlist
 
 class PlaylistViewModel: ViewModel() {
     private val playlistsLiveData = MutableLiveData<List<Playlist>>()
