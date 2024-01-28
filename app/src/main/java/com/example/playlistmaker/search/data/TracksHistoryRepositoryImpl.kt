@@ -1,14 +1,14 @@
 package com.example.playlistmaker.search.data
 
 import com.example.playlistmaker.favourites.data.db.AppDatabase
-import com.example.playlistmaker.search.data.mapper.TrackDtoToDomain
-import com.example.playlistmaker.search.data.mapper.TrackMapper
 import com.example.playlistmaker.search.data.storage.mapper.MapperTrackStorage
 import com.example.playlistmaker.search.domain.api.TracksHistoryRepository
 import com.example.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class TracksHistoryRepositoryImpl(
@@ -28,21 +28,18 @@ class TracksHistoryRepositoryImpl(
     }
 
     init {
-        val scope = CoroutineScope(Job() + Dispatchers.IO)
-        scope.launch {
-            trackHistory.addAll(historyStorage.getHistoryList()
-                .map { MapperTrackStorage().mapTrackStorageToDomain(it) })
-            val favouriteTracks = database.trackDao().getIdTracks()
-            trackHistory.map { track ->
-                if (favouriteTracks.contains(track.trackId)) {
-                    track.isFavourite = true
-                }
-            }
-        }
+        trackHistory.addAll(historyStorage.getHistoryList()
+            .map { MapperTrackStorage().mapTrackStorageToDomain(it) })
     }
 
-    override fun getHistory(): List<Track> {
-        return trackHistory
+    override fun getHistory(): Flow<List<Track>> = flow {
+        val favouritesTracks = database.trackDao().getIdTracks()
+        trackHistory.forEach { track ->
+            if (favouritesTracks.contains(track.trackId)) {
+                track.isFavourite = true
+            }
+        }
+        emit(trackHistory)
     }
 
     override fun saveHistory() {

@@ -75,6 +75,8 @@ class PlayerViewModel(
         }
 
         mediaPlayerInteractor.setOnCompletionListener(onCompletedListener)
+
+        mutableFavouriteLiveData.postValue(track.isFavourite)
     }
 
     fun onPlayerButtonClick() {

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.favourites.ui.view_model
+package com.example.playlistmaker.playlist.ui.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

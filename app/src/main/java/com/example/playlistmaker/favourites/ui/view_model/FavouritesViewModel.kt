@@ -2,13 +2,41 @@ package com.example.playlistmaker.favourites.ui.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.favourites.domain.FavouritesInteractor
+import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.search.ui.mapper.TrackUiMapper
 import com.example.playlistmaker.search.ui.model.TrackUi
+import kotlinx.coroutines.launch
 
-class FavouritesViewModel: ViewModel() {
-    private val favouritesLiveData = MutableLiveData<List<TrackUi>>()
-    val listOfFavouritesLiveData = favouritesLiveData
+class FavouritesViewModel(
+    private val favouritesInteractor: FavouritesInteractor
+    ): ViewModel() {
+    private val favouriteLiveData = MutableLiveData<FavouriteState>()
+    val favouritesListOfLiveData = favouriteLiveData
 
-    init {
-        favouritesLiveData.postValue(emptyList())
+    fun onViewCreatedOnScreen() {
+        viewModelScope.launch {
+            favouritesInteractor
+                .getTracksFromFavourites()
+                .collect { tracks ->
+                    handleResult(tracks)
+                }
+        }
+    }
+
+    private fun handleResult(tracks: List<Track>) {
+        if (tracks.isEmpty()) {
+            setState(FavouriteState.Empty)
+        } else {
+            val tracksUi = tracks.map { item ->
+                TrackUiMapper().map(item)
+            }
+            setState(FavouriteState.Content(tracks = tracksUi))
+        }
+    }
+
+    private fun setState(state: FavouriteState) {
+        favouritesListOfLiveData.postValue(state)
     }
 }

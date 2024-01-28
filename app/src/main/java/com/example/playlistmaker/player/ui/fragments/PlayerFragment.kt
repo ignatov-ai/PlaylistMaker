@@ -62,6 +62,8 @@ class PlayerFragment: Fragment() {
             setTimer(it)
         }
 
+        viewModel.favouriteListLiveData.observe(viewLifecycleOwner) { setLikeButtonState(it) }
+
         // Кнопка плей/пауза к трекам
         setTrackInfo()
 
@@ -144,5 +146,13 @@ class PlayerFragment: Fragment() {
         binding.collectionName.text = track.collectionName
         binding.releaseDate.text = releaseYear
         binding.primaryGenreName.text = track.primaryGenreName
+    }
+
+    private fun setLikeButtonState(isFavourite: Boolean) {
+        if (isFavourite) {
+            binding.likeButton.setImageResource(R.drawable.liketrackbuttontrue)
+        } else {
+            binding.likeButton.setImageResource(R.drawable.liketrackbuttonfalse)
+        }
     }
 }

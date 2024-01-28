@@ -5,41 +5,48 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentMediaBinding
-import com.google.android.material.tabs.TabLayoutMediator
+import com.example.playlistmaker.databinding.FragmentFavouritesBinding
+import com.example.playlistmaker.favourites.ui.view_model.FavouritesViewModel
+import com.example.playlistmaker.search.ui.model.TrackUi
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavouriteFragment : Fragment() {
+class FavouritesFragment : Fragment() {
 
-    private var _binding: FragmentMediaBinding? = null
+    companion object {
+        fun newInstance() = FavouritesFragment()
+    }
+
+    private val viewModel: FavouritesViewModel by viewModel()
+
+    private var _binding: FragmentFavouritesBinding? = null
     private val binding get() = _binding!!
-    private lateinit var tabMediator: TabLayoutMediator
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentMediaBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.pager.adapter = FavouriteViewPagerAdapter(childFragmentManager, lifecycle)
-        tabMediator = TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
-            when (position) {
-                0 -> tab.text = getString(R.string.favouriteTabText)
-                1 -> tab.text = getString(R.string.playlistTabText)
-            }
+        viewModel.listOfFavouritesLiveData.observe(viewLifecycleOwner) {
+            render(it)
         }
-        tabMediator.attach()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        tabMediator.detach()
         _binding = null
+    }
+
+
+    private fun render(listOfFavourites: List<TrackUi>?) {
+        if (listOfFavourites.isNullOrEmpty()) {
+            binding.favouritesPlaceholder.visibility = View.VISIBLE
+        }
     }
 }

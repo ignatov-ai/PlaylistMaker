@@ -6,7 +6,7 @@ import org.koin.dsl.module
 
 val favouriteModule = module {
     includes(
-        mediaViewModelModule,
+        favouritesViewModelModule,
         favouriteDataModule,
         favouriteInteractorModule,
         favouriteRepositoryModule
