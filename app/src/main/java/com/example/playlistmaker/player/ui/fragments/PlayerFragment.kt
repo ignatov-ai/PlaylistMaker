@@ -34,7 +34,7 @@ class PlayerFragment: Fragment() {
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
     private val viewModel: PlayerViewModel by viewModel {
-        parametersOf(track.previewUrl)
+        parametersOf(track)
     }
 
     override fun onCreateView(

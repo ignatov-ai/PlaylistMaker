@@ -15,7 +15,8 @@ class TrackUiToDomain {
             releaseDate = trackUi.releaseDate,
             primaryGenreName = trackUi.primaryGenreName,
             country = trackUi.country,
-            previewUrl = trackUi.previewUrl
+            previewUrl = trackUi.previewUrl,
+            isFavourite = trackUi.isFavourite
         )
     }
 }

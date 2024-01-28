@@ -1,4 +1,4 @@
-package ru.kryu.playlistmaker.favourite.di
+package com.example.playlistmaker.favourite.di
 
 import com.example.playlistmaker.favourites.data.FavouritesRepositoryImpl
 import com.example.playlistmaker.favourites.domain.FavouritesRepository

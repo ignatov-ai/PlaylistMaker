@@ -9,7 +9,7 @@ val playerViewModelModule = module {
         PlayerViewModel(
             trackUrl = trackUrl,
             mediaPlayerInteractor = get(),
-            favouriteInteractor = get(),
+            favouriteInteractor = get()
             )
     }
 }

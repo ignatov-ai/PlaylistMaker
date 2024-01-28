@@ -1,5 +1,6 @@
 package com.example.playlistmaker.search.ui.mapper
 
+import com.example.playlistmaker.favourites.data.db.TrackEntity
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.model.TrackUi
 
@@ -16,7 +17,8 @@ class TrackToTrackUi {
             primaryGenreName = track.primaryGenreName,
             country = track.country,
             previewUrl = track.previewUrl,
-            artworkUrl512 = track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+            artworkUrl512 = track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"),
+            isFavourite = track.isFavourite
         )
     }
 }
