@@ -4,7 +4,7 @@ import com.example.playlistmaker.favourites.data.db.TrackEntity
 import com.example.playlistmaker.search.data.dto.TrackDto
 import com.example.playlistmaker.search.domain.model.Track
 
-class TrackDbMapper {
+object TrackDbMapper {
     fun map(track: TrackEntity): Track {
         return Track(
             trackId = track.trackId,

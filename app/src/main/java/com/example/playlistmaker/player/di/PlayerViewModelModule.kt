@@ -6,6 +6,10 @@ import org.koin.dsl.module
 
 val playerViewModelModule = module {
     viewModel { (trackUrl: String) ->
-        PlayerViewModel(trackUrl = trackUrl, mediaPlayerInteractor = get())
+        PlayerViewModel(
+            trackUrl = trackUrl,
+            mediaPlayerInteractor = get(),
+            favouriteInteractor = get(),
+            )
     }
 }
