@@ -6,7 +6,7 @@
         android:title="@string/searchBottomMenuText"/>
 
     <item
-        android:id="@+id/mediaFragment"
+        android:id="@+id/mediaFragment3"
         android:icon="@drawable/media_bottom_button"
         android:title="@string/mediaBottomMenuText"/>
 

@@ -70,6 +70,9 @@ class PlayerFragment: Fragment() {
         binding.playPauseButton.setOnClickListener {
             viewModel.onPlayerButtonClick()
         }
+        binding.likeButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
+        }
     }
 
     override fun onDestroyView() {

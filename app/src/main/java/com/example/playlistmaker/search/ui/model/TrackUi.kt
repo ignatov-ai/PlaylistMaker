@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Parcelize
 data class TrackUi(
-    val trackId: String,
+    val trackId: Long,
     val trackName: String,
     val artistName: String,
     val trackTimeMillis: String,

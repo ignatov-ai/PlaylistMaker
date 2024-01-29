@@ -23,7 +23,6 @@ class PlayerViewModel(
     private val track: TrackUi,
     private val mediaPlayerInteractor: PlayerInteractor,
     private val favouritesInteractor: FavouritesInteractor,
-    private val trackUiToDomain: TrackUiToDomain
     ): ViewModel() {
     companion object {
         private const val DELAY = 300L
@@ -115,11 +114,11 @@ class PlayerViewModel(
         viewModelScope.launch {
             if (track.isFavourite) {
                 track.isFavourite = false
-                favouritesInteractor.deleteTrackFromFavourites(trackUiToDomain.map(track))
+                favouritesInteractor.deleteTrackFromFavourites(TrackUiToDomain().map(track))
                 mutableFavouriteLiveData.postValue(false)
             } else {
                 track.isFavourite = true
-                favouritesInteractor.addTrackToFavourites(trackUiToDomain.map(track))
+                favouritesInteractor.addTrackToFavourites(TrackUiToDomain().map(track))
                 mutableFavouriteLiveData.postValue(true)
             }
         }

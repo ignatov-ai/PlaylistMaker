@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.ui.mapper
 
-import com.example.playlistmaker.favourites.data.db.TrackEntity
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.model.TrackUi
 

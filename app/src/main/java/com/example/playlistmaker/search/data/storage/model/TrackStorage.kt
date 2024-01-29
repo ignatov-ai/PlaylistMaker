@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TrackStorage(
-    val trackId: String,
+    val trackId: Long,
     val trackName: String,
     val artistName: String,
     val trackTimeMillis: String,

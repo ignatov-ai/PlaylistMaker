@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 data class Track(
-    val trackId: Long,
+    val trackId: Long = 0,
     val trackName: String = "",
     val artistName: String = "",
     val trackTimeMillis: String = "",

@@ -1,14 +1,11 @@
-package com.example.playlistmaker.favourites.ui.fragments
+package com.example.playlistmaker.playlist.ui.fragment
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.playlistmaker.playlist.ui.fragment.PlaylistsFragment
+import com.example.playlistmaker.favourites.ui.fragments.FavouriteFragment
 
-
-class FavouriteViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
-    FragmentStateAdapter(fragmentManager, lifecycle) {
+class MediaViewPagerAdapter(fragment: Fragment) :
+    FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int {
         return 2

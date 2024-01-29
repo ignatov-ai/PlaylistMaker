@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/colorOnSecondary"
-    tools:context=".favourites.ui.fragments.FavouriteFragment">
+    tools:context=".playlist.ui.fragment.MediaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

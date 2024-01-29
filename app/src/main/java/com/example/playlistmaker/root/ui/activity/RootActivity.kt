@@ -27,16 +27,15 @@ class RootActivity : AppCompatActivity() {
             .findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.playerFragment -> {
-                    bottomNavigationView.visibility = View.GONE
+                    binding.bottomNavigationView.visibility = View.GONE
                 }
                 else -> {
-                    bottomNavigationView.visibility = View.VISIBLE
+                    binding.bottomNavigationView.visibility = View.VISIBLE
                 }
             }
         }
