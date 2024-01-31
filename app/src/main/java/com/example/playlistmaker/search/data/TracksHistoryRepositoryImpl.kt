@@ -1,11 +1,20 @@
 package com.example.playlistmaker.search.data
 
+import com.example.playlistmaker.favourites.data.db.AppDatabase
 import com.example.playlistmaker.search.data.storage.mapper.MapperTrackStorage
 import com.example.playlistmaker.search.domain.api.TracksHistoryRepository
 import com.example.playlistmaker.search.domain.model.Track
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
-class TracksHistoryRepositoryImpl(private val historyStorage: HistoryStorage) :
-    TracksHistoryRepository {
+class TracksHistoryRepositoryImpl(
+    private val historyStorage: HistoryStorage,
+    private val database: AppDatabase
+    ): TracksHistoryRepository {
 
     companion object {
         private const val HISTORY_TRACK_COUNT = 10
@@ -18,8 +27,14 @@ class TracksHistoryRepositoryImpl(private val historyStorage: HistoryStorage) :
             .map { MapperTrackStorage().mapTrackStorageToDomain(it) }
     }
 
-    override fun getHistory(): List<Track> {
-        return trackHistory
+    override fun getHistory(): Flow<List<Track>> = flow {
+        val favouritesTracks = database.trackDao().getIdTracks()
+        trackHistory.forEach { track ->
+            if (favouritesTracks.contains(track.trackId)) {
+                track.isFavourite = true
+            }
+        }
+        emit(trackHistory)
     }
 
     override fun saveHistory() {

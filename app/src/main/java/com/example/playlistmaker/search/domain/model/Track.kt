@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 data class Track(
-    val trackId: String = "",
+    val trackId: Long = 0,
     val trackName: String = "",
     val artistName: String = "",
     val trackTimeMillis: String = "",
@@ -13,5 +13,6 @@ data class Track(
     val releaseDate: String = "",
     val primaryGenreName: String = "",
     val country: String = "",
-    val previewUrl: String = ""
+    val previewUrl: String = "",
+    var isFavourite: Boolean = false
 )

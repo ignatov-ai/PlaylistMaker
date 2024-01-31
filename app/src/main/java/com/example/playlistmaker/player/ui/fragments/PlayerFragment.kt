@@ -34,7 +34,7 @@ class PlayerFragment: Fragment() {
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
     private val viewModel: PlayerViewModel by viewModel {
-        parametersOf(track.previewUrl)
+        parametersOf(track)
     }
 
     override fun onCreateView(
@@ -62,11 +62,16 @@ class PlayerFragment: Fragment() {
             setTimer(it)
         }
 
+        viewModel.favouriteListLiveData.observe(viewLifecycleOwner) { setLikeButtonState(it) }
+
         // Кнопка плей/пауза к трекам
         setTrackInfo()
 
         binding.playPauseButton.setOnClickListener {
             viewModel.onPlayerButtonClick()
+        }
+        binding.likeButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
         }
     }
 
@@ -144,5 +149,13 @@ class PlayerFragment: Fragment() {
         binding.collectionName.text = track.collectionName
         binding.releaseDate.text = releaseYear
         binding.primaryGenreName.text = track.primaryGenreName
+    }
+
+    private fun setLikeButtonState(isFavourite: Boolean) {
+        if (isFavourite) {
+            binding.likeButton.setImageResource(R.drawable.liketrackbuttontrue)
+        } else {
+            binding.likeButton.setImageResource(R.drawable.liketrackbuttonfalse)
+        }
     }
 }

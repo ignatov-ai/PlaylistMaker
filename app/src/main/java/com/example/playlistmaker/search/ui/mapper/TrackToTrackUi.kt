@@ -16,7 +16,8 @@ class TrackToTrackUi {
             primaryGenreName = track.primaryGenreName,
             country = track.country,
             previewUrl = track.previewUrl,
-            artworkUrl512 = track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+            artworkUrl512 = track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"),
+            isFavourite = track.isFavourite
         )
     }
 }

@@ -7,7 +7,7 @@ import java.util.Locale
 
 @Parcelize
 data class TrackUi(
-    val trackId: String,
+    val trackId: Long,
     val trackName: String,
     val artistName: String,
     val trackTimeMillis: String,
@@ -17,7 +17,8 @@ data class TrackUi(
     val primaryGenreName: String,
     val country: String,
     val previewUrl: String,
-    val artworkUrl512: String
+    val artworkUrl512: String,
+    var isFavourite: Boolean
 ) : Parcelable {
 
     val releaseYear: String?

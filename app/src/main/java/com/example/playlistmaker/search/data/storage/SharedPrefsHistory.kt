@@ -1,8 +1,6 @@
 package com.example.playlistmaker.search.data.storage
 
-import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.search.data.HistoryStorage
 import com.example.playlistmaker.search.data.storage.model.TrackStorage
 import com.google.gson.Gson

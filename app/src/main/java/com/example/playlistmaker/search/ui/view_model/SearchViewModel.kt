@@ -11,13 +11,15 @@ import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.mapper.TrackToTrackUi
 import com.example.playlistmaker.search.ui.mapper.TrackUiToDomain
 import com.example.playlistmaker.search.ui.model.TrackUi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val trackInteractor: TracksInteractor,
-    private val trackHistoryInteractor: TracksHistoryInteractor
+    private val trackHistoryInteractor: TracksHistoryInteractor,
 ) : ViewModel() {
 
     companion object {
@@ -37,7 +39,7 @@ class SearchViewModel(
     val isClickAllowedLiveData: LiveData<Boolean> = mutableIsClickAllowedLiveData
 
     init {
-        renderHistoryCheck()
+        trackHistory()
     }
 
     fun searchDebounce(lastText: String) {
@@ -110,11 +112,8 @@ class SearchViewModel(
         stateLiveData.postValue(state)
     }
 
-    private fun renderHistoryCheck() {
-        val list = trackHistory()
-        if (list.isEmpty()) {
-            renderState(TrackSearchState.Content(emptyList()))
-        } else {
+    private fun renderHistoryCheck(list: List<TrackUi>) {
+        if (list.isNotEmpty()) {
             renderState(TrackSearchState.History(list))
         }
     }
@@ -131,8 +130,19 @@ class SearchViewModel(
         }
     }
 
-    private fun trackHistory(): MutableList<TrackUi> {
-        return trackHistoryInteractor.getHistory().map { TrackToTrackUi().map(it) } as MutableList<TrackUi>
+    private fun trackHistory() {
+        renderState(TrackSearchState.Content(emptyList()))
+        viewModelScope.launch(Dispatchers.IO) {
+            trackHistoryInteractor.getHistory()
+                .map { tracks: List<Track> ->
+                    tracks.map { track: Track ->
+                        TrackToTrackUi().map(track)
+                    }
+                }
+                .collect { tracks: List<TrackUi> ->
+                    renderHistoryCheck(tracks)
+                }
+        }
     }
 
     private fun saveHistory() {
@@ -143,9 +153,6 @@ class SearchViewModel(
         clickDebounce()
         trackHistoryInteractor.addTrack(TrackUiToDomain().map(track))
         saveHistory()
-        if (stateLiveData.value is TrackSearchState.History) {
-            renderState(TrackSearchState.History(trackHistory()))
-        }
     }
 
     fun onClearHistoryClick() {
@@ -154,6 +161,6 @@ class SearchViewModel(
     }
 
     fun onClearButtonClick() {
-        renderHistoryCheck()
+        trackHistory()
     }
 }
