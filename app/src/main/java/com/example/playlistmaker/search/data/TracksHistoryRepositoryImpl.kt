@@ -27,11 +27,6 @@ class TracksHistoryRepositoryImpl(
             .map { MapperTrackStorage().mapTrackStorageToDomain(it) }
     }
 
-    init {
-        trackHistory.addAll(historyStorage.getHistoryList()
-            .map { MapperTrackStorage().mapTrackStorageToDomain(it) })
-    }
-
     override fun getHistory(): Flow<List<Track>> = flow {
         val favouritesTracks = database.trackDao().getIdTracks()
         trackHistory.forEach { track ->

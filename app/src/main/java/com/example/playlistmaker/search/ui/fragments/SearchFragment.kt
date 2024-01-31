@@ -101,7 +101,9 @@ class SearchFragment : Fragment() {
         // Обработчик нажатия кнопки ОБНОВИТЬ при отсутствии сети
         binding.searchPlaceholderRefreshButton.setOnClickListener {
             if (isClickAllowed) {
-                binding.searchPlaceholder.visibility = View.GONE
+                binding.searchPlaceholderErrorIcon.visibility = View.GONE
+                binding.searchPlaceholderRefreshButton.visibility = View.GONE
+                binding.searchPlaceholderErrorText.visibility = View.GONE
                 viewModel.searchWithoutDebounce(searchText)
             }
         }
