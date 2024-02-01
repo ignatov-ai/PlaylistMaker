@@ -37,4 +37,7 @@
     <string name="settingsBottomMenuText">Настройки</string>
     <string name="connectionErrorString">Проверьте подключение к интернету</string>
     <string name="serverErrorString">Ошибка сервера</string>
+    <string name="newPlaylistHeaderText">Новый плейлист</string>
+    <string name="newPlaylistNameFieldText">Название*</string>
+    <string name="newPlaylistDescriptionFieldText">Описание</string>
 </resources>
