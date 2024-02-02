@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.favourites.domain.model.Playlist
 import com.example.playlistmaker.playlist.ui.view_model.PlaylistViewModel
@@ -35,6 +37,10 @@ class PlaylistsFragment : Fragment() {
 
         viewModel.listOfPlaylistsLiveData.observe(viewLifecycleOwner) {
             render(it)
+        }
+
+        binding.newPlaylistFragmentButton.setOnClickListener {
+            findNavController().navigate(R.id.action_mediaFragment3_to_newPlaylistFragment)
         }
     }
 
