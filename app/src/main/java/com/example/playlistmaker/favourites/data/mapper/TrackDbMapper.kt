@@ -16,7 +16,8 @@ object TrackDbMapper {
             releaseDate = track.releaseDate,
             primaryGenreName = track.primaryGenreName,
             country = track.country,
-            previewUrl = track.previewUrl
+            previewUrl = track.previewUrl,
+            isFavourite = track.isFavourite
         )
     }
 
@@ -31,7 +32,9 @@ object TrackDbMapper {
             releaseDate = track.releaseDate,
             primaryGenreName = track.primaryGenreName,
             country = track.country,
-            previewUrl = track.previewUrl
+            previewUrl = track.previewUrl,
+            isFavourite = track.isFavourite,
+            createTime = System.currentTimeMillis()
         )
     }
 }

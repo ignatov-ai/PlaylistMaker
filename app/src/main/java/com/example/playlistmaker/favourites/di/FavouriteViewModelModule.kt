@@ -11,7 +11,4 @@ val favouritesViewModelModule = module {
             favouritesInteractor = get()
         )
     }
-    viewModel {
-        PlaylistViewModel()
-    }
 }

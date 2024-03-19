@@ -20,5 +20,6 @@
     <color name="switchTrackNight">@color/ypBlue</color>
     <color name="ypGray">#AEAFB4</color>
     <color name="ypSearchBar">#E6E8EB</color>
+    <color name="overlay">#99000000</color>
 
 </resources>
