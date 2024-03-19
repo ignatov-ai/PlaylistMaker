@@ -109,6 +109,9 @@ class NewPlaylistFragment : Fragment() {
                 }
             )
             findNavController().navigateUp()
+
+            Toast.makeText(requireContext(),
+                "Плейлист ${binding.newPlaylistNameField.text.toString()} создан", Toast.LENGTH_LONG).show()
         }
 
         listener =
@@ -160,7 +163,6 @@ class NewPlaylistFragment : Fragment() {
             }
         }
         binding.newPlaylistDescriptionField.addTextChangedListener(editTextTextWatcher2)
-
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
             .setTitle(getString(R.string.newPlaylistAddConfirm))
