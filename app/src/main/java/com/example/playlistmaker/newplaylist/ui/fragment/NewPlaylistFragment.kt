@@ -75,7 +75,7 @@ class NewPlaylistFragment : Fragment() {
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         binding.backToMediaButton.setOnClickListener {
-            findNavController().navigateUp()
+            backPressedHandle()
         }
 
         pickMedia =
@@ -162,7 +162,7 @@ class NewPlaylistFragment : Fragment() {
         binding.newPlaylistDescriptionField.addTextChangedListener(editTextTextWatcher2)
 
 
-        confirmDialog = MaterialAlertDialogBuilder(requireContext())
+        confirmDialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
             .setTitle(getString(R.string.newPlaylistAddConfirm))
             .setMessage(getString(R.string.newPlalistUnsavedDataLost))
             .setNeutralButton(getString(R.string.cancel)) { dialog, which ->

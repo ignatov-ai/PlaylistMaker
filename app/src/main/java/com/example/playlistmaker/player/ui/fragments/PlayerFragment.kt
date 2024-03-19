@@ -1,11 +1,13 @@
 package com.example.playlistmaker.player.ui.fragments
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -214,16 +216,22 @@ class PlayerFragment: Fragment() {
         val message: String
         when (stateOfTrackInPlaylist) {
             is StateOfTrackInPlaylist.TrackInPlaylistAdded -> {
-                message = getString(R.string.addedToPlaylist, stateOfTrackInPlaylist.playlistName)
+                message = "${getString(R.string.addedToPlaylist)} ${stateOfTrackInPlaylist.playlistName}"
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
 
             is StateOfTrackInPlaylist.TrackInPlaylistNotAdded -> {
-                message = getString(R.string.existInPlaylist, stateOfTrackInPlaylist.playlistName)
+                message = "${getString(R.string.existInPlaylist)} ${stateOfTrackInPlaylist.playlistName}"
             }
+
         }
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
-            .show()
+
+        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+        val snackbarView = snackbar.view
+        val textView = snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView.setTextColor(Color.WHITE)
+
+        snackbar.show()
     }
 
     private fun setListInAdapter(playlists: List<PlaylistUi>?) {
