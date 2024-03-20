@@ -56,7 +56,7 @@ class PlayerFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -223,13 +223,12 @@ class PlayerFragment: Fragment() {
             is StateOfTrackInPlaylist.TrackInPlaylistNotAdded -> {
                 message = "${getString(R.string.existInPlaylist)} ${stateOfTrackInPlaylist.playlistName}"
             }
-
         }
 
         val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
-        val snackbarView = snackbar.view
-        val textView = snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-        textView.setTextColor(Color.WHITE)
+
+        snackbar.setTextColor(Color.WHITE)
+        snackbar.setBackgroundTint(Color.BLACK)
 
         snackbar.show()
     }

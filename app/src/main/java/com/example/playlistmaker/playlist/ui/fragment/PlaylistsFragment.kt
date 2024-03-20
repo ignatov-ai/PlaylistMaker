@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
-import com.example.playlistmaker.playlist.domain.model.Playlist
 import com.example.playlistmaker.playlist.ui.recycler.PlaylistsAdapter
 import com.example.playlistmaker.playlist.ui.view_model.PlaylistViewModel
 import com.example.playlistmaker.playlist.ui.view_model.PlaylistsState

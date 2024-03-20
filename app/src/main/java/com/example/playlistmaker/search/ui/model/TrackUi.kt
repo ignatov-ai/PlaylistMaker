@@ -22,7 +22,7 @@ data class TrackUi(
 ) : Parcelable {
 
     val releaseYear: String?
-        get() = releaseDate?.substring(0,4)
+        get() = releaseDate.substring(0,4)
 
     val timeToMins: String?
         get() = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis.toInt())

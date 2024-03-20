@@ -1,7 +1,6 @@
 package com.example.playlistmaker.favourites.data.mapper
 
 import com.example.playlistmaker.favourites.data.db.TrackEntity
-import com.example.playlistmaker.search.data.dto.TrackDto
 import com.example.playlistmaker.search.domain.model.Track
 
 object TrackDbMapper {

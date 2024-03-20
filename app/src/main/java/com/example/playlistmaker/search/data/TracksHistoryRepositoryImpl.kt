@@ -4,12 +4,8 @@ import com.example.playlistmaker.favourites.data.db.AppDatabase
 import com.example.playlistmaker.search.data.storage.mapper.MapperTrackStorage
 import com.example.playlistmaker.search.domain.api.TracksHistoryRepository
 import com.example.playlistmaker.search.domain.model.Track
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 
 class TracksHistoryRepositoryImpl(
     private val historyStorage: HistoryStorage,

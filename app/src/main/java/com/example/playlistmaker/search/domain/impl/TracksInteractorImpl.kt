@@ -6,7 +6,6 @@ import com.example.playlistmaker.search.domain.model.Resource
 import com.example.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.concurrent.Executors
 
 class TracksInteractorImpl(private val repository: TracksRepository): TracksInteractor {
 
