@@ -7,10 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.favourites.domain.FavouritesInteractor
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.mapper.TrackUiMapper
-import com.example.playlistmaker.search.ui.mapper.TrackUiToDomain
-import com.example.playlistmaker.search.ui.model.TrackUi
-import com.example.playlistmaker.search.ui.view_model.SearchViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class FavouritesViewModel(

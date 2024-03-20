@@ -43,4 +43,7 @@
     <dimen name="font13sp">13sp</dimen>
     <dimen name="size40dp">40dp</dimen>
     <dimen name="size104dp">104dp</dimen>
+    <dimen name="size44dp">44dp</dimen>
+    <dimen name="maxBehaviorHeight">360dp</dimen>
+    <dimen name="size18dp">18dp</dimen>
 </resources>

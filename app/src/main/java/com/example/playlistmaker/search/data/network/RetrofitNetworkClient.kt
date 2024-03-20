@@ -4,10 +4,8 @@ import android.net.NetworkCapabilities
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.dto.TrackResponse
 import com.example.playlistmaker.search.data.dto.TrackSearchRequest
-import com.example.playlistmaker.search.data.dto.TrackSearchResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 
 class RetrofitNetworkClient(
     private val iTunesApiService: ITunesAPI,

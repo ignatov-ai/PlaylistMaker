@@ -1,25 +1,35 @@
 package com.example.playlistmaker.player.ui.fragments
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore.Audio.AudioColumns.TRACK
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.player.ui.PlayerState
+import com.example.playlistmaker.player.ui.recycler.PlayerPlaylistAdapter
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
+import com.example.playlistmaker.player.ui.view_model.StateOfTrackInPlaylist
+import com.example.playlistmaker.playlist.ui.model.PlaylistUi
 import com.example.playlistmaker.search.domain.model.Track
-import com.example.playlistmaker.search.ui.mapper.TrackToTrackUi
+import com.example.playlistmaker.search.ui.mapper.TrackUiMapper
 import com.example.playlistmaker.search.ui.model.TrackUi
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+
 
 class PlayerFragment: Fragment() {
 
@@ -33,6 +43,11 @@ class PlayerFragment: Fragment() {
     private lateinit var track: TrackUi
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
+
+    private var playlistAdapter: PlayerPlaylistAdapter? = null
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(track)
     }
@@ -41,10 +56,9 @@ class PlayerFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentPlayerBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,6 +86,45 @@ class PlayerFragment: Fragment() {
         }
         binding.likeButton.setOnClickListener {
             viewModel.onFavoriteClicked()
+        }
+
+        viewModel.listPlaylistsLiveData.observe(viewLifecycleOwner) { setListInAdapter(it) }
+
+        viewModel.observeMessageLiveData().observe(viewLifecycleOwner) { showMessage(it) }
+
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetPlaylists)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        binding.addToPlaylistButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            viewModel.onAddButtonClicked()
+        }
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.visibility = View.GONE
+                    }
+
+                    else -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.overlay.alpha = slideOffset + 0.6f
+            }
+        })
+        playlistAdapter = PlayerPlaylistAdapter { playlist ->
+            viewModel.onPlaylistClicked(playlist)
+        }
+        binding.playerRecycleViewPlaylists.layoutManager =
+            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        binding.playerRecycleViewPlaylists.adapter = playlistAdapter
+        binding.buttonNewPlaylist.setOnClickListener {
+            findNavController().navigate(R.id.action_playerFragment_to_newPlaylistFragment)
         }
     }
 
@@ -118,12 +171,12 @@ class PlayerFragment: Fragment() {
     private fun getTrack(): TrackUi =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(TRACK, TrackUi::class.java)
-                ?: TrackToTrackUi().map(
+                ?: TrackUiMapper().map(
                     Track()
                 )
         } else {
             @Suppress("DEPRECATION")
-            arguments?.getParcelable(TRACK) ?: TrackToTrackUi().map(
+            arguments?.getParcelable(TRACK) ?: TrackUiMapper().map(
                 Track()
             )
         }
@@ -156,6 +209,35 @@ class PlayerFragment: Fragment() {
             binding.likeButton.setImageResource(R.drawable.liketrackbuttontrue)
         } else {
             binding.likeButton.setImageResource(R.drawable.liketrackbuttonfalse)
+        }
+    }
+
+    private fun showMessage(stateOfTrackInPlaylist: StateOfTrackInPlaylist) {
+        val message: String
+        when (stateOfTrackInPlaylist) {
+            is StateOfTrackInPlaylist.TrackInPlaylistAdded -> {
+                message = "${getString(R.string.addedToPlaylist)} ${stateOfTrackInPlaylist.playlistName}"
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+
+            is StateOfTrackInPlaylist.TrackInPlaylistNotAdded -> {
+                message = "${getString(R.string.existInPlaylist)} ${stateOfTrackInPlaylist.playlistName}"
+            }
+        }
+
+        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+
+        snackbar.setTextColor(Color.WHITE)
+        snackbar.setBackgroundTint(Color.BLACK)
+
+        snackbar.show()
+    }
+
+    private fun setListInAdapter(playlists: List<PlaylistUi>?) {
+        if (playlists != null) {
+            playlistAdapter?.playlists?.clear()
+            playlistAdapter?.playlists?.addAll(playlists)
+            playlistAdapter?.notifyDataSetChanged()
         }
     }
 }

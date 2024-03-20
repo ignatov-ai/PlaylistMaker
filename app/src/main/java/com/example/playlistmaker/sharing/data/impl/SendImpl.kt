@@ -2,7 +2,6 @@ package com.example.playlistmaker.sharing.data.impl
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.example.playlistmaker.sharing.data.Send
 
 class SendImpl(private val context: Context) : Send {

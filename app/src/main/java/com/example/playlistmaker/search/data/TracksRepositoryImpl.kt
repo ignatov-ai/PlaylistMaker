@@ -2,10 +2,10 @@ package com.example.playlistmaker.search.data
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.favourites.data.db.AppDatabase
-import com.example.playlistmaker.search.domain.api.TracksRepository
 import com.example.playlistmaker.search.data.dto.TrackSearchRequest
 import com.example.playlistmaker.search.data.dto.TrackSearchResponse
 import com.example.playlistmaker.search.data.mapper.TrackDtoToDomain
+import com.example.playlistmaker.search.domain.api.TracksRepository
 import com.example.playlistmaker.search.domain.model.Resource
 import com.example.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow

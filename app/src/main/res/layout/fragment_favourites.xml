@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".playlist.ui.fragment.PlaylistsFragment">
+    tools:context=".favourites.ui.fragments.FavouriteFragment">
 
     <LinearLayout
         android:id="@+id/favouritesPlaceholder"

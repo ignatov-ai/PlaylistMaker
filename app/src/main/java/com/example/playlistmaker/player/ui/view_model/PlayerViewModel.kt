@@ -1,17 +1,20 @@
 package com.example.playlistmaker.player.ui.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.favourites.domain.FavouritesInteractor
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
+import com.example.playlistmaker.player.domain.api.TrackInPlaylistInteractor
 import com.example.playlistmaker.player.ui.PlayerState
-import com.example.playlistmaker.search.ui.mapper.TrackToTrackUi
-import com.example.playlistmaker.search.ui.mapper.TrackUiToDomain
+import com.example.playlistmaker.playlist.domain.api.PlaylistsInteractor
+import com.example.playlistmaker.playlist.ui.mapper.PlaylistUiMapper
+import com.example.playlistmaker.playlist.ui.model.PlaylistUi
+import com.example.playlistmaker.search.ui.mapper.TrackUiMapper
 import com.example.playlistmaker.search.ui.model.TrackUi
+import com.example.playlistmaker.search.ui.view_model.SingleLiveEvent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -23,6 +26,8 @@ class PlayerViewModel(
     private val track: TrackUi,
     private val mediaPlayerInteractor: PlayerInteractor,
     private val favouritesInteractor: FavouritesInteractor,
+    private val playlistInteractor: PlaylistsInteractor,
+    private val trackInPlaylistInteractor: TrackInPlaylistInteractor
     ): ViewModel() {
     companion object {
         private const val DELAY = 300L
@@ -38,6 +43,12 @@ class PlayerViewModel(
 
     private var mutableFavouriteLiveData = MutableLiveData<Boolean>()
     val favouriteListLiveData: LiveData<Boolean> = mutableFavouriteLiveData
+
+    private val listPlaylistsMutableLiveData = MutableLiveData<List<PlaylistUi>>()
+    val listPlaylistsLiveData: LiveData<List<PlaylistUi>> = listPlaylistsMutableLiveData
+
+    private val messageLiveData = SingleLiveEvent<StateOfTrackInPlaylist>()
+    fun observeMessageLiveData(): LiveData<StateOfTrackInPlaylist> = messageLiveData
 
     private fun timerUpdate() {
         timerJob = viewModelScope.launch {
@@ -114,12 +125,44 @@ class PlayerViewModel(
         viewModelScope.launch {
             if (track.isFavourite) {
                 track.isFavourite = false
-                favouritesInteractor.deleteTrackFromFavourites(TrackUiToDomain().map(track))
+                favouritesInteractor.deleteTrackFromFavourites(TrackUiMapper().map(track))
                 mutableFavouriteLiveData.postValue(false)
             } else {
                 track.isFavourite = true
-                favouritesInteractor.addTrackToFavourites(TrackUiToDomain().map(track))
+                favouritesInteractor.addTrackToFavourites(TrackUiMapper().map(track))
                 mutableFavouriteLiveData.postValue(true)
+            }
+        }
+    }
+
+    fun onAddButtonClicked() {
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistInteractor.getPlaylists().collect { playlists ->
+                val playlistsUi = playlists.map { item ->
+                    PlaylistUiMapper.map(item)
+                }
+                listPlaylistsMutableLiveData.postValue(playlistsUi)
+            }
+        }
+    }
+
+    fun onPlaylistClicked(playlistItemUi: PlaylistUi) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (!trackInPlaylistInteractor.trackInDataBase(idTrack = track.trackId)) {
+                favouritesInteractor.addTrackToFavourites(TrackUiMapper().map(track))
+            }
+            val isAdded = trackInPlaylistInteractor.addTrackInPlaylist(
+                playlistId = playlistItemUi.playlistId,
+                trackId = track.trackId
+            )
+            if (isAdded) {
+                messageLiveData.postValue(StateOfTrackInPlaylist.TrackInPlaylistAdded(playlistItemUi.playlistName))
+            } else {
+                messageLiveData.postValue(
+                    StateOfTrackInPlaylist.TrackInPlaylistNotAdded(
+                        playlistItemUi.playlistName
+                    )
+                )
             }
         }
     }

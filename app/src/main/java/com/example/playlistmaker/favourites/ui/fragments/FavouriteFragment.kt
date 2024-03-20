@@ -57,8 +57,6 @@ class FavouriteFragment : Fragment() {
             }
         }
 
-
-
         //адаптеры списков
         binding.favouritesTracksListView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.favouritesTracksListView.adapter = tracksAdapter

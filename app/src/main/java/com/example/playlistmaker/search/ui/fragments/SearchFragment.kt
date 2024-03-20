@@ -2,31 +2,22 @@ package com.example.playlistmaker.search.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.player.ui.fragments.PlayerFragment
 import com.example.playlistmaker.player.ui.fragments.PlayerFragment.Companion.createArgs
-import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.model.TrackUi
 import com.example.playlistmaker.search.ui.recycler.TrackAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
-import com.example.playlistmaker.search.ui.view_model.SearchViewModel.Companion.CLICK_DEBOUNCE_DELAY
 import com.example.playlistmaker.search.ui.view_model.TrackSearchState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -45,7 +36,7 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -57,7 +48,7 @@ class SearchFragment : Fragment() {
             if (isClickAllowed) {
                 findNavController().navigate(
                     R.id.action_searchFragment_to_playerFragment,
-                    PlayerFragment.createArgs(it)
+                    createArgs(it)
                 )
                 viewModel.onItemClick(it)
             }

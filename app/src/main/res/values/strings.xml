@@ -37,4 +37,16 @@
     <string name="settingsBottomMenuText">Настройки</string>
     <string name="connectionErrorString">Проверьте подключение к интернету</string>
     <string name="serverErrorString">Ошибка сервера</string>
+    <string name="newPlaylistHeaderText">Новый плейлист</string>
+    <string name="newPlaylistNameFieldText">Название*</string>
+    <string name="newPlaylistDescriptionFieldText">Описание</string>
+    <string name="newPlaylistAddConfirm">Завершить создание плейлиста?</string>
+    <string name="newPlalistUnsavedDataLost">Все несохраненные данные будут потеряны</string>
+    <string name="cancel">Отмена</string>
+    <string name="done">Завершить</string>
+    <string name="playlistsIconsPermission">Данное разрешение необходимо для доступа к файлам изображения плейлиста</string>
+    <string name="addToPlaylist">Добавить в плейлист</string>
+    <string name="newPlaylist">Новый плейлист</string>
+    <string name="addedToPlaylist">Добавлен в плейлист</string>
+    <string name="existInPlaylist">Трек уже добавлен в плейлист</string>
 </resources>

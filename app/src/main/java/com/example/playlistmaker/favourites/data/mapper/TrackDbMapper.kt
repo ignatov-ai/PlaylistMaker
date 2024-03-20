@@ -1,7 +1,6 @@
 package com.example.playlistmaker.favourites.data.mapper
 
 import com.example.playlistmaker.favourites.data.db.TrackEntity
-import com.example.playlistmaker.search.data.dto.TrackDto
 import com.example.playlistmaker.search.domain.model.Track
 
 object TrackDbMapper {
@@ -16,7 +15,8 @@ object TrackDbMapper {
             releaseDate = track.releaseDate,
             primaryGenreName = track.primaryGenreName,
             country = track.country,
-            previewUrl = track.previewUrl
+            previewUrl = track.previewUrl,
+            isFavourite = track.isFavourite
         )
     }
 
@@ -31,7 +31,9 @@ object TrackDbMapper {
             releaseDate = track.releaseDate,
             primaryGenreName = track.primaryGenreName,
             country = track.country,
-            previewUrl = track.previewUrl
+            previewUrl = track.previewUrl,
+            isFavourite = track.isFavourite,
+            createTime = System.currentTimeMillis()
         )
     }
 }
