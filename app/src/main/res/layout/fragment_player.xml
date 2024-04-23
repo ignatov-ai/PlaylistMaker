@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -239,7 +240,6 @@
             android:textFontWeight="500"
             android:text="Rock"/>
 
-        <!--    Параметр cтрана-->
         <TextView
             android:id="@+id/countryLabel"
             android:layout_width="wrap_content"
@@ -265,6 +265,66 @@
             android:textSize="@dimen/font13sp"
             android:textFontWeight="500"
             android:text="Великобритания"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+        <!-- Панель с плейлистами -->
+
+        <View
+            android:id="@+id/overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/overlay"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/bottomSheetPlaylists"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bottom_sheet_bg"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/size4dp"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="@dimen/maxBehaviorHeight"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            tools:visibility="gone">
+
+            <View
+                android:layout_width="@dimen/size52dp"
+                android:layout_height="@dimen/size4dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin8dp"
+                android:layout_marginBottom="@dimen/size12dp"
+                android:background="@drawable/round_box" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size12dp"
+                android:layout_marginTop="@dimen/size18dp"
+                android:layout_marginBottom="@dimen/size12dp"
+                android:textColor="?attr/colorOnPrimary"
+                android:fontFamily="@font/ysmedium"
+                android:textSize="@dimen/size19sp"
+                android:textFontWeight="400"
+                android:text="@string/addToPlaylist" />
+
+            <Button
+                android:id="@+id/buttonNewPlaylist"
+                style="@style/refreshButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size16dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/newPlaylist" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playerRecycleViewPlaylists"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/size24dp"
+                tools:itemCount="15"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/playlist_bottom_sheet_item" />
+        </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -15,7 +15,7 @@
         android:layout_gravity="center|start"
         android:layout_marginLeft="@dimen/margin_l_r"
         android:orientation="horizontal"
-        app:srcCompat="@mipmap/track_list_element_icon_foreground" />
+        app:srcCompat="@drawable/noalbumicon" />
     <LinearLayout
         android:id="@+id/trackListMiddle"
         android:layout_width="0dp"

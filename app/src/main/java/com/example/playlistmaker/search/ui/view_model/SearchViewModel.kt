@@ -8,8 +8,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.search.domain.api.TracksHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.model.Track
-import com.example.playlistmaker.search.ui.mapper.TrackToTrackUi
-import com.example.playlistmaker.search.ui.mapper.TrackUiToDomain
+import com.example.playlistmaker.search.ui.mapper.TrackUiMapper
 import com.example.playlistmaker.search.ui.model.TrackUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -79,7 +78,7 @@ class SearchViewModel(
     private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
         val tracks = mutableListOf<TrackUi>()
         if (foundTracks != null) {
-            tracks.addAll(foundTracks.map { TrackToTrackUi().map(it) })
+            tracks.addAll(foundTracks.map { TrackUiMapper().map(it) })
         }
 
         when {
@@ -136,7 +135,7 @@ class SearchViewModel(
             trackHistoryInteractor.getHistory()
                 .map { tracks: List<Track> ->
                     tracks.map { track: Track ->
-                        TrackToTrackUi().map(track)
+                        TrackUiMapper().map(track)
                     }
                 }
                 .collect { tracks: List<TrackUi> ->
@@ -151,7 +150,7 @@ class SearchViewModel(
 
     fun onItemClick(track: TrackUi) {
         clickDebounce()
-        trackHistoryInteractor.addTrack(TrackUiToDomain().map(track))
+        trackHistoryInteractor.addTrack(TrackUiMapper().map(track))
         saveHistory()
     }
 

@@ -1,8 +1,5 @@
 package com.example.playlistmaker.search.domain.model
 
-import java.text.SimpleDateFormat
-import java.util.Locale
-
 data class Track(
     val trackId: Long = 0,
     val trackName: String = "",

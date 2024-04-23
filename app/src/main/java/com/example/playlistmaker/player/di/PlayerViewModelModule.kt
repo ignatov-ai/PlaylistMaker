@@ -10,7 +10,9 @@ val playerViewModelModule = module {
         PlayerViewModel(
             track = track,
             mediaPlayerInteractor = get(),
-            favouritesInteractor = get()
+            favouritesInteractor = get(),
+            playlistInteractor = get(),
+            trackInPlaylistInteractor = get()
             )
     }
 }
