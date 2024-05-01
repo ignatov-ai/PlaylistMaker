@@ -6,6 +6,8 @@ import com.example.playlistmaker.favourites.di.favouriteModule
 import com.example.playlistmaker.newplaylist.di.newPlaylistModule
 import com.example.playlistmaker.player.di.playerModule
 import com.example.playlistmaker.playlist.di.playlistModule
+import com.example.playlistmaker.playlistEdit.di.playlistEditModule
+import com.example.playlistmaker.playlistShow.di.playlistMainModule
 import com.example.playlistmaker.search.di.searchModule
 import com.example.playlistmaker.settings.di.settingsModule
 import com.example.playlistmaker.settings.domain.api.DarkThemeInteractor
@@ -32,7 +34,9 @@ class App : Application() {
                 sharingModule,
                 searchModule,
                 playlistModule,
-                newPlaylistModule
+                newPlaylistModule,
+                playlistMainModule,
+                playlistEditModule
             )
         }
 

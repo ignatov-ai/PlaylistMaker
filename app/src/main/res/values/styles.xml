@@ -66,6 +66,14 @@
         <item name="backgroundTint">?attr/colorOnSecondary</item>
         <item name="itemIconTint">@color/bottom_nav_bar_icon</item>
         <item name="itemTextColor">@color/bottom_nav_bar_icon</item>
+        <item name="itemTextAppearanceInactive">@style/text_bottom_navigation</item>
+        <item name="itemTextAppearanceActive">@style/text_bottom_navigation</item>
+    </style>
+
+    <style name="text_bottom_navigation">
+        <item name="fontFamily">@font/ysregular</item>
+        <item name="android:textSize">@dimen/text12sp</item>
+        <item name="android:textFontWeight">400</item>
     </style>
 
     <style name="tabBarNoCapsText" parent="TextAppearance.Design.Tab">

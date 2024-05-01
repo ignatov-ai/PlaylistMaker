@@ -12,7 +12,13 @@ class PlaylistsViewHolder(private val binding: PlaylistItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(playlist: PlaylistUi) {
         binding.playlistName.text = playlist.playlistName
-        binding.playlistTracksCount.text = playlist.getPlaylistTracksNumberText()
+        val numberOfSongs = "${playlist.playlistTracksNumber} ${
+            itemView.resources.getQuantityString(
+                R.plurals.tracksCount,
+                playlist.playlistTracksNumber
+            )
+        }"
+        binding.playlistTracksCount.text = numberOfSongs
 
         Glide.with(itemView)
             .load(playlist.playlistImage)

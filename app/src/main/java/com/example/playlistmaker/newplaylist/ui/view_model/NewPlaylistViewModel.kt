@@ -8,15 +8,17 @@ import com.example.playlistmaker.playlist.domain.model.Playlist
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NewPlaylistViewModel(private val newPlaylistInteractor: NewPlaylistInteractor) :
+open class NewPlaylistViewModel(private val newPlaylistInteractor: NewPlaylistInteractor) :
     ViewModel() {
 
-    fun onButtonSaveClick(
+    open fun onButtonSaveClick(
+        playlistId: Long?,
         playlistName: String,
         playlistDescription: String,
         playlistCoverPath: String,
     ) {
         val playlist = Playlist(
+            playlistId = playlistId,
             playlistName = playlistName,
             playlistDescription = playlistDescription,
             playlistCoverUri = playlistCoverPath

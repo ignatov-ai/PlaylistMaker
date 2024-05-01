@@ -35,11 +35,11 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.UUID
 
-class NewPlaylistFragment : Fragment() {
+open class NewPlaylistFragment : Fragment() {
 
-    private val viewModel: NewPlaylistViewModel by viewModel()
-    private var _binding: FragmentNewPlaylistBinding? = null
-    private val binding get() = _binding!!
+    open val viewModel: NewPlaylistViewModel by viewModel()
+    protected var _binding: FragmentNewPlaylistBinding? = null
+    protected val binding get() = _binding!!
 
     private val requester = PermissionRequester.instance()
 
@@ -58,7 +58,7 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private var imageId = ""
+    var imageId = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,6 +99,7 @@ class NewPlaylistFragment : Fragment() {
 
         binding.newPlaylistAddButton.setOnClickListener {
             viewModel.onButtonSaveClick(
+                playlistId = null,
                 playlistName = binding.newPlaylistNameField.text.toString(),
                 playlistDescription = binding.newPlaylistDescriptionField.text.toString(),
                 playlistCoverPath = if (imageId != "") {
@@ -145,7 +146,7 @@ class NewPlaylistFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.newPlaylistAddButton.isEnabled = !s.isNullOrEmpty()
+                binding.newPlaylistAddButton.isEnabled = !s.isNullOrBlank()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -211,7 +212,7 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    fun backPressedHandle() {
+    open fun backPressedHandle() {
         if (!binding.newPlaylistNameField.text.isNullOrEmpty() ||
             !binding.newPlaylistDescriptionField.text.isNullOrEmpty() ||
             !imageId.isEmpty()

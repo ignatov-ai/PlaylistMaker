@@ -171,12 +171,12 @@ class PlayerFragment: Fragment() {
     private fun getTrack(): TrackUi =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(TRACK, TrackUi::class.java)
-                ?: TrackUiMapper().map(
+                ?: TrackUiMapper.map(
                     Track()
                 )
         } else {
             @Suppress("DEPRECATION")
-            arguments?.getParcelable(TRACK) ?: TrackUiMapper().map(
+            arguments?.getParcelable(TRACK) ?: TrackUiMapper.map(
                 Track()
             )
         }

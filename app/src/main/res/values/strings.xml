@@ -49,4 +49,29 @@
     <string name="newPlaylist">Новый плейлист</string>
     <string name="addedToPlaylist">Добавлен в плейлист</string>
     <string name="existInPlaylist">Трек уже добавлен в плейлист</string>
+    <string name="sharePlaylist">Поделиться</string>
+    <string name="editPlaylist">Редактировать информацию</string>
+    <string name="deletePlaylist">Удалить плейлист</string>
+    <string name="deletePlaylistQuestion">Хотите удалить плейлист?</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+    <string name="emptyPlaylist">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="trackDeleteQuestion">Хотите удалить трек?</string>
+    <string name="emptyPlaylistToast">В этом плейлисте нет треков</string>
+    <string name="save">Сохранить</string>
+    <string name="edit">Редактировать</string>
+
+    <plurals name="minutesText">
+        <item quantity="one">минута</item>
+        <item quantity="few">минуты</item>
+        <item quantity="many">минут</item>
+        <item quantity="other">минут</item>
+    </plurals>
+
+    <plurals name="tracksCount">
+        <item quantity="one">трек</item>
+        <item quantity="few">трека</item>
+        <item quantity="many">треков</item>
+        <item quantity="other">треков</item>
+    </plurals>
 </resources>

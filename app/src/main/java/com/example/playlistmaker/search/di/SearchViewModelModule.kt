@@ -13,7 +13,7 @@ val searchViewModelModule = module {
         )
     }
 
-    single { TrackUiMapper() }
+    single { TrackUiMapper }
 
-    single { TrackUiMapper() }
+    single { TrackUiMapper }
 }

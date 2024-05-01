@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,12 +14,16 @@ import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.playlist.ui.recycler.PlaylistsAdapter
 import com.example.playlistmaker.playlist.ui.view_model.PlaylistViewModel
 import com.example.playlistmaker.playlist.ui.view_model.PlaylistsState
+import com.example.playlistmaker.playlistShow.ui.fragment.PlaylistShowFragment
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {
 
     companion object {
         fun newInstance() = PlaylistsFragment()
+        private const val DEBOUNCE_DELAY_MILLIS = 750L
     }
 
     private val viewModel: PlaylistViewModel by viewModel()
@@ -27,6 +32,8 @@ class PlaylistsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var playlistsAdapter: PlaylistsAdapter? = null
+
+    private var isClickAllowed = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,9 +47,17 @@ class PlaylistsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        playlistsAdapter = PlaylistsAdapter()
+        playlistsAdapter = PlaylistsAdapter { playlistId ->
+            if (clickDebounce()) {
+                findNavController().navigate(
+                    R.id.action_mediaFragment3_to_playlistShowFragment,
+                    PlaylistShowFragment.createArgs(playlistId)
+                )
+            }
+        }
+
         binding.playlistsRecyclerView.layoutManager =
-            GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
+            GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
         binding.playlistsRecyclerView.adapter = playlistsAdapter
 
         viewModel.listOfPlaylistsLiveData.observe(viewLifecycleOwner) {
@@ -78,5 +93,17 @@ class PlaylistsFragment : Fragment() {
                 binding.playlistsRecyclerView.visibility = View.GONE
             }
         }
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            lifecycleScope.launch {
+                delay(DEBOUNCE_DELAY_MILLIS)
+                isClickAllowed = true
+            }
+        }
+        return current
     }
 }

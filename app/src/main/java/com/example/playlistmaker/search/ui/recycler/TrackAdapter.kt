@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.TrackListElementBinding
 import com.example.playlistmaker.search.ui.model.TrackUi
 
-class TrackAdapter(private val recycleViewListener: OnItemClickListener? = null) : RecyclerView.Adapter<TrackViewHolder>() {
+open class TrackAdapter(private val recycleViewListener: OnItemClickListener? = null) : RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<TrackUi>()
 
