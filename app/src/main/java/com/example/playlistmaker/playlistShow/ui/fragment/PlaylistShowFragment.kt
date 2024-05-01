@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -41,6 +42,7 @@ class PlaylistShowFragment : Fragment() {
     }
     private var trackAdapter: TrackAdapterLongClick? = null
     private var isClickAllowed = true
+    private lateinit var tracksBottomSheet: BottomSheetBehavior<LinearLayout>
     private lateinit var bottomSheetBehaviorMenu: BottomSheetBehavior<LinearLayout>
 
     override fun onCreateView(
@@ -92,6 +94,7 @@ class PlaylistShowFragment : Fragment() {
         binding.settingsIcon.setOnClickListener {
             bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_EXPANDED
         }
+
         bottomSheetBehaviorMenu.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
