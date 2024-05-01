@@ -74,6 +74,7 @@
             android:fontFamily="@font/ysmedium"
             android:textSize="@dimen/font22sp"
             android:textFontWeight="500"
+            android:textColor="?attr/colorOnPrimary"
             android:text="Yesterday (Remastered 2009)"/>
 
         <TextView
@@ -87,6 +88,7 @@
             android:fontFamily="@font/ysmedium"
             android:textSize="@dimen/font14sp"
             android:textFontWeight="500"
+            android:textColor="?attr/colorOnPrimary"
             android:text="The Beatles "/>
 
         <ImageView

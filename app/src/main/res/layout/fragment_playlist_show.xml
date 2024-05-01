@@ -88,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/size4dp"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/dot"
             app:layout_constraintBottom_toBottomOf="@id/playlistDuration"
             app:layout_constraintStart_toEndOf="@id/playlistDuration"
@@ -101,7 +102,6 @@
             app:layout_constraintStart_toEndOf="@id/dotIcon"
             android:fontFamily="@font/ysregular"
             android:textSize="@dimen/text18sp"
-            android:layout_marginStart="@dimen/margin16dp"
             android:layout_marginTop="@dimen/margin8dp"
             android:textColor="@color/ypDark"
             tools:text="100 треков" />
@@ -115,7 +115,7 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/share"
+            android:src="@drawable/share_playlist_show"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/playlistDuration" />
 

@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
+            android:textSize="@dimen/text16sp"
             tools:text="Это самый лучший плейлист" />
 
         <TextView
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
+            android:textSize="@dimen/text11sp"
             tools:text="100500 треков" />
 
     </LinearLayout>

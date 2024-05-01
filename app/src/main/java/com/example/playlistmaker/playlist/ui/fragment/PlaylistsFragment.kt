@@ -50,7 +50,7 @@ class PlaylistsFragment : Fragment() {
         playlistsAdapter = PlaylistsAdapter { playlistId ->
             if (clickDebounce()) {
                 findNavController().navigate(
-                    R.id.action_mediaFragment3_to_playlistShowFragment,
+                    R.id.action_mediaFragment_to_playlistShowFragment,
                     PlaylistShowFragment.createArgs(playlistId)
                 )
             }
@@ -67,7 +67,7 @@ class PlaylistsFragment : Fragment() {
         viewModel.viewCreated()
 
         binding.newPlaylistButton.setOnClickListener {
-            findNavController().navigate(R.id.action_mediaFragment3_to_newPlaylistFragment)
+            findNavController().navigate(R.id.action_mediaFragment_to_newPlaylistFragment)
         }
     }
 

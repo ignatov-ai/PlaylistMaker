@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation_graph"
-    app:startDestination="@id/mediaFragment3">
+    app:startDestination="@id/mediaFragment">
 
     <fragment
         android:id="@+id/searchFragment"
@@ -29,18 +29,18 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/mediaFragment3"
+        android:id="@+id/mediaFragment"
         android:name="com.example.playlistmaker.playlist.ui.fragment.MediaFragment"
         android:label="fragment_media"
         tools:layout="@layout/fragment_media" >
         <action
-            android:id="@+id/action_mediaFragment3_to_playerFragment"
+            android:id="@+id/action_mediaFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
         <action
-            android:id="@+id/action_mediaFragment3_to_newPlaylistFragment"
+            android:id="@+id/action_mediaFragment_to_newPlaylistFragment"
             app:destination="@id/newPlaylistFragment" />
         <action
-            android:id="@+id/action_mediaFragment3_to_playlistShowFragment"
+            android:id="@+id/action_mediaFragment_to_playlistShowFragment"
             app:destination="@id/playlistShowFragment" />
     </fragment>
     <fragment
@@ -49,7 +49,7 @@
         android:label="fragment_playlists"
         tools:layout="@layout/fragment_playlists" />
     <fragment
-        android:id="@+id/favouriteFragment2"
+        android:id="@+id/favouriteFragment"
         android:name="com.example.playlistmaker.favourites.ui.fragments.FavouriteFragment"
         android:label="fragment_favourites"
         tools:layout="@layout/fragment_favourites" />
