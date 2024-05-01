@@ -52,4 +52,5 @@
     <dimen name="text16sp">16sp</dimen>
     <dimen name="text11sp">11sp</dimen>
     <dimen name="size240dp">240dp</dimen>
+    <dimen name="size256dp">256dp</dimen>
 </resources>
