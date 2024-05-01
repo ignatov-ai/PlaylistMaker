@@ -286,7 +286,7 @@
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/size4dp"
             app:behavior_hideable="true"
-            app:behavior_peekHeight="@dimen/maxBehaviorHeight"
+            app:behavior_peekHeight="@dimen/size240dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             tools:visibility="gone">
 
