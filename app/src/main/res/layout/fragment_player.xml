@@ -132,6 +132,7 @@
             android:textSize="@dimen/font14sp"
             android:textFontWeight="500"
             android:textAlignment="center"
+            android:textColor="?attr/colorOnPrimary"
             android:text="00:00"/>
 
         <!--    Параметр длительность-->
@@ -159,6 +160,7 @@
             android:fontFamily="@font/ysregular"
             android:textSize="@dimen/font13sp"
             android:textFontWeight="500"
+            android:textColor="?attr/colorOnPrimary"
             android:text="5:35"/>
 
         <!--    Параметр альбом-->
@@ -186,6 +188,7 @@
             android:fontFamily="@font/ysregular"
             android:textSize="@dimen/font13sp"
             android:textFontWeight="500"
+            android:textColor="?attr/colorOnPrimary"
             android:text="Yesterday (Remastered 2009)"/>
 
         <!--    Параметр год-->
@@ -213,6 +216,7 @@
             android:fontFamily="@font/ysregular"
             android:textSize="@dimen/font13sp"
             android:textFontWeight="500"
+            android:textColor="?attr/colorOnPrimary"
             android:text="1965"/>
 
         <!--    Параметр год-->
@@ -240,6 +244,7 @@
             android:fontFamily="@font/ysregular"
             android:textSize="@dimen/font13sp"
             android:textFontWeight="500"
+            android:textColor="?attr/colorOnPrimary"
             android:text="Rock"/>
 
         <TextView
@@ -266,6 +271,7 @@
             android:fontFamily="@font/ysregular"
             android:textSize="@dimen/font13sp"
             android:textFontWeight="500"
+            android:textColor="?attr/colorOnPrimary"
             android:text="Великобритания"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
         <!-- Панель с плейлистами -->

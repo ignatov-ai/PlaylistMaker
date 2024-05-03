@@ -117,10 +117,10 @@
 
     <style name="AlertDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="buttonBarButtonStyle">@style/DialogButtonStyle</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <style name="DialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/ypBlue</item>
     </style>
+
 </resources>

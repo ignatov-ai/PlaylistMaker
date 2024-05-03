@@ -27,6 +27,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:textSize="@dimen/text16sp"
+            android:textColor="?attr/colorOnPrimary"
             tools:text="Это самый лучший плейлист" />
 
         <TextView
@@ -36,6 +37,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:textSize="@dimen/text11sp"
+            android:textColor="?attr/colorOnPrimary"
             tools:text="100500 треков" />
 
     </LinearLayout>
