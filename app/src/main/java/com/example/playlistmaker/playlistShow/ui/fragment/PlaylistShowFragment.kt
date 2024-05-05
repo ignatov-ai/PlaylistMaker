@@ -1,6 +1,8 @@
 package com.example.playlistmaker.playlistShow.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnNextLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -42,8 +45,8 @@ class PlaylistShowFragment : Fragment() {
     }
     private var trackAdapter: TrackAdapterLongClick? = null
     private var isClickAllowed = true
-    private lateinit var tracksBottomSheet: BottomSheetBehavior<LinearLayout>
     private lateinit var bottomSheetBehaviorMenu: BottomSheetBehavior<LinearLayout>
+    private lateinit var tracksBottomSheet: BottomSheetBehavior<LinearLayout>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,6 +93,8 @@ class PlaylistShowFragment : Fragment() {
         }
 
         bottomSheetBehaviorMenu = BottomSheetBehavior.from(binding.bottomSheetMenu)
+        tracksBottomSheet = BottomSheetBehavior.from(binding.tracksBottomSheet)
+
         bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_HIDDEN
         binding.settingsIcon.setOnClickListener {
             bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_EXPANDED
@@ -129,6 +134,15 @@ class PlaylistShowFragment : Fragment() {
         binding.deletePlaylistText.setOnClickListener {
             bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_HIDDEN
             showDeleteDialog()
+        }
+
+        binding.shareLine.doOnNextLayout {
+            val screenHeight = binding.root.measuredHeight
+            val tracksBottomSheetHeight = screenHeight - binding.shareLine.bottom
+            val bottomSheetMenuHeight = screenHeight - binding.playlistNameLine.bottom
+
+            tracksBottomSheet.setPeekHeight(tracksBottomSheetHeight, true)
+            bottomSheetBehaviorMenu.setPeekHeight(bottomSheetMenuHeight, true)
         }
     }
 
