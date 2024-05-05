@@ -1,6 +1,7 @@
 package com.example.playlistmaker.playlistShow.ui.fragment
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -163,6 +164,8 @@ class PlaylistShowFragment : Fragment() {
     private fun share() {
         if (trackAdapter?.tracks.isNullOrEmpty()) {
             Snackbar.make(binding.root, getString(R.string.emptyPlaylist), Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.GRAY)
                 .show()
         } else {
             viewModel.shareClicked(binding.playlistTracksCount.text.toString())
