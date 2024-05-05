@@ -15,13 +15,13 @@ open class NewPlaylistViewModel(private val newPlaylistInteractor: NewPlaylistIn
         playlistId: Long?,
         playlistName: String,
         playlistDescription: String,
-        playlistCoverPath: String,
+        playlistCoverUri: String,
     ) {
         val playlist = Playlist(
             playlistId = playlistId,
             playlistName = playlistName,
             playlistDescription = playlistDescription,
-            playlistCoverUri = playlistCoverPath
+            playlistCoverUri = playlistCoverUri
         )
         viewModelScope.launch(Dispatchers.IO) {
             newPlaylistInteractor.createPlaylist(playlist)

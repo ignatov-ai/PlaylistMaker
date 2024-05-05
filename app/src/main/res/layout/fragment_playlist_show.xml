@@ -146,6 +146,7 @@
             android:layout_height="1dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/settingsIcon"
+            android:layout_marginTop="@dimen/margin16dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

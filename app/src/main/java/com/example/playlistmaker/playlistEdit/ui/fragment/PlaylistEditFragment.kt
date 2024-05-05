@@ -32,11 +32,15 @@ class PlaylistEditFragment : NewPlaylistFragment() {
                 playlistName = binding.newPlaylistNameField.text.toString(),
                 playlistDescription = binding.newPlaylistDescriptionField.text.toString(),
                 playlistCoverUri = if (imageId != "") {
-                    activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.path + "/$FILE_DIRECTORY/cover-$imageId.jpg"
+                    activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.path +
+                            "/$FILE_DIRECTORY/playlist-$imageId.jpg"
                 } else {
-                    playlist?.playlistCoverPath ?: ""
+                    ""
                 }
             )
+
+
+
             findNavController().navigateUp()
         }
     }

@@ -102,7 +102,7 @@ open class NewPlaylistFragment : Fragment() {
                 playlistId = null,
                 playlistName = binding.newPlaylistNameField.text.toString(),
                 playlistDescription = binding.newPlaylistDescriptionField.text.toString(),
-                playlistCoverPath = if (imageId != "") {
+                playlistCoverUri = if (imageId != "") {
                     activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.path +
                             "/$FILE_DIRECTORY/playlist-$imageId.jpg"
                 } else {
