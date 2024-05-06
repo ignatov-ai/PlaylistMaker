@@ -167,6 +167,8 @@ class PlaylistShowFragment : Fragment() {
                 .setTextColor(Color.WHITE)
                 .setBackgroundTint(Color.GRAY)
                 .show()
+
+        bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_HIDDEN
         } else {
             viewModel.shareClicked(binding.playlistTracksCount.text.toString())
         }
