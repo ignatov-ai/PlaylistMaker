@@ -19,7 +19,8 @@ class TrackInPlaylistRepositoryImpl(private val database: AppDatabase) : TrackIn
             database.trackInPlaylistDao().addTrackInPlaylist(
                 PlaylistTrackEntity(
                     playlistId = playlistId,
-                    trackId = trackId
+                    trackId = trackId,
+                    createTime = System.currentTimeMillis()
                 )
             )
             return true

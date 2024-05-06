@@ -3,7 +3,7 @@ package com.example.playlistmaker.search.ui.mapper
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.model.TrackUi
 
-class TrackUiMapper {
+object TrackUiMapper {
     fun map(track: Track): TrackUi {
         return TrackUi(
             trackId = track.trackId,

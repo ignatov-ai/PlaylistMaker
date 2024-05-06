@@ -78,7 +78,7 @@ class SearchViewModel(
     private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
         val tracks = mutableListOf<TrackUi>()
         if (foundTracks != null) {
-            tracks.addAll(foundTracks.map { TrackUiMapper().map(it) })
+            tracks.addAll(foundTracks.map { TrackUiMapper.map(it) })
         }
 
         when {
@@ -135,7 +135,7 @@ class SearchViewModel(
             trackHistoryInteractor.getHistory()
                 .map { tracks: List<Track> ->
                     tracks.map { track: Track ->
-                        TrackUiMapper().map(track)
+                        TrackUiMapper.map(track)
                     }
                 }
                 .collect { tracks: List<TrackUi> ->
@@ -150,7 +150,7 @@ class SearchViewModel(
 
     fun onItemClick(track: TrackUi) {
         clickDebounce()
-        trackHistoryInteractor.addTrack(TrackUiMapper().map(track))
+        trackHistoryInteractor.addTrack(TrackUiMapper.map(track))
         saveHistory()
     }
 

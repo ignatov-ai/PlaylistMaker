@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical"
         android:layout_marginLeft="@dimen/margin8dp"
         android:layout_marginRight="@dimen/margin8dp">
@@ -39,7 +39,7 @@
         <LinearLayout
             android:id="@+id/trackListElementProperties"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/size20dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
             <TextView

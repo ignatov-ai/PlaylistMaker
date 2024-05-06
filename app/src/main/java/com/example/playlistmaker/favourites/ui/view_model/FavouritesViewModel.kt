@@ -32,7 +32,7 @@ class FavouritesViewModel(
             setState(FavouriteState.Empty)
         } else {
             val tracksUi = tracks.map { item ->
-                TrackUiMapper().map(item)
+                TrackUiMapper.map(item)
             }
             setState(FavouriteState.Content(tracks = tracksUi))
         }

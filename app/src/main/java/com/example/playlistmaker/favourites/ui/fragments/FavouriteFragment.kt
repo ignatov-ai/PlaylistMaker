@@ -51,7 +51,7 @@ class FavouriteFragment : Fragment() {
         tracksAdapter = TrackAdapter {
             if (clickDebounce()) {
                 findNavController().navigate(
-                    R.id.action_mediaFragment3_to_playerFragment,
+                    R.id.action_mediaFragment_to_playerFragment,
                     PlayerFragment.createArgs(it)
                 ).apply { it.isFavourite = true }
             }

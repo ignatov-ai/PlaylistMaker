@@ -125,11 +125,11 @@ class PlayerViewModel(
         viewModelScope.launch {
             if (track.isFavourite) {
                 track.isFavourite = false
-                favouritesInteractor.deleteTrackFromFavourites(TrackUiMapper().map(track))
+                favouritesInteractor.deleteTrackFromFavourites(TrackUiMapper.map(track))
                 mutableFavouriteLiveData.postValue(false)
             } else {
                 track.isFavourite = true
-                favouritesInteractor.addTrackToFavourites(TrackUiMapper().map(track))
+                favouritesInteractor.addTrackToFavourites(TrackUiMapper.map(track))
                 mutableFavouriteLiveData.postValue(true)
             }
         }
@@ -149,7 +149,7 @@ class PlayerViewModel(
     fun onPlaylistClicked(playlistItemUi: PlaylistUi) {
         viewModelScope.launch(Dispatchers.IO) {
             if (!trackInPlaylistInteractor.trackInDataBase(idTrack = track.trackId)) {
-                favouritesInteractor.addTrackToFavourites(TrackUiMapper().map(track))
+                favouritesInteractor.addTrackToFavourites(TrackUiMapper.map(track))
             }
             val isAdded = trackInPlaylistInteractor.addTrackInPlaylist(
                 playlistId = playlistItemUi.playlistId,
