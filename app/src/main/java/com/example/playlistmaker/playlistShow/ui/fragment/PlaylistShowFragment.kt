@@ -171,6 +171,7 @@ class PlaylistShowFragment : Fragment() {
         bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_HIDDEN
         } else {
             viewModel.shareClicked(binding.playlistTracksCount.text.toString())
+            bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 
